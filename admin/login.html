@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Battery ERP | Login</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:#eef5ff;
+overflow-x:hidden;
+
+}
+
+.login-section{
+
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:35px;
+
+}
+
+.login-container{
+
+width:100%;
+max-width:1450px;
+background:#fff;
+border-radius:25px;
+overflow:hidden;
+box-shadow:0 20px 60px rgba(0,0,0,.12);
+
+}
+
+.left-panel{
+
+background:linear-gradient(135deg,#0B5ED7,#3D8BFD);
+color:#fff;
+padding:60px;
+height:100%;
+
+position:relative;
+overflow:hidden;
+
+}
+
+.left-panel::before{
+
+content:"";
+position:absolute;
+width:500px;
+height:500px;
+background:rgba(255,255,255,.08);
+border-radius:50%;
+top:-150px;
+right:-120px;
+
+}
+
+.left-panel::after{
+
+content:"";
+position:absolute;
+width:350px;
+height:350px;
+background:rgba(255,255,255,.06);
+border-radius:50%;
+bottom:-120px;
+left:-120px;
+
+}
+
+.brand{
+
+display:flex;
+align-items:center;
+margin-bottom:45px;
+
+}
+
+.brand i{
+
+font-size:42px;
+margin-right:15px;
+color:#fff;
+
+}
+
+.brand h2{
+
+font-weight:700;
+margin:0;
+font-size:38px;
+
+}
+
+.brand small{
+
+display:block;
+font-size:15px;
+opacity:.9;
+
+}
+
+.hero-title{
+
+font-size:52px;
+font-weight:700;
+line-height:1.2;
+margin-bottom:25px;
+
+}
+
+.hero-title span{
+
+color:#FFD54F;
+
+}
+
+.hero-text{
+
+font-size:18px;
+line-height:33px;
+opacity:.95;
+max-width:520px;
+
+}
+
+.feature-box{
+
+margin-top:50px;
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+
+}
+
+.feature{
+
+background:rgba(255,255,255,.12);
+
+padding:20px;
+
+border-radius:18px;
+
+backdrop-filter:blur(8px);
+
+transition:.3s;
+
+}
+
+.feature:hover{
+
+transform:translateY(-5px);
+background:rgba(255,255,255,.18);
+
+}
+
+.feature i{
+
+font-size:30px;
+margin-bottom:15px;
+
+}
+
+.feature h5{
+
+font-size:18px;
+font-weight:600;
+
+}
+
+.feature p{
+
+font-size:14px;
+opacity:.9;
+margin-top:8px;
+
+}
+
+.right-panel{
+
+padding:70px;
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:#fff;
+
+}
+
+.login-box{
+
+width:100%;
+max-width:470px;
+
+}
+
+.login-icon{
+
+width:90px;
+height:90px;
+border-radius:50%;
+background:#EEF5FF;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+margin:auto;
+margin-bottom:25px;
+
+}
+
+.login-icon i{
+
+font-size:36px;
+color:#0B5ED7;
+
+}
+
+.login-box h2{
+
+font-weight:700;
+text-align:center;
+
+margin-bottom:10px;
+
+}
+
+.login-box p{
+
+text-align:center;
+color:#777;
+margin-bottom:35px;
+
+}
+
+.form-label{
+
+font-weight:600;
+
+}
+
+.form-control{
+
+height:55px;
+border-radius:12px;
+border:1px solid #d9d9d9;
+padding-left:45px;
+
+}
+
+.form-control:focus{
+
+box-shadow:none;
+border-color:#0B5ED7;
+
+}
+
+.input-box{
+
+position:relative;
+margin-bottom:20px;
+
+}
+
+.input-box i{
+
+position:absolute;
+left:15px;
+top:18px;
+color:#0B5ED7;
+
+font-size:18px;
+
+}
+
+.password-eye{
+
+position:absolute;
+right:18px;
+top:18px;
+cursor:pointer;
+color:#777;
+
+}
+/* ================= BUTTONS ================= */
+
+.btn-primary{
+
+background:#0B5ED7;
+border:none;
+transition:.3s;
+
+}
+
+.btn-primary:hover{
+
+background:#0849a6;
+transform:translateY(-2px);
+
+}
+
+.btn-outline-primary,
+.btn-outline-success{
+
+height:55px;
+font-weight:600;
+transition:.3s;
+
+}
+
+.btn-outline-primary:hover,
+.btn-outline-success:hover{
+
+transform:translateY(-3px);
+
+}
+
+/* ================= LINKS ================= */
+
+a{
+
+transition:.3s;
+
+}
+
+a:hover{
+
+color:#0B5ED7;
+
+}
+
+/* ================= ANIMATION ================= */
+
+.login-container{
+
+animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+0%{
+
+opacity:0;
+transform:translateY(40px);
+
+}
+
+100%{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1200px){
+
+.left-panel{
+
+padding:45px;
+
+}
+
+.hero-title{
+
+font-size:42px;
+
+}
+
+.right-panel{
+
+padding:45px;
+
+}
+
+}
+
+@media(max-width:992px){
+
+.left-panel{
+
+display:none;
+
+}
+
+.right-panel{
+
+padding:45px 25px;
+
+}
+
+.login-box{
+
+max-width:100%;
+
+}
+
+.login-container{
+
+max-width:600px;
+margin:auto;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.login-section{
+
+padding:15px;
+
+}
+
+.right-panel{
+
+padding:35px 20px;
+
+}
+
+.login-box h2{
+
+font-size:30px;
+
+}
+
+.form-control{
+
+height:52px;
+
+}
+
+.btn{
+
+height:52px;
+
+}
+
+}
+
+@media(max-width:576px){
+
+.login-container{
+
+border-radius:15px;
+
+}
+
+.login-box h2{
+
+font-size:26px;
+
+}
+
+.login-box p{
+
+font-size:14px;
+
+}
+
+.login-icon{
+
+width:75px;
+height:75px;
+
+}
+
+.login-icon i{
+
+font-size:28px;
+
+}
+
+.btn{
+
+font-size:14px;
+
+}
+
+.form-control{
+
+font-size:14px;
+
+}
+
+}
+
+@media(max-width:420px){
+
+.right-panel{
+
+padding:25px 15px;
+
+}
+
+.login-box{
+
+max-width:100%;
+
+}
+
+.form-control{
+
+padding-left:40px;
+
+}
+
+.password-eye{
+
+right:14px;
+
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<section class="login-section">
+
+<div class="container-fluid">
+
+<div class="login-container">
+
+<div class="row g-0">
+
+<!-- ================= LEFT PANEL ================= -->
+
+<div class="col-lg-6">
+
+<div class="left-panel">
+
+<div class="brand">
+
+<i class="fa-solid fa-car-battery"></i>
+
+<div>
+
+<h2>Battery ERP</h2>
+
+<small>Inventory & Warranty Management System</small>
+
+</div>
+
+</div>
+
+<h1 class="hero-title">
+
+Powering <span>Dealers</span><br>
+
+Managing <span>Batteries</span>
+
+</h1>
+
+<p class="hero-text">
+
+Complete Battery ERP Software for managing Inventory,
+Dispatch, Dealers, Customers, Warranty, Replacement,
+Reward Wallet, Reports and Analytics from one dashboard.
+
+</p>
+
+<div class="feature-box">
+
+<div class="feature">
+
+<i class="fa-solid fa-boxes-stacked"></i>
+
+<h5>Inventory</h5>
+
+<p>
+
+Serial Number Based Inventory
+Management with Complete Stock Tracking.
+
+</p>
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-truck-fast"></i>
+
+<h5>Dispatch</h5>
+
+<p>
+
+Dealer Dispatch Management
+with Invoice & Transport Details.
+
+</p>
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+<h5>Warranty</h5>
+
+<p>
+
+90 Days Dealer Warranty
+Activation System.
+
+</p>
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-gift"></i>
+
+<h5>Reward Wallet</h5>
+
+<p>
+
+50 Reward Points on Every
+Successful Warranty Activation.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= RIGHT PANEL ================= -->
+
+<div class="col-lg-6">
+
+<div class="right-panel">
+
+<div class="login-box">
+
+<div class="login-icon">
+
+<i class="fa-solid fa-user-lock"></i>
+
+</div>
+
+<h2>Welcome Back</h2>
+
+<p>
+
+Please login to continue
+
+</p>
+
+<form>
+
+<div class="input-box">
+
+<label class="form-label">
+
+Username
+
+</label>
+
+<i class="fa-solid fa-user"></i>
+
+<input
+
+type="text"
+
+class="form-control"
+
+placeholder="Enter Username"
+
+>
+
+</div>
+
+<div class="input-box">
+
+<label class="form-label">
+
+Password
+
+</label>
+
+<i class="fa-solid fa-lock"></i>
+
+<input
+
+type="password"
+
+id="password"
+
+class="form-control"
+
+placeholder="Enter Password"
+
+>
+
+<span class="password-eye">
+
+<i
+
+class="fa-solid fa-eye"
+
+id="togglePassword"
+
+></i>
+
+</span>
+
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div class="form-check">
+
+<input
+
+class="form-check-input"
+
+type="checkbox"
+
+id="remember"
+
+>
+
+<label
+
+class="form-check-label"
+
+for="remember"
+
+>
+
+Remember Me
+
+</label>
+
+</div>
+
+<a
+
+href="#"
+
+class="text-decoration-none"
+
+>
+
+Forgot Password?
+
+</a>
+
+</div>
+
+<button
+
+type="submit"
+
+class="btn btn-primary w-100 py-3 rounded-3 fw-semibold"
+
+>
+
+<i class="fa-solid fa-right-to-bracket me-2"></i>
+
+Login
+
+</button>
+
+</form>
+
+<hr class="my-4">
+
+<div class="row">
+
+<div class="col-6">
+
+<button class="btn btn-outline-primary w-100 py-3 rounded-3">
+
+<i class="fa-solid fa-user-shield me-2"></i>
+
+Admin Login
+
+</button>
+
+</div>
+
+<div class="col-6">
+
+<button class="btn btn-outline-success w-100 py-3 rounded-3">
+
+<i class="fa-solid fa-user-tie me-2"></i>
+
+Dealer Login
+
+</button>
+
+</div>
+
+</div>
+
+<div class="text-center mt-5 text-secondary">
+
+© 2026 Battery ERP Management System
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section><!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+/* ==========================================
+   SHOW / HIDE PASSWORD
+========================================== */
+
+const password = document.getElementById("password");
+const togglePassword = document.getElementById("togglePassword");
+
+togglePassword.addEventListener("click", () => {
+
+    if(password.type === "password"){
+
+        password.type = "text";
+
+        togglePassword.classList.remove("fa-eye");
+        togglePassword.classList.add("fa-eye-slash");
+
+    }else{
+
+        password.type = "password";
+
+        togglePassword.classList.remove("fa-eye-slash");
+        togglePassword.classList.add("fa-eye");
+
+    }
+
+});
+
+
+/* ==========================================
+   LOGIN BUTTON
+========================================== */
+
+document.querySelector("form").addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    const username = document.querySelector("input[type='text']").value.trim();
+
+    const pass = password.value.trim();
+
+    if(username==="" || pass===""){
+
+        alert("Please enter Username & Password.");
+
+        return;
+
+    }
+
+    alert("Login Successful");
+
+    // Future
+    // window.location.href="admin-dashboard.html";
+
+});
+
+
+/* ==========================================
+   ADMIN BUTTON
+========================================== */
+
+document.querySelector(".btn-outline-primary").addEventListener("click",function(){
+
+    alert("Admin Login Selected");
+
+});
+
+
+/* ==========================================
+   DEALER BUTTON
+========================================== */
+
+document.querySelector(".btn-outline-success").addEventListener("click",function(){
+
+    alert("Dealer Login Selected");
+
+});
+
+</script>
+
+</body>
+</html>

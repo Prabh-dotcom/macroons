@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Warranty Management | Battery ERP</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+overflow-x:hidden;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+position:fixed;
+top:0;
+left:0;
+width:260px;
+height:100vh;
+background:#0B5ED7;
+padding:20px;
+overflow-y:auto;
+z-index:1000;
+}
+
+.logo{
+display:flex;
+align-items:center;
+margin-bottom:35px;
+color:#fff;
+}
+
+.logo i{
+font-size:32px;
+margin-right:12px;
+}
+
+.logo h4{
+margin:0;
+font-weight:700;
+}
+
+.logo small{
+opacity:.8;
+}
+
+.sidebar ul{
+list-style:none;
+padding:0;
+}
+
+.sidebar ul li{
+margin-bottom:8px;
+}
+
+.sidebar ul li a{
+display:flex;
+align-items:center;
+padding:13px 15px;
+text-decoration:none;
+color:#fff;
+border-radius:10px;
+transition:.3s;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active{
+background:rgba(255,255,255,.15);
+padding-left:20px;
+}
+
+.sidebar ul li a i{
+width:28px;
+}
+
+/* ================= MAIN ================= */
+
+.main-content{
+margin-left:260px;
+min-height:100vh;
+}
+
+/* ================= TOPBAR ================= */
+
+.topbar{
+height:75px;
+background:#fff;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 30px;
+box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.search-box{
+position:relative;
+width:380px;
+}
+
+.search-box input{
+width:100%;
+height:46px;
+border:none;
+outline:none;
+background:#eef3fa;
+padding-left:45px;
+border-radius:10px;
+}
+
+.search-box i{
+position:absolute;
+left:16px;
+top:15px;
+color:#0B5ED7;
+}
+
+.profile{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.profile button{
+width:45px;
+height:45px;
+border:none;
+border-radius:50%;
+background:#eef3fa;
+}
+
+.page-content{
+padding:30px;
+}
+
+/* ================= DASHBOARD CARD ================= */
+
+.dashboard-card{
+background:#fff;
+padding:22px;
+border-radius:16px;
+box-shadow:0 5px 18px rgba(0,0,0,.05);
+transition:.3s;
+height:100%;
+}
+
+.dashboard-card:hover{
+transform:translateY(-4px);
+}
+
+.dashboard-card h3{
+margin-top:12px;
+margin-bottom:5px;
+font-weight:700;
+}
+
+.dashboard-card p{
+margin:0;
+color:#777;
+}
+
+.form-card{
+margin-top:30px;
+background:#fff;
+padding:25px;
+border-radius:18px;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.form-label{
+font-weight:600;
+}
+
+.form-control,
+.form-select{
+height:48px;
+border-radius:10px;
+}
+
+textarea.form-control{
+height:110px;
+resize:none;
+}
+
+.readonly{
+background:#f8f9fa;
+font-weight:600;
+}
+
+.btn{
+height:45px;
+border-radius:10px;
+font-weight:600;
+}
+
+.section-title{
+font-size:20px;
+font-weight:700;
+color:#0B5ED7;
+margin-bottom:20px;
+padding-bottom:10px;
+border-bottom:2px solid #eee;
+}
+
+.badge{
+padding:8px 12px;
+font-size:13px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+<div>
+
+<h4>Battery ERP</h4>
+
+<small>Admin Panel</small>
+
+</div>
+
+</div>
+
+<ul>
+
+<li>
+
+<a href="admin-dashboard.html">
+
+<i class="fa-solid fa-house"></i>
+
+Dashboard
+
+</a>
+
+</li>
+
+<li>
+
+<a href="inventory.html">
+
+<i class="fa-solid fa-boxes-stacked"></i>
+
+Inventory
+
+</a>
+
+</li>
+
+<li>
+
+<a href="dispatch.html">
+
+<i class="fa-solid fa-truck-fast"></i>
+
+Dispatch
+
+</a>
+
+</li>
+
+<li>
+
+<a href="dealer.html">
+
+<i class="fa-solid fa-users"></i>
+
+Dealers
+
+</a>
+
+</li>
+
+<li>
+
+<a href="warranty.html" class="active">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+Warranty
+
+</a>
+
+</li>
+
+<li>
+
+<a href="replacement.html">
+
+<i class="fa-solid fa-repeat"></i>
+
+Replacement
+
+</a>
+
+</li>
+
+<li>
+
+<a href="reward-wallet.html">
+
+<i class="fa-solid fa-wallet"></i>
+
+Reward Wallet
+
+</a>
+
+</li>
+
+<li>
+
+<a href="reports.html">
+
+<i class="fa-solid fa-chart-column"></i>
+
+Reports
+
+</a>
+
+</li>
+
+<li>
+
+<a href="settings.html">
+
+<i class="fa-solid fa-gear"></i>
+
+Settings
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="main-content">
+
+<div class="topbar">
+
+<div class="search-box">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+<input
+type="text"
+placeholder="Search Warranty ID / Serial Number / Customer">
+
+</div>
+
+<div class="profile">
+
+<button>
+
+<i class="fa-solid fa-bell"></i>
+
+</button>
+
+<button>
+
+<i class="fa-solid fa-user"></i>
+
+</button>
+
+</div>
+
+</div>
+
+<div class="page-content">
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+<div>
+
+<h2 class="fw-bold">
+
+Warranty Management
+
+</h2>
+
+<small class="text-muted">
+
+Dashboard > Warranty
+
+</small>
+
+</div>
+
+<div class="d-flex flex-wrap gap-2 mt-3 mt-lg-0">
+
+<button class="btn btn-success">
+
+<i class="fa-solid fa-circle-check me-2"></i>
+
+Activate Warranty
+
+</button>
+
+<button class="btn btn-warning text-white">
+
+<i class="fa-solid fa-rotate-right me-2"></i>
+
+Refresh
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= DASHBOARD CARDS ================= -->
+
+<div class="row g-4">
+
+<div class="col-xl-3 col-md-6">
+
+<div class="dashboard-card">
+
+<i class="fa-solid fa-shield-halved fa-2x text-primary"></i>
+
+<h3></h3>
+
+<p>Total Warranty</p>
+
+</div>
+
+</div>
+
+<div class="col-xl-3 col-md-6">
+
+<div class="dashboard-card">
+
+<i class="fa-solid fa-calendar-check fa-2x text-success"></i>
+
+<h3></h3>
+
+<p>Today's Activation</p>
+
+</div>
+
+</div>
+
+<div class="col-xl-3 col-md-6">
+
+<div class="dashboard-card">
+
+<i class="fa-solid fa-circle-check fa-2x text-info"></i>
+
+<h3></h3>
+
+<p>Active Warranty</p>
+
+</div>
+
+</div>
+
+<div class="col-xl-3 col-md-6">
+
+<div class="dashboard-card">
+
+<i class="fa-solid fa-clock fa-2x text-danger"></i>
+
+<h3></h3>
+
+<p>Expired Warranty</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= WARRANTY ACTIVATION FORM ================= -->
+
+<div class="form-card">
+
+<h4 class="fw-bold mb-4">
+
+Warranty Activation Form
+
+</h4>
+
+<form>
+
+<div class="row">
+    <!-- ================= PRODUCT CATEGORY ================= -->
+
+<div class="col-12 mb-3">
+
+    <h5 class="section-title">
+
+        Product Details
+
+    </h5>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Product Category <span class="text-danger">*</span>
+
+    </label>
+
+    <select class="form-select" id="productCategory">
+
+        <option selected disabled>Select Product Category</option>
+
+        <option>Lead Acid Battery</option>
+
+        <option>Lithium Battery</option>
+
+        <option>Solar Panel</option>
+
+        <option>Inverter</option>
+
+        <option>Charger</option>
+
+    </select>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Company Name <span class="text-danger">*</span>
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Company Name">
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Product Serial Number <span class="text-danger">*</span>
+
+    </label>
+
+    <div class="input-group">
+
+        <input
+            type="text"
+            class="form-control"
+            placeholder="Search Serial Number">
+
+        <button class="btn btn-primary">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+        </button>
+
+    </div>
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Product Name
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Model Number
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Batch Number
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Manufacturing Date
+
+    </label>
+
+    <input
+        type="date"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Purchase Date
+
+    </label>
+
+    <input
+        type="date"
+        class="form-control">
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Invoice Number
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Invoice Number">
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Invoice Upload
+
+    </label>
+
+    <input
+        type="file"
+        class="form-control"
+        accept=".pdf,.jpg,.jpeg,.png">
+
+</div>
+
+<!-- ================= DEALER DETAILS ================= -->
+
+<div class="col-12 mt-4 mb-3">
+
+    <h5 class="section-title">
+
+        Dealer Details
+
+    </h5>
+
+</div>
+<!-- ================= DEALER DETAILS ================= -->
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Dealer ID
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Dealer Name
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Mobile Number
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Email ID
+
+    </label>
+
+    <input
+        type="email"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        State
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        District
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        City
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<!-- ================= CUSTOMER DETAILS ================= -->
+
+<div class="col-12 mt-4 mb-3">
+
+    <h5 class="section-title">
+
+        Customer Details
+
+    </h5>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Customer Name <span class="text-danger">*</span>
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Customer Name">
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Mobile Number <span class="text-danger">*</span>
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Mobile Number">
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Email ID
+
+    </label>
+
+    <input
+        type="email"
+        class="form-control"
+        placeholder="Enter Email ID">
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        State
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Enter State">
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        District
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Enter District">
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        City
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Enter City">
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Pincode
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Pincode">
+
+</div>
+
+<div class="col-12 mb-3">
+
+    <label class="form-label">
+
+        Full Address
+
+    </label>
+
+    <textarea
+        class="form-control"
+        placeholder="Enter Complete Address"></textarea>
+
+</div>
+
+<!-- ================= WARRANTY DETAILS ================= -->
+
+<div class="col-12 mt-4 mb-3">
+
+    <h5 class="section-title">
+
+        Warranty Details
+
+    </h5>
+
+</div>
+<!-- ================= WARRANTY DETAILS ================= -->
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Warranty ID
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        id="warrantyId"
+        placeholder="Auto Generate"
+        readonly>
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Activation Date <span class="text-danger">*</span>
+
+    </label>
+
+    <input
+        type="date"
+        class="form-control">
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Warranty Period <span class="text-danger">*</span>
+
+    </label>
+
+    <select class="form-select" id="warrantyPeriod">
+
+        <option selected disabled>Select Warranty Period</option>
+
+    </select>
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Warranty Expiry Date
+
+    </label>
+
+    <input
+        type="date"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Warranty Status
+
+    </label>
+
+    <select class="form-select">
+
+        <option>Active</option>
+
+        <option>Pending</option>
+
+        <option>Expired</option>
+
+    </select>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Activation By
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control readonly"
+        readonly>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+    <label class="form-label">
+
+        Remarks
+
+    </label>
+
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Remarks">
+
+</div>
+
+<!-- ================= ACTION BUTTONS ================= -->
+
+<div class="col-12 mt-4">
+
+    <div class="d-flex flex-wrap gap-2">
+
+        <button
+            type="submit"
+            class="btn btn-success">
+
+            <i class="fa-solid fa-circle-check me-2"></i>
+
+            Activate Warranty
+
+        </button>
+
+        <button
+            type="button"
+            class="btn btn-primary">
+
+            <i class="fa-solid fa-floppy-disk me-2"></i>
+
+            Save Draft
+
+        </button>
+
+        <button
+            type="button"
+            class="btn btn-warning text-white">
+
+            <i class="fa-solid fa-print me-2"></i>
+
+            Print Warranty Card
+
+        </button>
+
+        <button
+            type="reset"
+            class="btn btn-secondary">
+
+            <i class="fa-solid fa-rotate-left me-2"></i>
+
+            Reset
+
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+<!-- ================= WARRANTY LIST ================= -->
+
+<div class="form-card mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h4 class="fw-bold mb-0">
+
+            Warranty Records
+
+        </h4>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-hover align-middle">
+
+            <thead class="table-primary">
+
+                <tr>
+
+                    <th>Warranty ID</th>
+
+                    <th>Category</th>
+
+                    <th>Serial Number</th>
+
+                    <th>Customer</th>
+
+                    <th>Dealer</th>
+
+                    <th>Activation Date</th>
+
+                    <th>Expiry Date</th>
+
+                    <th>Status</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <!-- Warranty records will come from database -->
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+<script>
+
+/* ===========================================
+   AUTO WARRANTY ID
+=========================================== */
+
+function generateWarrantyID(){
+
+    const random = Math.floor(Math.random()*90000)+10000;
+
+    document.getElementById("warrantyId").value="WAR"+random;
+
+}
+
+window.onload=generateWarrantyID;
+
+
+/* ===========================================
+   WARRANTY PERIOD CATEGORY WISE
+=========================================== */
+
+const category=document.getElementById("productCategory");
+
+const period=document.getElementById("warrantyPeriod");
+
+category.addEventListener("change",function(){
+
+let options="";
+
+switch(this.value){
+
+case "Lead Acid Battery":
+
+options=`
+<option selected disabled>Select Warranty</option>
+<option>12 Months</option>
+<option>24 Months</option>
+<option>36 Months</option>
+<option>48 Months</option>
+<option>60 Months</option>
+`;
+
+break;
+
+case "Lithium Battery":
+
+options=`
+<option selected disabled>Select Warranty</option>
+<option>24 Months</option>
+<option>36 Months</option>
+<option>48 Months</option>
+<option>60 Months</option>
+`;
+
+break;
+
+case "Solar Panel":
+
+options=`
+<option selected disabled>Select Warranty</option>
+<option>10 Years</option>
+<option>15 Years</option>
+<option>20 Years</option>
+<option>25 Years</option>
+`;
+
+break;
+
+case "Inverter":
+
+options=`
+<option selected disabled>Select Warranty</option>
+<option>12 Months</option>
+<option>24 Months</option>
+<option>36 Months</option>
+`;
+
+break;
+
+case "Charger":
+
+options=`
+<option selected disabled>Select Warranty</option>
+<option>6 Months</option>
+<option>12 Months</option>
+<option>24 Months</option>
+`;
+
+break;
+
+}
+
+period.innerHTML=options;
+
+});
+
+
+/* ===========================================
+   AUTO EXPIRY DATE
+=========================================== */
+
+const activationDate=document.querySelector('input[type="date"]');
+
+const expiryDate=document.querySelectorAll('input[type="date"]')[1];
+
+period.addEventListener("change",function(){
+
+if(activationDate.value==""){
+
+alert("Select Activation Date First");
+
+period.selectedIndex=0;
+
+return;
+
+}
+
+let date=new Date(activationDate.value);
+
+let value=this.value;
+
+if(value.includes("Months")){
+
+date.setMonth(date.getMonth()+parseInt(value));
+
+}
+
+if(value.includes("Years")){
+
+date.setFullYear(date.getFullYear()+parseInt(value));
+
+}
+
+expiryDate.value=date.toISOString().split("T")[0];
+
+});
+
+
+/* ===========================================
+   FORM SUBMIT
+=========================================== */
+
+document.querySelector("form").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+alert("Warranty Activated Successfully.");
+
+generateWarrantyID();
+
+});
+
+
+/* ===========================================
+   SAVE DRAFT
+=========================================== */
+
+document.querySelector(".btn-primary").addEventListener("click",function(){
+
+alert("Warranty Saved As Draft.");
+
+});
+
+
+/* ===========================================
+   PRINT WARRANTY
+=========================================== */
+
+document.querySelector(".btn-warning").addEventListener("click",function(){
+
+window.print();
+
+});
+
+
+/* ===========================================
+   RESET FORM
+=========================================== */
+
+document.querySelector(".btn-secondary").addEventListener("click",function(){
+
+setTimeout(function(){
+
+generateWarrantyID();
+
+},100);
+
+});
+
+</script>
+
+</body>
+
+</html>

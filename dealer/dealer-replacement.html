@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dealer Replacement | Battery ERP</title>
+
+<!-- Bootstrap -->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<!-- Google Font -->
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:#f5f7fb;
+
+}
+
+/*=========================
+SIDEBAR
+=========================*/
+
+.sidebar{
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+width:260px;
+
+height:100vh;
+
+background:linear-gradient(180deg,#198754,#0f6b43);
+
+padding:20px;
+
+overflow-y:auto;
+
+}
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+margin-bottom:35px;
+
+color:#fff;
+
+}
+
+.logo i{
+
+font-size:34px;
+
+margin-right:12px;
+
+}
+
+.logo h4{
+
+margin:0;
+
+font-weight:700;
+
+}
+
+.logo small{
+
+opacity:.8;
+
+}
+
+.sidebar ul{
+
+list-style:none;
+
+padding:0;
+
+}
+
+.sidebar ul li{
+
+margin-bottom:8px;
+
+}
+
+.sidebar ul li a{
+
+display:flex;
+
+align-items:center;
+
+text-decoration:none;
+
+color:#fff;
+
+padding:14px 18px;
+
+border-radius:12px;
+
+font-weight:500;
+
+transition:.3s;
+
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active{
+
+background:rgba(255,255,255,.18);
+
+padding-left:24px;
+
+}
+
+.sidebar ul li a i{
+
+width:28px;
+
+}
+
+/*=========================
+MAIN
+=========================*/
+
+.main{
+
+margin-left:260px;
+
+}
+
+/*=========================
+TOPBAR
+=========================*/
+
+.topbar{
+
+height:75px;
+
+background:#fff;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:0 30px;
+
+box-shadow:0 4px 15px rgba(0,0,0,.05);
+
+}
+
+.page-title{
+
+font-size:24px;
+
+font-weight:700;
+
+color:#198754;
+
+}
+
+.top-icons{
+
+display:flex;
+
+gap:15px;
+
+}
+
+.top-icons button{
+
+width:45px;
+
+height:45px;
+
+border:none;
+
+border-radius:50%;
+
+background:#eef5f1;
+
+font-size:17px;
+
+}
+
+/*=========================
+CONTENT
+=========================*/
+
+.content{
+
+padding:30px;
+
+}
+
+/*=========================
+CARD
+=========================*/
+
+.form-card{
+
+background:#fff;
+
+border-radius:18px;
+
+padding:25px;
+
+margin-bottom:25px;
+
+box-shadow:0 5px 18px rgba(0,0,0,.05);
+
+}
+
+.form-card h5{
+
+font-weight:700;
+
+color:#198754;
+
+margin-bottom:20px;
+
+}
+
+.form-label{
+
+font-weight:600;
+
+}
+
+.form-control,
+.form-select{
+
+height:48px;
+
+border-radius:10px;
+
+}
+
+textarea.form-control{
+
+height:120px;
+
+resize:none;
+
+}
+
+/*=========================
+SEARCH BOX
+=========================*/
+
+.search-box{
+
+background:#ecf8f1;
+
+border:2px dashed #198754;
+
+padding:20px;
+
+border-radius:15px;
+
+margin-bottom:30px;
+
+}
+
+/*=========================
+INFO BOX
+=========================*/
+
+.info-box{
+
+background:#fff8e6;
+
+border-left:5px solid #ffc107;
+
+padding:18px;
+
+border-radius:12px;
+
+margin-bottom:25px;
+
+}
+
+.info-box h5{
+
+margin-bottom:10px;
+
+color:#b8860b;
+
+font-weight:700;
+
+}
+
+.info-box p{
+
+margin:0;
+
+color:#555;
+
+}
+
+/*=========================
+RESPONSIVE
+=========================*/
+
+@media(max-width:991px){
+
+.sidebar{
+
+left:-260px;
+
+transition:.3s;
+
+}
+
+.main{
+
+margin-left:0;
+
+}
+
+.topbar{
+
+padding:15px;
+
+height:auto;
+
+flex-wrap:wrap;
+
+gap:15px;
+
+}
+
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+<i class="fa-solid fa-store"></i>
+
+<div>
+
+<h4>Dealer ERP</h4>
+
+<small>Replacement Panel</small>
+
+</div>
+
+</div>
+
+<ul>
+
+<li>
+
+<a href="dealer-dashboard.html">
+
+<i class="fa-solid fa-house"></i>
+
+Dashboard
+
+</a>
+
+</li>
+
+<li>
+
+<a href="dealer-warranty.html">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+Warranty
+
+</a>
+
+</li>
+
+<li>
+
+<a href="dealer-replacement.html" class="active">
+
+<i class="fa-solid fa-repeat"></i>
+
+Replacement
+
+</a>
+
+</li>
+
+<li>
+
+<a href="dealer-reward-wallet.html">
+
+<i class="fa-solid fa-wallet"></i>
+
+Reward Wallet
+
+</a>
+
+</li>
+
+<li>
+
+<a href="dealer-reports.html">
+
+<i class="fa-solid fa-chart-column"></i>
+
+Reports
+
+</a>
+
+</li>
+
+<li>
+
+<a href="dealer-profile.html">
+
+<i class="fa-solid fa-user"></i>
+
+Profile
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+<!-- ================= TOPBAR ================= -->
+
+<div class="topbar">
+
+<h3 class="page-title">
+
+Battery Replacement Request
+
+</h3>
+
+<div class="top-icons">
+
+<button>
+
+<i class="fa-solid fa-bell"></i>
+
+</button>
+
+<button>
+
+<i class="fa-solid fa-user"></i>
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= CONTENT ================= -->
+
+<div class="content">
+
+<!-- ================= SEARCH ================= -->
+
+<div class="search-box">
+
+<div class="row align-items-end">
+
+<div class="col-lg-9">
+
+<label class="form-label">
+
+Old Battery Serial Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+placeholder="Enter Old Battery Serial Number">
+
+</div>
+
+<div class="col-lg-3">
+
+<button
+class="btn btn-success w-100"
+style="height:48px;">
+
+<i class="fa-solid fa-magnifying-glass me-2"></i>
+
+Search Battery
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= IMPORTANT NOTE ================= -->
+
+<div class="info-box">
+
+<h5>
+
+⚠ Important Notice
+
+</h5>
+
+<p>
+
+Replacement battery will continue with the remaining warranty of the old battery.
+
+A new warranty will <strong>NOT</strong> be created.
+
+</p>
+
+</div>
+
+<!-- ================= OLD BATTERY DETAILS ================= -->
+
+<div class="form-card">
+
+<h5>
+
+<i class="fa-solid fa-car-battery me-2"></i>
+
+Old Battery Details
+
+</h5>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Product Name
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="Macroon Power Plus"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Model Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="MPP-150AH"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Old Serial Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="MPP240001"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Batch Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="BATCH-2026-001"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Warranty Start Date
+
+</label>
+
+<input
+type="date"
+class="form-control"
+value="2026-07-21"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Warranty Expiry Date
+
+</label>
+
+<input
+type="date"
+class="form-control"
+value="2028-07-21"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Remaining Warranty
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="18 Months Remaining"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Warranty Status
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="Active"
+readonly>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= CUSTOMER DETAILS ================= -->
+
+<div class="form-card">
+
+<h5>
+
+<i class="fa-solid fa-user me-2"></i>
+
+Customer Information
+
+</h5>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Customer Name
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="Rahul Sharma"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Mobile Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="9876543210"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Vehicle Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="UP14AB1234"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Battery Installed On
+
+</label>
+
+<input
+type="date"
+class="form-control"
+value="2026-07-21"
+readonly>
+
+</div>
+
+<div class="col-12 mb-3">
+
+<label class="form-label">
+
+Customer Address
+
+</label>
+
+<textarea
+class="form-control"
+readonly>
+
+Bulandshahr, Uttar Pradesh
+
+</textarea>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= NEXT PART START ================= -->
+ <!-- ================= REPLACEMENT DETAILS ================= -->
+
+<div class="form-card">
+
+<h5>
+
+<i class="fa-solid fa-screwdriver-wrench me-2"></i>
+
+Replacement Details
+
+</h5>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Replacement Reason <span class="text-danger">*</span>
+
+</label>
+
+<select class="form-select">
+
+<option selected disabled>
+
+Select Reason
+
+</option>
+
+<option>Manufacturing Defect</option>
+
+<option>Low Backup</option>
+
+<option>Charging Problem</option>
+
+<option>Terminal Damage</option>
+
+<option>Physical Damage</option>
+
+<option>Acid Leakage</option>
+
+<option>Other</option>
+
+</select>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Replacement Request Date
+
+</label>
+
+<input
+type="date"
+class="form-control">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Battery Condition
+
+</label>
+
+<select class="form-select">
+
+<option selected disabled>
+
+Select Condition
+
+</option>
+
+<option>Good</option>
+
+<option>Average</option>
+
+<option>Poor</option>
+
+<option>Dead</option>
+
+</select>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Invoice Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+placeholder="Invoice Number">
+
+</div>
+
+<div class="col-12 mb-3">
+
+<label class="form-label">
+
+Problem Description
+
+</label>
+
+<textarea
+class="form-control"
+placeholder="Describe the battery issue in detail..."></textarea>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Upload Battery Images
+
+</label>
+
+<input
+type="file"
+class="form-control"
+accept="image/*"
+multiple>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Upload Purchase Invoice
+
+</label>
+
+<input
+type="file"
+class="form-control"
+accept=".jpg,.jpeg,.png,.pdf">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= NEW BATTERY DETAILS ================= -->
+
+<div class="form-card">
+
+<h5>
+
+<i class="fa-solid fa-battery-full me-2"></i>
+
+New Battery Details
+
+</h5>
+
+<div class="row">
+
+<div class="col-md-9 mb-3">
+
+<label class="form-label">
+
+New Battery Serial Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+placeholder="Enter New Battery Serial Number">
+
+</div>
+
+<div class="col-md-3 mb-3 d-flex align-items-end">
+
+<button
+class="btn btn-success w-100"
+style="height:48px;">
+
+<i class="fa-solid fa-magnifying-glass me-2"></i>
+
+Search
+
+</button>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Product Name
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="Macroon Power Plus"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Model Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="MPP-150AH"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+New Serial Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="MPP240985"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Batch Number
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="BATCH-2026-015"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Manufacturing Date
+
+</label>
+
+<input
+type="date"
+class="form-control"
+value="2026-07-15"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Battery Status
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="Available In Stock"
+readonly>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= NEXT PART START ================= -->
+ <!-- ================= WARRANTY TRANSFER ================= -->
+
+<div class="form-card">
+
+<h5>
+
+<i class="fa-solid fa-shield-halved me-2"></i>
+
+Warranty Transfer Summary
+
+</h5>
+
+<div class="row">
+
+<div class="col-md-4 mb-3">
+
+<label class="form-label">
+
+Old Warranty Start
+
+</label>
+
+<input
+type="date"
+class="form-control"
+value="2026-07-21"
+readonly>
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<label class="form-label">
+
+Old Warranty End
+
+</label>
+
+<input
+type="date"
+class="form-control"
+value="2028-07-21"
+readonly>
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<label class="form-label">
+
+Remaining Warranty
+
+</label>
+
+<input
+type="text"
+class="form-control"
+value="18 Months"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Replacement Date
+
+</label>
+
+<input
+type="date"
+class="form-control">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+New Battery Warranty Expiry
+
+</label>
+
+<input
+type="date"
+class="form-control"
+value="2028-07-21"
+readonly>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= IMPORTANT NOTICE ================= -->
+
+<div class="alert alert-warning border-start border-5 border-warning shadow-sm">
+
+<h5 class="fw-bold">
+
+<i class="fa-solid fa-triangle-exclamation me-2"></i>
+
+Important Warranty Rule
+
+</h5>
+
+<p class="mb-2">
+
+The replacement battery <strong>will not receive a new warranty.</strong>
+
+</p>
+
+<p class="mb-2">
+
+The new battery will continue with the <strong>remaining warranty period</strong> of the old battery.
+
+</p>
+
+<p class="mb-0">
+
+This process follows the company's replacement policy.
+
+</p>
+
+</div>
+
+<!-- ================= DECLARATION ================= -->
+
+<div class="form-card">
+
+<h5>
+
+<i class="fa-solid fa-circle-check me-2"></i>
+
+Declaration
+
+</h5>
+
+<div class="form-check">
+
+<input
+class="form-check-input"
+type="checkbox"
+id="confirmReplacement">
+
+<label
+class="form-check-label"
+for="confirmReplacement">
+
+I confirm that all replacement information is correct and the old battery has been received from the customer.
+
+</label>
+
+</div>
+
+</div>
+
+<!-- ================= ACTION BUTTONS ================= -->
+
+<div class="text-end mb-5">
+
+<button
+type="reset"
+class="btn btn-secondary px-4">
+
+<i class="fa-solid fa-rotate-left me-2"></i>
+
+Reset
+
+</button>
+
+<button
+type="button"
+class="btn btn-success px-5 ms-2"
+id="submitReplacement">
+
+<i class="fa-solid fa-paper-plane me-2"></i>
+
+Submit Replacement Request
+
+</button>
+
+</div>
+
+<!-- ================= SUCCESS MODAL ================= -->
+
+<div class="modal fade"
+id="replacementModal"
+tabindex="-1">
+
+<div class="modal-dialog modal-dialog-centered">
+
+<div class="modal-content">
+
+<div class="modal-header bg-success text-white">
+
+<h5 class="modal-title">
+
+Replacement Request Submitted
+
+</h5>
+
+<button
+type="button"
+class="btn-close btn-close-white"
+data-bs-dismiss="modal">
+
+</button>
+
+</div>
+
+<div class="modal-body text-center">
+
+<i class="fa-solid fa-circle-check text-success display-2 mb-3"></i>
+
+<h4>
+
+Request Submitted Successfully
+
+</h4>
+
+<p>
+
+Request ID :
+
+<strong>REP24000125</strong>
+
+</p>
+
+<div class="alert alert-info">
+
+Status :
+
+<strong>Pending Admin Approval</strong>
+
+</div>
+
+<div class="alert alert-warning">
+
+Warranty expiry of the new battery will remain
+
+<strong>20 Jul 2028</strong>
+
+(No New Warranty Created)
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+class="btn btn-success"
+data-bs-dismiss="modal">
+
+OK
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= NEXT PART START ================= -->
+ <!-- ================= BOOTSTRAP JS ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+/* ================= SEARCH OLD BATTERY ================= */
+
+document.querySelector(".search-box button").addEventListener("click",function(){
+
+alert("Old Battery Details Loaded Successfully");
+
+/*
+
+Backend Flow
+
+Search Old Serial Number
+
+↓
+
+Inventory Table
+
+↓
+
+Warranty Table
+
+↓
+
+Customer Details
+
+↓
+
+Replacement Eligible?
+
+↓
+
+Load Data
+
+*/
+
+});
+
+/* ================= SEARCH NEW BATTERY ================= */
+
+document.querySelectorAll(".btn-success")[1].addEventListener("click",function(){
+
+alert("New Battery Found & Ready For Replacement");
+
+/*
+
+Backend
+
+Search New Battery
+
+↓
+
+Inventory
+
+↓
+
+Available?
+
+↓
+
+Already Sold?
+
+↓
+
+Already Activated?
+
+↓
+
+Load Battery Details
+
+*/
+
+});
+
+/* ================= SUBMIT REPLACEMENT ================= */
+
+document.getElementById("submitReplacement")
+
+.addEventListener("click",function(){
+
+const agree=document.getElementById("confirmReplacement");
+
+if(!agree.checked){
+
+alert("Please accept the declaration.");
+
+return;
+
+}
+
+/*
+
+========================================
+
+BUSINESS LOGIC
+
+========================================
+
+1. Old Battery Warranty Exists?
+
+2. Warranty Active?
+
+3. Replacement Eligible?
+
+4. New Battery Available?
+
+5. Old Battery Received?
+
+6. Create Replacement Request
+
+Status = Pending
+
+========================================
+
+*/
+
+let modal=new bootstrap.Modal(
+
+document.getElementById("replacementModal")
+
+);
+
+modal.show();
+
+console.log("Replacement Request Submitted");
+
+/*
+
+========================================
+
+ADMIN APPROVAL
+
+========================================
+
+Approve Request
+
+↓
+
+Old Battery
+
+Status = Replaced
+
+↓
+
+New Battery
+
+Assign Customer
+
+↓
+
+Warranty Expiry
+
+Copy Old Warranty Expiry
+
+↓
+
+No New Warranty
+
+↓
+
+Dealer Dashboard Update
+
+↓
+
+Admin Dashboard Update
+
+========================================
+
+*/
+
+});
+
+/* ================= SIDEBAR ACTIVE ================= */
+
+document.querySelectorAll(".sidebar a")
+
+.forEach(link=>{
+
+link.addEventListener("click",function(){
+
+document.querySelectorAll(".sidebar a")
+
+.forEach(item=>{
+
+item.classList.remove("active");
+
+});
+
+this.classList.add("active");
+
+});
+
+});
+
+/* ================= NOTIFICATION ICON ================= */
+
+const bell=document.querySelector(".fa-bell");
+
+if(bell){
+
+setInterval(()=>{
+
+bell.classList.toggle("text-success");
+
+},1000);
+
+}
+
+/* ================= PAGE LOADED ================= */
+
+console.log("Dealer Replacement Module Loaded Successfully");
+
+</script>
+
+</body>
+
+</html>

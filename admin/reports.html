@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reports | Battery ERP</title>
+
+<!-- Bootstrap -->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<!-- Google Fonts -->
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+
+}
+
+body{
+
+background:#f5f7fb;
+overflow-x:hidden;
+
+}
+
+/*=========================
+SIDEBAR
+=========================*/
+
+.sidebar{
+
+position:fixed;
+top:0;
+left:0;
+
+width:260px;
+height:100vh;
+
+background:#0B5ED7;
+
+padding:20px;
+
+overflow-y:auto;
+
+z-index:1000;
+
+}
+
+.logo{
+
+display:flex;
+align-items:center;
+
+margin-bottom:35px;
+
+color:#fff;
+
+}
+
+.logo i{
+
+font-size:32px;
+margin-right:12px;
+
+}
+
+.logo h4{
+
+margin:0;
+font-weight:700;
+
+}
+
+.logo small{
+
+opacity:.8;
+
+}
+
+.sidebar ul{
+
+list-style:none;
+padding:0;
+
+}
+
+.sidebar ul li{
+
+margin-bottom:8px;
+
+}
+
+.sidebar ul li a{
+
+display:flex;
+align-items:center;
+
+padding:13px 15px;
+
+text-decoration:none;
+
+color:#fff;
+
+border-radius:10px;
+
+transition:.3s;
+
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active{
+
+background:rgba(255,255,255,.15);
+
+padding-left:20px;
+
+}
+
+.sidebar ul li a i{
+
+width:28px;
+
+}
+
+/*=========================
+MAIN CONTENT
+=========================*/
+
+.main-content{
+
+margin-left:260px;
+min-height:100vh;
+
+}
+
+/*=========================
+TOPBAR
+=========================*/
+
+.topbar{
+
+height:75px;
+
+background:#fff;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:0 30px;
+
+box-shadow:0 3px 15px rgba(0,0,0,.05);
+
+}
+
+.search-box{
+
+position:relative;
+
+width:380px;
+
+}
+
+.search-box input{
+
+width:100%;
+
+height:46px;
+
+border:none;
+outline:none;
+
+background:#eef3fa;
+
+padding-left:45px;
+
+border-radius:10px;
+
+}
+
+.search-box i{
+
+position:absolute;
+
+left:16px;
+top:15px;
+
+color:#0B5ED7;
+
+}
+
+.profile{
+
+display:flex;
+align-items:center;
+gap:15px;
+
+}
+
+.profile button{
+
+width:45px;
+height:45px;
+
+border:none;
+
+border-radius:50%;
+
+background:#eef3fa;
+
+}
+
+/*=========================
+PAGE CONTENT
+=========================*/
+
+.page-content{
+
+padding:30px;
+
+}
+
+/*=========================
+DASHBOARD CARD
+=========================*/
+
+.dashboard-card{
+
+background:#fff;
+
+padding:22px;
+
+border-radius:16px;
+
+box-shadow:0 5px 18px rgba(0,0,0,.05);
+
+transition:.3s;
+
+height:100%;
+
+}
+
+.dashboard-card:hover{
+
+transform:translateY(-4px);
+
+}
+
+.dashboard-card h3{
+
+margin-top:12px;
+margin-bottom:5px;
+
+font-weight:700;
+
+}
+
+.dashboard-card p{
+
+margin:0;
+
+color:#777;
+
+}
+
+/*=========================
+FORM CARD
+=========================*/
+
+.form-card{
+
+margin-top:30px;
+
+background:#fff;
+
+padding:25px;
+
+border-radius:18px;
+
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+
+}
+
+.form-label{
+
+font-weight:600;
+
+}
+
+.form-control,
+.form-select{
+
+height:48px;
+
+border-radius:10px;
+
+}
+
+.btn{
+
+height:45px;
+
+border-radius:10px;
+
+font-weight:600;
+
+}
+
+/*=========================
+TABLE
+=========================*/
+
+.table th{
+
+white-space:nowrap;
+
+}
+
+.badge{
+
+padding:8px 12px;
+
+font-size:13px;
+
+}
+
+/*=========================
+CHART BOX
+=========================*/
+
+.chart-box{
+
+background:#fff;
+
+padding:20px;
+
+border-radius:16px;
+
+box-shadow:0 5px 18px rgba(0,0,0,.05);
+
+margin-top:25px;
+
+min-height:320px;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+color:#777;
+
+font-weight:600;
+
+}
+
+/*=========================
+DOCUMENTS
+=========================*/
+
+.document-card{
+
+background:#fff;
+
+border:2px dashed #d8d8d8;
+
+border-radius:15px;
+
+padding:18px;
+
+text-align:center;
+
+transition:.3s;
+
+height:100%;
+
+}
+
+.document-card:hover{
+
+border-color:#0B5ED7;
+
+transform:translateY(-4px);
+
+}
+
+.document-card i{
+
+font-size:42px;
+
+color:#0B5ED7;
+
+margin-bottom:12px;
+
+}
+
+.document-preview{
+
+width:100%;
+
+height:180px;
+
+object-fit:cover;
+
+border-radius:10px;
+
+border:1px solid #ddd;
+
+}
+
+.upload-btn{
+
+margin-top:12px;
+
+width:100%;
+
+}
+
+.document-table img{
+
+width:70px;
+
+height:70px;
+
+object-fit:cover;
+
+border-radius:8px;
+
+border:1px solid #ddd;
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-car-battery"></i>
+
+        <div>
+
+            <h4>Battery ERP</h4>
+
+            <small>Admin Panel</small>
+
+        </div>
+
+    </div>
+
+    <ul>
+
+        <li>
+            <a href="admin-dashboard.html">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="inventory.html">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                Inventory
+            </a>
+        </li>
+
+        <li>
+            <a href="dispatch.html">
+                <i class="fa-solid fa-truck-fast"></i>
+                Dispatch
+            </a>
+        </li>
+
+        <li>
+            <a href="dealers.html">
+                <i class="fa-solid fa-users"></i>
+                Dealers
+            </a>
+        </li>
+
+        <li>
+            <a href="warranty.html">
+                <i class="fa-solid fa-shield-halved"></i>
+                Warranty
+            </a>
+        </li>
+
+        <li>
+            <a href="replacement.html">
+                <i class="fa-solid fa-repeat"></i>
+                Replacement
+            </a>
+        </li>
+
+        <li>
+            <a href="reward-wallet.html">
+                <i class="fa-solid fa-wallet"></i>
+                Reward Wallet
+            </a>
+        </li>
+
+        <li>
+            <a href="reports.html" class="active">
+                <i class="fa-solid fa-chart-column"></i>
+                Reports
+            </a>
+        </li>
+
+        <li>
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="main-content">
+
+    <!-- ================= TOPBAR ================= -->
+
+    <div class="topbar">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input type="text"
+                   placeholder="Search Report ID / Dealer / Serial Number">
+
+        </div>
+
+        <div class="profile">
+
+            <button>
+
+                <i class="fa-solid fa-bell"></i>
+
+            </button>
+
+            <button>
+
+                <i class="fa-solid fa-user"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ================= PAGE CONTENT ================= -->
+
+    <div class="page-content">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+            <div>
+
+                <h2 class="fw-bold">
+
+                    Reports & Analytics
+
+                </h2>
+
+                <small class="text-muted">
+
+                    Dashboard > Reports
+
+                </small>
+
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mt-3 mt-lg-0">
+
+                <button class="btn btn-success">
+
+                    <i class="fa-solid fa-file-excel me-2"></i>
+
+                    Export Excel
+
+                </button>
+
+                <button class="btn btn-danger">
+
+                    <i class="fa-solid fa-file-pdf me-2"></i>
+
+                    Export PDF
+
+                </button>
+
+                <button class="btn btn-primary">
+
+                    <i class="fa-solid fa-print me-2"></i>
+
+                    Print
+
+                </button>
+
+                <button class="btn btn-warning text-white">
+
+                    <i class="fa-solid fa-rotate-right me-2"></i>
+
+                    Refresh
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- ================= DASHBOARD CARDS ================= -->
+
+        <div class="row g-4">
+
+            <div class="col-xl-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <i class="fa-solid fa-boxes-stacked fa-2x text-primary"></i>
+
+                    <h3>12,580</h3>
+
+                    <p>Total Inventory</p>
+
+                </div>
+
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <i class="fa-solid fa-truck-fast fa-2x text-success"></i>
+
+                    <h3>9,240</h3>
+
+                    <p>Total Dispatch</p>
+
+                </div>
+
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <i class="fa-solid fa-shield-halved fa-2x text-warning"></i>
+
+                    <h3>8,915</h3>
+
+                    <p>Warranty Activated</p>
+
+                </div>
+
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <i class="fa-solid fa-repeat fa-2x text-danger"></i>
+
+                    <h3>215</h3>
+
+                    <p>Total Replacements</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ================= REPORT FILTERS ================= -->
+
+        <div class="form-card">
+
+            <h4 class="fw-bold mb-4">
+
+                Report Filters
+
+            </h4>
+
+            <form>
+
+                <div class="row">
+
+                    <div class="col-lg-3 mb-3">
+
+                        <label class="form-label">
+
+                            From Date
+
+                        </label>
+
+                        <input type="date"
+                               class="form-control">
+
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+
+                        <label class="form-label">
+
+                            To Date
+
+                        </label>
+
+                        <input type="date"
+                               class="form-control">
+
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+
+                        <label class="form-label">
+
+                            Report Type
+
+                        </label>
+
+                        <select class="form-select">
+
+                            <option>All Reports</option>
+                            <option>Inventory Report</option>
+                            <option>Dispatch Report</option>
+                            <option>Warranty Report</option>
+                            <option>Replacement Report</option>
+                            <option>Dealer Report</option>
+                            <option>Reward Wallet Report</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+
+                        <label class="form-label">
+
+                            Status
+
+                        </label>
+
+                        <select class="form-select">
+
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>Pending</option>
+                            <option>Approved</option>
+                            <option>Completed</option>
+                            <option>Rejected</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <!-- ================= ADVANCED FILTERS ================= -->
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Dealer
+
+    </label>
+
+    <input type="text"
+           class="form-control"
+           placeholder="Dealer Name / Code">
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Product Category
+
+    </label>
+
+    <select class="form-select">
+
+        <option>All Categories</option>
+        <option>Lead Acid Battery</option>
+        <option>Lithium Battery</option>
+        <option>Solar Battery</option>
+        <option>Inverter Battery</option>
+
+    </select>
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Product Name
+
+    </label>
+
+    <input type="text"
+           class="form-control"
+           placeholder="Enter Product Name">
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        Model Number
+
+    </label>
+
+    <input type="text"
+           class="form-control"
+           placeholder="Enter Model Number">
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        State
+
+    </label>
+
+    <input type="text"
+           class="form-control"
+           placeholder="State">
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+    <label class="form-label">
+
+        District
+
+    </label>
+
+    <input type="text"
+           class="form-control"
+           placeholder="District">
+
+</div>
+
+<div class="col-lg-6 d-flex align-items-end mb-3">
+
+    <div class="d-flex flex-wrap gap-2 w-100">
+
+        <button class="btn btn-primary">
+
+            <i class="fa-solid fa-magnifying-glass me-2"></i>
+
+            Generate Report
+
+        </button>
+
+        <button class="btn btn-secondary">
+
+            <i class="fa-solid fa-filter-circle-xmark me-2"></i>
+
+            Clear Filters
+
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+<!-- ================= QUICK REPORTS ================= -->
+
+<div class="form-card">
+
+    <h4 class="fw-bold mb-4">
+
+        Quick Reports
+
+    </h4>
+
+    <div class="d-flex flex-wrap gap-3">
+
+        <button class="btn btn-outline-primary">
+
+            Today's Report
+
+        </button>
+
+        <button class="btn btn-outline-success">
+
+            Weekly Report
+
+        </button>
+
+        <button class="btn btn-outline-warning">
+
+            Monthly Report
+
+        </button>
+
+        <button class="btn btn-outline-danger">
+
+            Yearly Report
+
+        </button>
+
+        <button class="btn btn-outline-dark">
+
+            Custom Report
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ================= REPORT SUMMARY ================= -->
+
+<div class="form-card">
+
+    <h4 class="fw-bold mb-4">
+
+        Report Summary
+
+    </h4>
+
+    <div class="row g-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <i class="fa-solid fa-box-open fa-2x text-primary"></i>
+
+                <h3>3,340</h3>
+
+                <p>Inventory Available</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <i class="fa-solid fa-truck-fast fa-2x text-success"></i>
+
+                <h3>9,240</h3>
+
+                <p>Inventory Dispatched</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <i class="fa-solid fa-shield-halved fa-2x text-warning"></i>
+
+                <h3>8,915</h3>
+
+                <p>Warranty Active</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <i class="fa-solid fa-repeat fa-2x text-danger"></i>
+
+                <h3>215</h3>
+
+                <p>Replacement Approved</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <i class="fa-solid fa-users fa-2x text-info"></i>
+
+                <h3>186</h3>
+
+                <p>Total Dealers</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <i class="fa-solid fa-wallet fa-2x text-success"></i>
+
+                <h3>41,800</h3>
+
+                <p>Reward Balance</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <i class="fa-solid fa-file-circle-check fa-2x text-primary"></i>
+
+                <h3>12,460</h3>
+
+                <p>Total Reports</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <i class="fa-solid fa-chart-line fa-2x text-danger"></i>
+
+                <h3>98.6%</h3>
+
+                <p>Success Rate</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= REPORT TABLE START ================= -->
+
+<div class="form-card">
+
+    <h4 class="fw-bold mb-4">
+
+        Generated Reports
+
+    </h4>
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-hover align-middle">
+
+            <thead class="table-primary">
+
+                <tr>
+
+                    <th>#</th>
+                    <th>Report ID</th>
+                    <th>Date</th>
+                    <th>Dealer</th>
+                    <th>Category</th>
+                    <th>Product</th>
+                    <th>Model</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+                <!-- ================= REPORT 1 ================= -->
+
+<tr>
+
+    <td>1</td>
+
+    <td>RPT-2026-00001</td>
+
+    <td>19-07-2026</td>
+
+    <td>Sharma Battery House</td>
+
+    <td>Lithium Battery</td>
+
+    <td>Li Power 150Ah</td>
+
+    <td>LP150-01</td>
+
+    <td>
+
+        <span class="badge bg-success">
+
+            Completed
+
+        </span>
+
+    </td>
+
+    <td>
+
+        <button class="btn btn-sm btn-info">
+
+            <i class="fa-solid fa-eye"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-primary">
+
+            <i class="fa-solid fa-print"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-danger">
+
+            <i class="fa-solid fa-file-pdf"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-success">
+
+            <i class="fa-solid fa-file-excel"></i>
+
+        </button>
+
+    </td>
+
+</tr>
+
+<!-- ================= REPORT 2 ================= -->
+
+<tr>
+
+    <td>2</td>
+
+    <td>RPT-2026-00002</td>
+
+    <td>18-07-2026</td>
+
+    <td>Gupta Traders</td>
+
+    <td>Solar Battery</td>
+
+    <td>Solar Max 200Ah</td>
+
+    <td>SM200-02</td>
+
+    <td>
+
+        <span class="badge bg-warning text-dark">
+
+            Pending
+
+        </span>
+
+    </td>
+
+    <td>
+
+        <button class="btn btn-sm btn-info">
+
+            <i class="fa-solid fa-eye"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-primary">
+
+            <i class="fa-solid fa-print"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-danger">
+
+            <i class="fa-solid fa-file-pdf"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-success">
+
+            <i class="fa-solid fa-file-excel"></i>
+
+        </button>
+
+    </td>
+
+</tr>
+
+<!-- ================= REPORT 3 ================= -->
+
+<tr>
+
+    <td>3</td>
+
+    <td>RPT-2026-00003</td>
+
+    <td>17-07-2026</td>
+
+    <td>Verma Batteries</td>
+
+    <td>Inverter Battery</td>
+
+    <td>Power Plus 180Ah</td>
+
+    <td>PP180-03</td>
+
+    <td>
+
+        <span class="badge bg-primary">
+
+            Approved
+
+        </span>
+
+    </td>
+
+    <td>
+
+        <button class="btn btn-sm btn-info">
+
+            <i class="fa-solid fa-eye"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-primary">
+
+            <i class="fa-solid fa-print"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-danger">
+
+            <i class="fa-solid fa-file-pdf"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-success">
+
+            <i class="fa-solid fa-file-excel"></i>
+
+        </button>
+
+    </td>
+
+</tr>
+
+<!-- ================= REPORT 4 ================= -->
+
+<tr>
+
+    <td>4</td>
+
+    <td>RPT-2026-00004</td>
+
+    <td>16-07-2026</td>
+
+    <td>Singh Enterprises</td>
+
+    <td>Lead Acid Battery</td>
+
+    <td>Classic 150Ah</td>
+
+    <td>CL150-04</td>
+
+    <td>
+
+        <span class="badge bg-danger">
+
+            Rejected
+
+        </span>
+
+    </td>
+
+    <td>
+
+        <button class="btn btn-sm btn-info">
+
+            <i class="fa-solid fa-eye"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-primary">
+
+            <i class="fa-solid fa-print"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-danger">
+
+            <i class="fa-solid fa-file-pdf"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-success">
+
+            <i class="fa-solid fa-file-excel"></i>
+
+        </button>
+
+    </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- ================= TABLE FOOTER ================= -->
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mt-4">
+
+    <p class="text-muted mb-2">
+
+        Showing 1 to 4 of 2,458 Reports
+
+    </p>
+
+    <nav>
+
+        <ul class="pagination mb-0">
+
+            <li class="page-item disabled">
+
+                <a class="page-link">
+
+                    Previous
+
+                </a>
+
+            </li>
+
+            <li class="page-item active">
+
+                <a class="page-link">
+
+                    1
+
+                </a>
+
+            </li>
+
+            <li class="page-item">
+
+                <a class="page-link">
+
+                    2
+
+                </a>
+
+            </li>
+
+            <li class="page-item">
+
+                <a class="page-link">
+
+                    3
+
+                </a>
+
+            </li>
+
+            <li class="page-item">
+
+                <a class="page-link">
+
+                    Next
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </nav>
+
+</div>
+
+</div>
+
+<!-- ================= ANALYTICS CHARTS ================= -->
+
+<div class="row">
+
+    <div class="col-lg-6">
+
+        <div class="chart-box">
+
+            📊 Monthly Dispatch Report Chart
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="chart-box">
+
+            📈 Warranty & Replacement Analysis
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-lg-6">
+
+        <div class="chart-box">
+
+            🏆 Top Dealers Performance
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="chart-box">
+
+            🎁 Reward Wallet Distribution
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= FOOTER START ================= -->
+ <!-- ================= FOOTER ================= -->
+
+<footer class="mt-4">
+
+    <div class="dashboard-card">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <h6 class="fw-bold mb-1">
+
+                    Battery ERP Management System
+
+                </h6>
+
+                <small class="text-muted">
+
+                    Reports & Analytics Module | Version 1.0
+
+                </small>
+
+            </div>
+
+            <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
+
+                <button class="btn btn-outline-primary btn-sm">
+
+                    Help
+
+                </button>
+
+                <button class="btn btn-outline-success btn-sm">
+
+                    Support
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</div>
+
+</div>
+
+<!-- ================= RESPONSIVE CSS ================= -->
+
+<style>
+
+@media (max-width:992px){
+
+.sidebar{
+
+left:-260px;
+transition:.3s;
+
+}
+
+.sidebar.active{
+
+left:0;
+
+}
+
+.main-content{
+
+margin-left:0;
+
+}
+
+.search-box{
+
+width:100%;
+
+}
+
+}
+
+@media (max-width:768px){
+
+.topbar{
+
+flex-direction:column;
+
+height:auto;
+
+padding:15px;
+
+gap:15px;
+
+}
+
+.page-content{
+
+padding:15px;
+
+}
+
+.dashboard-card{
+
+margin-bottom:15px;
+
+}
+
+.chart-box{
+
+min-height:220px;
+
+margin-bottom:20px;
+
+}
+
+.table{
+
+font-size:13px;
+
+}
+
+.btn{
+
+font-size:14px;
+
+}
+
+.form-control,
+.form-select{
+
+font-size:14px;
+
+}
+
+.pagination{
+
+justify-content:center;
+
+}
+
+}
+
+</style>
+
+<!-- ================= BOOTSTRAP JS ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ================= CHART.JS ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+/* ================= SIDEBAR TOGGLE ================= */
+
+const sidebar = document.querySelector(".sidebar");
+
+const menuBtn = document.createElement("button");
+
+menuBtn.className = "btn btn-primary";
+
+menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+
+document.querySelector(".profile").prepend(menuBtn);
+
+menuBtn.onclick = function(){
+
+    sidebar.classList.toggle("active");
+
+};
+
+/* ================= PAGE LOAD ================= */
+
+console.log("Reports Module Loaded Successfully");
+
+/*
+====================================================
+
+BATTERY ERP REPORT FLOW
+
+Inventory
+      │
+      ▼
+Dispatch
+      │
+      ▼
+Warranty
+      │
+      ▼
+Replacement
+      │
+      ▼
+Reward Wallet
+      │
+      ▼
+Reports Dashboard
+
+====================================================
+
+REPORT TYPES
+
+Inventory Report
+
+Dispatch Report
+
+Warranty Report
+
+Replacement Report
+
+Dealer Report
+
+Reward Wallet Report
+
+Sales Report
+
+====================================================
+
+EXPORT OPTIONS
+
+PDF
+
+Excel
+
+Print
+
+====================================================
+
+DATABASE TABLES
+
+inventory
+
+dispatch
+
+dealers
+
+warranty
+
+replacement
+
+reward_wallet
+
+reward_transactions
+
+reports
+
+====================================================
+
+FUTURE FEATURES
+
+• Auto Email Reports
+
+• Scheduled Daily Reports
+
+• Monthly Analytics
+
+• Yearly Sales Graph
+
+• Dealer Ranking
+
+• Warranty Claim Analytics
+
+• Export CSV
+
+====================================================
+
+*/
+
+</script>
+
+</body>
+
+</html>
