@@ -899,31 +899,57 @@ document.querySelector("form").addEventListener("submit",function(e){
 
     }
 
-    alert("Login Successful");
+    const endpoint = loginMode === "dealer" ? "/api/auth/dealer-login" : "/api/auth/login";
+    const bodyPayload = loginMode === "dealer"
+        ? { login_id: username, password: pass }
+        : { email: username, password: pass };
 
-    // Future
-    // window.location.href="admin-dashboard.html";
+    fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bodyPayload)
+    })
+    .then(response => response.json())
+    .then(result => {
+
+        if (!result.success) {
+            alert(result.message || "Login failed.");
+            return;
+        }
+
+        localStorage.setItem("token", result.data.token);
+        localStorage.setItem("role", loginMode);
+
+        window.location.href = loginMode === "dealer"
+            ? "../dealer/dealer-dashboard.html"
+            : "admin-dashboard.html";
+
+    })
+    .catch(err => {
+        alert("Server se connect nahi ho paya. Backend (nodemon) chal raha hai ya nahi check karo.");
+        console.error(err);
+    });
 
 });
 
 
 /* ==========================================
-   ADMIN BUTTON
+   ADMIN / DEALER TOGGLE
 ========================================== */
+
+let loginMode = "admin";
 
 document.querySelector(".btn-outline-primary").addEventListener("click",function(){
 
+    loginMode = "admin";
     alert("Admin Login Selected");
 
 });
 
 
-/* ==========================================
-   DEALER BUTTON
-========================================== */
-
 document.querySelector(".btn-outline-success").addEventListener("click",function(){
 
+    loginMode = "dealer";
     alert("Dealer Login Selected");
 
 });

@@ -803,6 +803,7 @@ border-bottom:2px solid #e9ecef;
 
     <input type="text"
            class="form-control"
+           id="userFullName"
            placeholder="Enter Full Name">
 
 </div>
@@ -817,6 +818,7 @@ border-bottom:2px solid #e9ecef;
 
     <input type="email"
            class="form-control"
+           id="userEmail"
            placeholder="Enter Email">
 
 </div>
@@ -831,6 +833,7 @@ border-bottom:2px solid #e9ecef;
 
     <input type="text"
            class="form-control"
+           id="userMobile"
            placeholder="Mobile Number">
 
 </div>
@@ -843,17 +846,16 @@ border-bottom:2px solid #e9ecef;
 
     </label>
 
-    <select class="form-select">
+    <select class="form-select"
+           id="userRole">
 
-        <option>Select Role</option>
+        <option value="" selected disabled>Select Role</option>
 
-        <option>Super Admin</option>
+        <option value="super_admin">Super Admin</option>
 
-        <option>Admin</option>
+        <option value="admin">Admin</option>
 
-        <option>Manager</option>
-
-        <option>Dealer</option>
+        <option value="staff">Staff / Manager</option>
 
     </select>
 
@@ -867,11 +869,12 @@ border-bottom:2px solid #e9ecef;
 
     </label>
 
-    <select class="form-select">
+    <select class="form-select"
+           id="userStatus">
 
-        <option>Active</option>
+        <option value="active">Active</option>
 
-        <option>Inactive</option>
+        <option value="inactive">Inactive</option>
 
     </select>
 
@@ -887,6 +890,7 @@ border-bottom:2px solid #e9ecef;
 
     <input type="password"
            class="form-control"
+           id="userPassword"
            placeholder="Password">
 
 </div>
@@ -901,6 +905,7 @@ border-bottom:2px solid #e9ecef;
 
     <input type="password"
            class="form-control"
+           id="userConfirmPassword"
            placeholder="Confirm Password">
 
 </div>
@@ -990,104 +995,8 @@ border-bottom:2px solid #e9ecef;
             </thead>
 
             <tbody>
-
-                <tr>
-
-                    <td>1</td>
-
-                    <td>System Admin</td>
-
-                    <td>admin@company.com</td>
-
-                    <td>9876543210</td>
-
-                    <td>
-                        <span class="badge bg-danger">
-                            Super Admin
-                        </span>
-                    </td>
-
-                    <td>
-                        <span class="badge bg-success">
-                            Active
-                        </span>
-                    </td>
-
-                    <td>19-07-2026 10:30 AM</td>
-
-                    <td>
-
-                        <button class="btn btn-sm btn-info">
-
-                            <i class="fa-solid fa-eye"></i>
-
-                        </button>
-
-                        <button class="btn btn-sm btn-warning">
-
-                            <i class="fa-solid fa-pen"></i>
-
-                        </button>
-
-                        <button class="btn btn-sm btn-danger">
-
-                            <i class="fa-solid fa-trash"></i>
-
-                        </button>
-
-                    </td>
-
-                </tr>
-
-                <tr>
-
-                    <td>2</td>
-
-                    <td>Warehouse Manager</td>
-
-                    <td>manager@company.com</td>
-
-                    <td>9876501234</td>
-
-                    <td>
-                        <span class="badge bg-primary">
-                            Manager
-                        </span>
-                    </td>
-
-                    <td>
-                        <span class="badge bg-success">
-                            Active
-                        </span>
-                    </td>
-
-                    <td>18-07-2026 06:45 PM</td>
-
-                    <td>
-
-                        <button class="btn btn-sm btn-info">
-
-                            <i class="fa-solid fa-eye"></i>
-
-                        </button>
-
-                        <button class="btn btn-sm btn-warning">
-
-                            <i class="fa-solid fa-pen"></i>
-
-                        </button>
-
-                        <button class="btn btn-sm btn-danger">
-
-                            <i class="fa-solid fa-trash"></i>
-
-                        </button>
-
-                    </td>
-
-                </tr>
-
-            </tbody>
+<!-- Users will be loaded here from the database -->
+</tbody>
 
         </table>
 
@@ -1713,125 +1622,263 @@ font-size:14px;
 /* ================= MOBILE SIDEBAR ================= */
 
 const sidebar = document.querySelector(".sidebar");
-
 const menuBtn = document.createElement("button");
-
 menuBtn.className = "btn btn-primary";
-
 menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-
 document.querySelector(".profile").prepend(menuBtn);
-
 menuBtn.onclick = function(){
-
     sidebar.classList.toggle("active");
-
 };
 
-/* ================= SAVE SETTINGS ================= */
 
-const saveButtons = document.querySelectorAll(".btn-success");
+/* ===============================
+   AUTH CHECK
+================================ */
 
-saveButtons.forEach(button=>{
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "login.html";
 
-button.addEventListener("click",function(e){
+const authHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+};
 
-e.preventDefault();
+let editingUserId = null;
 
-alert("Settings Saved Successfully!");
 
-});
+/* ===============================
+   LOAD USERS TABLE
+================================ */
 
-});
-
-/* ================= RESET FORM ================= */
-
-const resetButtons = document.querySelectorAll(".btn-secondary");
-
-resetButtons.forEach(button=>{
-
-button.addEventListener("click",function(e){
-
-e.preventDefault();
-
-if(confirm("Reset all unsaved changes?")){
-
-location.reload();
-
+function badgeClassForRole(role){
+    if (role === "super_admin") return "bg-danger";
+    if (role === "admin") return "bg-primary";
+    return "bg-secondary";
 }
 
+function formatRoleLabel(role){
+    if (role === "super_admin") return "Super Admin";
+    if (role === "admin") return "Admin";
+    return "Staff";
+}
+
+async function loadUsers(){
+    const tbody = document.querySelector("table tbody");
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
+
+    try {
+        const response = await fetch("/api/users", { headers: authHeaders });
+        const result = await response.json();
+
+        if (!result.success) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">${result.message}</td></tr>`;
+            return;
+        }
+
+        const users = result.data.users;
+
+        if (users.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center">Koi user nahi mila.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = users.map((u, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${u.full_name}</td>
+                <td>${u.email}</td>
+                <td>${u.mobile}</td>
+                <td><span class="badge ${badgeClassForRole(u.role)}">${formatRoleLabel(u.role)}</span></td>
+                <td><span class="badge ${u.status === 'active' ? 'bg-success' : 'bg-secondary'}">${u.status}</span></td>
+                <td>${u.last_login_at ? new Date(u.last_login_at).toLocaleString("en-IN") : "Never"}</td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick="viewUser(${u.user_id})"><i class="fa-solid fa-eye"></i></button>
+                    <button class="btn btn-sm btn-warning" onclick="editUser(${u.user_id})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteUser(${u.user_id})"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+        `).join("");
+
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   ADD / UPDATE USER
+================================ */
+
+const userForm = document.getElementById("userFullName").closest("form");
+
+async function saveUser(){
+    const password = document.getElementById("userPassword").value;
+    const confirmPassword = document.getElementById("userConfirmPassword").value;
+
+    if (password && password !== confirmPassword) {
+        alert("Password and Confirm Password do not match.");
+        return;
+    }
+    if (!editingUserId && !password) {
+        alert("Password is required for a new user.");
+        return;
+    }
+
+    const payload = {
+        full_name: document.getElementById("userFullName").value.trim(),
+        email: document.getElementById("userEmail").value.trim(),
+        mobile: document.getElementById("userMobile").value.trim(),
+        role: document.getElementById("userRole").value,
+        status: document.getElementById("userStatus").value
+    };
+    if (password) payload.password = password;
+
+    if (!payload.full_name || !payload.email || !payload.role) {
+        alert("Please fill all required (*) fields.");
+        return;
+    }
+
+    const url = editingUserId ? `/api/users/${editingUserId}` : "/api/users";
+    const method = editingUserId ? "PUT" : "POST";
+
+    try {
+        const response = await fetch(url, {
+            method,
+            headers: authHeaders,
+            body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message || "Something went wrong.");
+            return;
+        }
+
+        alert(editingUserId ? "User Updated Successfully." : "User Added Successfully.");
+        userForm.reset();
+        editingUserId = null;
+        loadUsers();
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   VIEW / EDIT / DELETE
+================================ */
+
+async function viewUser(id){
+    const response = await fetch(`/api/users/${id}`, { headers: authHeaders });
+    const result = await response.json();
+    if (!result.success) { alert(result.message); return; }
+    const u = result.data;
+    alert(
+        `Name: ${u.full_name}\nEmail: ${u.email}\nMobile: ${u.mobile}\nRole: ${formatRoleLabel(u.role)}\nStatus: ${u.status}\nLast Login: ${u.last_login_at ? new Date(u.last_login_at).toLocaleString("en-IN") : "Never"}`
+    );
+}
+
+async function editUser(id){
+    const response = await fetch(`/api/users/${id}`, { headers: authHeaders });
+    const result = await response.json();
+    if (!result.success) { alert(result.message); return; }
+
+    const u = result.data;
+    editingUserId = id;
+
+    document.getElementById("userFullName").value = u.full_name;
+    document.getElementById("userEmail").value = u.email;
+    document.getElementById("userEmail").setAttribute("readonly", "readonly"); // email change allowed nahi (unique identifier)
+    document.getElementById("userMobile").value = u.mobile;
+    document.getElementById("userRole").value = u.role;
+    document.getElementById("userStatus").value = u.status;
+    document.getElementById("userPassword").value = "";
+    document.getElementById("userConfirmPassword").value = "";
+    document.getElementById("userPassword").placeholder = "Leave blank to keep same password";
+
+    userForm.scrollIntoView({ behavior: "smooth" });
+}
+
+async function deleteUser(id){
+    if (!confirm("Kya tum sach me is user ko delete karna chahte ho?")) return;
+
+    try {
+        const response = await fetch(`/api/users/${id}`, {
+            method: "DELETE",
+            headers: authHeaders
+        });
+        const result = await response.json();
+
+        if (!result.success) { alert(result.message); return; }
+
+        alert("User Deleted Successfully.");
+        loadUsers();
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   USERS TAB BUTTONS (Add / Update / Delete / Reset)
+================================ */
+
+const usersTabButtons = userForm.querySelectorAll(".btn-success, .btn-primary, .btn-danger, .btn-secondary");
+
+usersTabButtons.forEach(btn => {
+    if (btn.textContent.includes("Add User") || btn.textContent.includes("Update User")) {
+        btn.addEventListener("click", function(e){
+            e.preventDefault();
+            saveUser();
+        });
+    } else if (btn.textContent.includes("Delete User")) {
+        btn.addEventListener("click", function(e){
+            e.preventDefault();
+            if (!editingUserId) { alert("Pehle table se ek user select karo (Edit icon dabao)."); return; }
+            deleteUser(editingUserId);
+        });
+    } else if (btn.textContent.includes("Reset")) {
+        btn.addEventListener("click", function(e){
+            e.preventDefault();
+            userForm.reset();
+            editingUserId = null;
+            document.getElementById("userEmail").removeAttribute("readonly");
+            document.getElementById("userPassword").placeholder = "Password";
+        });
+    }
 });
 
+
+/* ===============================
+   OTHER TABS (Company / Warranty / Security)
+   -- NOTE: yeh abhi database se connect nahi hain, sirf UI hai.
+   Save button dabate hi yeh message dikhega taaki confusion na ho.
+================================ */
+
+document.querySelectorAll(".btn-success, .btn-secondary").forEach(button => {
+    if (userForm.contains(button)) return; // Users tab already handled upar
+
+    button.addEventListener("click", function(e){
+        e.preventDefault();
+        if (button.textContent.includes("Reset") || button.textContent.includes("Cancel")) {
+            if (confirm("Reset all unsaved changes?")) location.reload();
+            return;
+        }
+        alert("Yeh section (Company/Warranty/Security) abhi database se connect nahi hai -- agle phase me banega.");
+    });
 });
 
-console.log("Settings Module Loaded Successfully");
 
-/*
+/* ===============================
+   PAGE LOAD
+================================ */
 
-=========================================
-BATTERY ERP SETTINGS FLOW
-=========================================
-
-Company Information
-        │
-        ▼
-Dealer / Reports / Invoice
-
-User Management
-        │
-        ▼
-Login & Permissions
-
-Warranty Settings
-        │
-        ▼
-Warranty Module
-
-Reward Settings
-        │
-        ▼
-Reward Wallet
-
-Notification Settings
-        │
-        ▼
-Email / SMS / WhatsApp
-
-Security
-        │
-        ▼
-Authentication
-
-Backup & Restore
-        │
-        ▼
-Database
-
-=========================================
-
-Recommended Database Tables
-
-settings
-
-company_profile
-
-users
-
-roles
-
-permissions
-
-system_logs
-
-notification_settings
-
-reward_settings
-
-warranty_settings
-
-=========================================
-
-*/
+loadUsers();
 
 </script>
 

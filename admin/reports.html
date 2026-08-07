@@ -554,6 +554,7 @@ border:1px solid #ddd;
             <i class="fa-solid fa-magnifying-glass"></i>
 
             <input type="text"
+                   id="topSearchBox"
                    placeholder="Search Report ID / Dealer / Serial Number">
 
         </div>
@@ -646,7 +647,7 @@ border:1px solid #ddd;
 
                     <i class="fa-solid fa-boxes-stacked fa-2x text-primary"></i>
 
-                    <h3>12,580</h3>
+                    <h3 id="statTotalInventory">0</h3>
 
                     <p>Total Inventory</p>
 
@@ -660,7 +661,7 @@ border:1px solid #ddd;
 
                     <i class="fa-solid fa-truck-fast fa-2x text-success"></i>
 
-                    <h3>9,240</h3>
+                    <h3 id="statTotalDispatch">0</h3>
 
                     <p>Total Dispatch</p>
 
@@ -674,7 +675,7 @@ border:1px solid #ddd;
 
                     <i class="fa-solid fa-shield-halved fa-2x text-warning"></i>
 
-                    <h3>8,915</h3>
+                    <h3 id="statWarrantyActivated">0</h3>
 
                     <p>Warranty Activated</p>
 
@@ -688,7 +689,7 @@ border:1px solid #ddd;
 
                     <i class="fa-solid fa-repeat fa-2x text-danger"></i>
 
-                    <h3>215</h3>
+                    <h3 id="statTotalReplacements">0</h3>
 
                     <p>Total Replacements</p>
 
@@ -721,7 +722,8 @@ border:1px solid #ddd;
                         </label>
 
                         <input type="date"
-                               class="form-control">
+                               class="form-control"
+           id="filterFromDate">
 
                     </div>
 
@@ -734,7 +736,8 @@ border:1px solid #ddd;
                         </label>
 
                         <input type="date"
-                               class="form-control">
+                               class="form-control"
+           id="filterToDate">
 
                     </div>
 
@@ -746,7 +749,8 @@ border:1px solid #ddd;
 
                         </label>
 
-                        <select class="form-select">
+                        <select class="form-select"
+           id="filterReportType">
 
                             <option>All Reports</option>
                             <option>Inventory Report</option>
@@ -768,7 +772,8 @@ border:1px solid #ddd;
 
                         </label>
 
-                        <select class="form-select">
+                        <select class="form-select"
+           id="filterStatus">
 
                             <option>All Status</option>
                             <option>Active</option>
@@ -796,6 +801,7 @@ border:1px solid #ddd;
 
     <input type="text"
            class="form-control"
+           id="filterDealer"
            placeholder="Dealer Name / Code">
 
 </div>
@@ -808,7 +814,8 @@ border:1px solid #ddd;
 
     </label>
 
-    <select class="form-select">
+    <select class="form-select"
+           id="filterCategory">
 
         <option>All Categories</option>
         <option>Lead Acid Battery</option>
@@ -830,6 +837,7 @@ border:1px solid #ddd;
 
     <input type="text"
            class="form-control"
+           id="filterProductName"
            placeholder="Enter Product Name">
 
 </div>
@@ -844,6 +852,7 @@ border:1px solid #ddd;
 
     <input type="text"
            class="form-control"
+           id="filterModelNumber"
            placeholder="Enter Model Number">
 
 </div>
@@ -858,6 +867,7 @@ border:1px solid #ddd;
 
     <input type="text"
            class="form-control"
+           id="filterState"
            placeholder="State">
 
 </div>
@@ -872,6 +882,7 @@ border:1px solid #ddd;
 
     <input type="text"
            class="form-control"
+           id="filterDistrict"
            placeholder="District">
 
 </div>
@@ -970,7 +981,7 @@ border:1px solid #ddd;
 
                 <i class="fa-solid fa-box-open fa-2x text-primary"></i>
 
-                <h3>3,340</h3>
+                <h3 id="statInventoryAvailable">0</h3>
 
                 <p>Inventory Available</p>
 
@@ -984,7 +995,7 @@ border:1px solid #ddd;
 
                 <i class="fa-solid fa-truck-fast fa-2x text-success"></i>
 
-                <h3>9,240</h3>
+                <h3 id="statInventoryDispatched">0</h3>
 
                 <p>Inventory Dispatched</p>
 
@@ -998,7 +1009,7 @@ border:1px solid #ddd;
 
                 <i class="fa-solid fa-shield-halved fa-2x text-warning"></i>
 
-                <h3>8,915</h3>
+                <h3 id="statWarrantyActive">0</h3>
 
                 <p>Warranty Active</p>
 
@@ -1012,7 +1023,7 @@ border:1px solid #ddd;
 
                 <i class="fa-solid fa-repeat fa-2x text-danger"></i>
 
-                <h3>215</h3>
+                <h3 id="statReplacementApproved">0</h3>
 
                 <p>Replacement Approved</p>
 
@@ -1026,7 +1037,7 @@ border:1px solid #ddd;
 
                 <i class="fa-solid fa-users fa-2x text-info"></i>
 
-                <h3>186</h3>
+                <h3 id="statTotalDealers">0</h3>
 
                 <p>Total Dealers</p>
 
@@ -1040,7 +1051,7 @@ border:1px solid #ddd;
 
                 <i class="fa-solid fa-wallet fa-2x text-success"></i>
 
-                <h3>41,800</h3>
+                <h3 id="statRewardBalance">0</h3>
 
                 <p>Reward Balance</p>
 
@@ -1054,7 +1065,7 @@ border:1px solid #ddd;
 
                 <i class="fa-solid fa-file-circle-check fa-2x text-primary"></i>
 
-                <h3>12,460</h3>
+                <h3 id="statTotalReports">0</h3>
 
                 <p>Total Reports</p>
 
@@ -1068,7 +1079,7 @@ border:1px solid #ddd;
 
                 <i class="fa-solid fa-chart-line fa-2x text-danger"></i>
 
-                <h3>98.6%</h3>
+                <h3 id="statSuccessRate">0%</h3>
 
                 <p>Success Rate</p>
 
@@ -1113,238 +1124,7 @@ border:1px solid #ddd;
             </thead>
 
             <tbody>
-                <!-- ================= REPORT 1 ================= -->
-
-<tr>
-
-    <td>1</td>
-
-    <td>RPT-2026-00001</td>
-
-    <td>19-07-2026</td>
-
-    <td>Sharma Battery House</td>
-
-    <td>Lithium Battery</td>
-
-    <td>Li Power 150Ah</td>
-
-    <td>LP150-01</td>
-
-    <td>
-
-        <span class="badge bg-success">
-
-            Completed
-
-        </span>
-
-    </td>
-
-    <td>
-
-        <button class="btn btn-sm btn-info">
-
-            <i class="fa-solid fa-eye"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-primary">
-
-            <i class="fa-solid fa-print"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-danger">
-
-            <i class="fa-solid fa-file-pdf"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-success">
-
-            <i class="fa-solid fa-file-excel"></i>
-
-        </button>
-
-    </td>
-
-</tr>
-
-<!-- ================= REPORT 2 ================= -->
-
-<tr>
-
-    <td>2</td>
-
-    <td>RPT-2026-00002</td>
-
-    <td>18-07-2026</td>
-
-    <td>Gupta Traders</td>
-
-    <td>Solar Battery</td>
-
-    <td>Solar Max 200Ah</td>
-
-    <td>SM200-02</td>
-
-    <td>
-
-        <span class="badge bg-warning text-dark">
-
-            Pending
-
-        </span>
-
-    </td>
-
-    <td>
-
-        <button class="btn btn-sm btn-info">
-
-            <i class="fa-solid fa-eye"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-primary">
-
-            <i class="fa-solid fa-print"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-danger">
-
-            <i class="fa-solid fa-file-pdf"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-success">
-
-            <i class="fa-solid fa-file-excel"></i>
-
-        </button>
-
-    </td>
-
-</tr>
-
-<!-- ================= REPORT 3 ================= -->
-
-<tr>
-
-    <td>3</td>
-
-    <td>RPT-2026-00003</td>
-
-    <td>17-07-2026</td>
-
-    <td>Verma Batteries</td>
-
-    <td>Inverter Battery</td>
-
-    <td>Power Plus 180Ah</td>
-
-    <td>PP180-03</td>
-
-    <td>
-
-        <span class="badge bg-primary">
-
-            Approved
-
-        </span>
-
-    </td>
-
-    <td>
-
-        <button class="btn btn-sm btn-info">
-
-            <i class="fa-solid fa-eye"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-primary">
-
-            <i class="fa-solid fa-print"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-danger">
-
-            <i class="fa-solid fa-file-pdf"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-success">
-
-            <i class="fa-solid fa-file-excel"></i>
-
-        </button>
-
-    </td>
-
-</tr>
-
-<!-- ================= REPORT 4 ================= -->
-
-<tr>
-
-    <td>4</td>
-
-    <td>RPT-2026-00004</td>
-
-    <td>16-07-2026</td>
-
-    <td>Singh Enterprises</td>
-
-    <td>Lead Acid Battery</td>
-
-    <td>Classic 150Ah</td>
-
-    <td>CL150-04</td>
-
-    <td>
-
-        <span class="badge bg-danger">
-
-            Rejected
-
-        </span>
-
-    </td>
-
-    <td>
-
-        <button class="btn btn-sm btn-info">
-
-            <i class="fa-solid fa-eye"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-primary">
-
-            <i class="fa-solid fa-print"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-danger">
-
-            <i class="fa-solid fa-file-pdf"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-success">
-
-            <i class="fa-solid fa-file-excel"></i>
-
-        </button>
-
-    </td>
-
-</tr>
-
+<!-- Report rows will be loaded here from the database -->
 </tbody>
 
 </table>
@@ -1352,74 +1132,6 @@ border:1px solid #ddd;
 </div>
 
 <!-- ================= TABLE FOOTER ================= -->
-
-<div class="d-flex justify-content-between align-items-center flex-wrap mt-4">
-
-    <p class="text-muted mb-2">
-
-        Showing 1 to 4 of 2,458 Reports
-
-    </p>
-
-    <nav>
-
-        <ul class="pagination mb-0">
-
-            <li class="page-item disabled">
-
-                <a class="page-link">
-
-                    Previous
-
-                </a>
-
-            </li>
-
-            <li class="page-item active">
-
-                <a class="page-link">
-
-                    1
-
-                </a>
-
-            </li>
-
-            <li class="page-item">
-
-                <a class="page-link">
-
-                    2
-
-                </a>
-
-            </li>
-
-            <li class="page-item">
-
-                <a class="page-link">
-
-                    3
-
-                </a>
-
-            </li>
-
-            <li class="page-item">
-
-                <a class="page-link">
-
-                    Next
-
-                </a>
-
-            </li>
-
-        </ul>
-
-    </nav>
-
-</div>
 
 </div>
 
@@ -1635,116 +1347,322 @@ justify-content:center;
 /* ================= SIDEBAR TOGGLE ================= */
 
 const sidebar = document.querySelector(".sidebar");
-
 const menuBtn = document.createElement("button");
-
 menuBtn.className = "btn btn-primary";
-
 menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-
 document.querySelector(".profile").prepend(menuBtn);
-
 menuBtn.onclick = function(){
-
     sidebar.classList.toggle("active");
-
 };
 
-/* ================= PAGE LOAD ================= */
 
-console.log("Reports Module Loaded Successfully");
+/* ===============================
+   AUTH CHECK
+================================ */
 
-/*
-====================================================
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "login.html";
 
-BATTERY ERP REPORT FLOW
+const authHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+};
 
-Inventory
-      │
-      ▼
-Dispatch
-      │
-      ▼
-Warranty
-      │
-      ▼
-Replacement
-      │
-      ▼
-Reward Wallet
-      │
-      ▼
-Reports Dashboard
+let lastLoadedReports = [];
 
-====================================================
 
-REPORT TYPES
+/* ===============================
+   TOP 4 DASHBOARD CARDS
+================================ */
 
-Inventory Report
+async function loadDashboardStats(){
+    try {
+        const response = await fetch("/api/reports/stats", { headers: authHeaders });
+        const result = await response.json();
+        if (!result.success) return;
 
-Dispatch Report
+        document.getElementById("statTotalInventory").textContent = result.data.total_inventory.toLocaleString("en-IN");
+        document.getElementById("statTotalDispatch").textContent = result.data.total_dispatch.toLocaleString("en-IN");
+        document.getElementById("statWarrantyActivated").textContent = result.data.warranty_activated.toLocaleString("en-IN");
+        document.getElementById("statTotalReplacements").textContent = result.data.total_replacements.toLocaleString("en-IN");
 
-Warranty Report
+    } catch (err) {
+        console.error(err);
+    }
+}
 
-Replacement Report
 
-Dealer Report
+/* ===============================
+   REPORT SUMMARY (8 cards)
+================================ */
 
-Reward Wallet Report
+async function loadSummary(){
+    try {
+        const response = await fetch("/api/reports/summary", { headers: authHeaders });
+        const result = await response.json();
+        if (!result.success) return;
 
-Sales Report
+        const d = result.data;
+        document.getElementById("statInventoryAvailable").textContent = d.inventory_available.toLocaleString("en-IN");
+        document.getElementById("statInventoryDispatched").textContent = d.inventory_dispatched.toLocaleString("en-IN");
+        document.getElementById("statWarrantyActive").textContent = d.warranty_active.toLocaleString("en-IN");
+        document.getElementById("statReplacementApproved").textContent = d.replacement_approved.toLocaleString("en-IN");
+        document.getElementById("statTotalDealers").textContent = d.total_dealers.toLocaleString("en-IN");
+        document.getElementById("statRewardBalance").textContent = d.reward_balance.toLocaleString("en-IN");
+        document.getElementById("statTotalReports").textContent = d.total_reports.toLocaleString("en-IN");
+        document.getElementById("statSuccessRate").textContent = d.success_rate + "%";
 
-====================================================
+    } catch (err) {
+        console.error(err);
+    }
+}
 
-EXPORT OPTIONS
 
-PDF
+/* ===============================
+   BUILD FILTER QUERY STRING
+================================ */
 
-Excel
+function buildFilterParams(searchOverride){
+    const params = new URLSearchParams();
 
-Print
+    const search = searchOverride !== undefined ? searchOverride : document.getElementById("topSearchBox").value.trim();
+    if (search) params.set("search", search);
 
-====================================================
+    const fromDate = document.getElementById("filterFromDate").value;
+    if (fromDate) params.set("fromDate", fromDate);
 
-DATABASE TABLES
+    const toDate = document.getElementById("filterToDate").value;
+    if (toDate) params.set("toDate", toDate);
 
-inventory
+    const reportType = document.getElementById("filterReportType").value;
+    if (reportType && reportType !== "All Reports") params.set("reportType", reportType);
 
-dispatch
+    const status = document.getElementById("filterStatus").value;
+    if (status && status !== "All Status") params.set("status", status);
 
-dealers
+    const dealer = document.getElementById("filterDealer").value.trim();
+    if (dealer) params.set("dealer", dealer);
 
-warranty
+    const category = document.getElementById("filterCategory").value;
+    if (category && category !== "All Categories") params.set("category", category);
 
-replacement
+    const productName = document.getElementById("filterProductName").value.trim();
+    if (productName) params.set("productName", productName);
 
-reward_wallet
+    const modelNumber = document.getElementById("filterModelNumber").value.trim();
+    if (modelNumber) params.set("modelNumber", modelNumber);
 
-reward_transactions
+    const state = document.getElementById("filterState").value.trim();
+    if (state) params.set("state", state);
 
-reports
+    return params;
+}
 
-====================================================
 
-FUTURE FEATURES
+/* ===============================
+   LOAD REPORTS TABLE
+================================ */
 
-• Auto Email Reports
+function badgeClassForReportStatus(status){
+    const s = (status || "").toLowerCase();
+    if (["active","approved","completed","dispatched","delivered"].includes(s)) return "bg-success";
+    if (["pending"].includes(s)) return "bg-warning text-dark";
+    if (["rejected","cancelled","defective"].includes(s)) return "bg-danger";
+    return "bg-secondary";
+}
 
-• Scheduled Daily Reports
+async function loadReports(searchOverride){
+    const tbody = document.querySelector("table tbody");
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center">Loading...</td></tr>`;
 
-• Monthly Analytics
+    try {
+        const params = buildFilterParams(searchOverride);
+        const response = await fetch(`/api/reports?${params.toString()}`, { headers: authHeaders });
+        const result = await response.json();
 
-• Yearly Sales Graph
+        if (!result.success) {
+            tbody.innerHTML = `<tr><td colspan="9" class="text-center text-danger">${result.message}</td></tr>`;
+            return;
+        }
 
-• Dealer Ranking
+        const reports = result.data.reports;
+        lastLoadedReports = reports;
 
-• Warranty Claim Analytics
+        if (reports.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="9" class="text-center">No Records Found.</td></tr>`;
+            return;
+        }
 
-• Export CSV
+        tbody.innerHTML = reports.map((r, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${r.report_id}</td>
+                <td>${new Date(r.report_date).toLocaleDateString("en-GB")}</td>
+                <td>${r.dealer_name}</td>
+                <td>${r.category_name}</td>
+                <td>${r.product_name}</td>
+                <td>${r.model_name}</td>
+                <td><span class="badge ${badgeClassForReportStatus(r.status)}">${r.status}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick='viewReportRow(${JSON.stringify(r).replace(/'/g,"&apos;")})'><i class="fa-solid fa-eye"></i></button>
+                </td>
+            </tr>
+        `).join("");
 
-====================================================
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
 
-*/
+function viewReportRow(r){
+    alert(
+        `Report ID: ${r.report_id}\nType: ${r.type}\nDate: ${new Date(r.report_date).toLocaleDateString("en-GB")}\nDealer: ${r.dealer_name}\nCategory: ${r.category_name}\nProduct: ${r.product_name}\nModel: ${r.model_name}\nSerial: ${r.serial_number}\nStatus: ${r.status}`
+    );
+}
+
+
+/* ===============================
+   TOPBAR SEARCH
+================================ */
+
+document.getElementById("topSearchBox").addEventListener("keyup", function(e){
+    if (e.key === "Enter") loadReports(this.value.trim());
+});
+
+
+/* ===============================
+   GENERATE REPORT / CLEAR FILTERS
+================================ */
+
+const filterForm = document.querySelector(".form-card form");
+
+filterForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    loadReports();
+});
+
+document.querySelector('.btn-secondary').addEventListener("click", function(e){
+    e.preventDefault();
+    filterForm.reset();
+    loadReports("");
+});
+
+
+/* ===============================
+   QUICK REPORTS (Today / Weekly / Monthly / Yearly)
+================================ */
+
+function formatDateInput(date){
+    return date.toISOString().split("T")[0];
+}
+
+document.querySelector(".btn-outline-primary").addEventListener("click", function(){
+    const today = formatDateInput(new Date());
+    document.getElementById("filterFromDate").value = today;
+    document.getElementById("filterToDate").value = today;
+    loadReports();
+});
+
+document.querySelector(".btn-outline-success").addEventListener("click", function(){
+    const to = new Date();
+    const from = new Date();
+    from.setDate(from.getDate() - 7);
+    document.getElementById("filterFromDate").value = formatDateInput(from);
+    document.getElementById("filterToDate").value = formatDateInput(to);
+    loadReports();
+});
+
+document.querySelector(".btn-outline-warning").addEventListener("click", function(){
+    const to = new Date();
+    const from = new Date();
+    from.setMonth(from.getMonth() - 1);
+    document.getElementById("filterFromDate").value = formatDateInput(from);
+    document.getElementById("filterToDate").value = formatDateInput(to);
+    loadReports();
+});
+
+document.querySelector(".btn-outline-danger").addEventListener("click", function(){
+    const to = new Date();
+    const from = new Date();
+    from.setFullYear(from.getFullYear() - 1);
+    document.getElementById("filterFromDate").value = formatDateInput(from);
+    document.getElementById("filterToDate").value = formatDateInput(to);
+    loadReports();
+});
+
+document.querySelector(".btn-outline-dark").addEventListener("click", function(){
+    document.querySelector(".form-card").scrollIntoView({ behavior: "smooth" });
+});
+
+
+/* ===============================
+   EXPORT EXCEL (CSV download -- Excel opens CSV natively,
+   no extra library needed)
+================================ */
+
+document.querySelectorAll(".btn-success").forEach(btn => {
+    if (btn.textContent.includes("Export Excel")) {
+        btn.addEventListener("click", function(){
+            if (lastLoadedReports.length === 0) {
+                alert("Koi data nahi hai export karne ke liye. Pehle 'Generate Report' dabao.");
+                return;
+            }
+            const headers = ["Report ID","Date","Dealer","Category","Product","Model","Serial","Status"];
+            const rows = lastLoadedReports.map(r => [
+                r.report_id, new Date(r.report_date).toLocaleDateString("en-GB"), r.dealer_name,
+                r.category_name, r.product_name, r.model_name, r.serial_number, r.status
+            ]);
+            const csvContent = [headers, ...rows].map(row => row.map(v => `"${v}"`).join(",")).join("\n");
+            const blob = new Blob([csvContent], { type: "text/csv" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `battery_erp_report_${Date.now()}.csv`;
+            link.click();
+        });
+    }
+});
+
+
+/* ===============================
+   EXPORT PDF / PRINT (browser print dialog -- "Save as PDF" option)
+================================ */
+
+document.querySelectorAll(".btn-danger").forEach(btn => {
+    if (btn.textContent.includes("Export PDF")) {
+        btn.addEventListener("click", function(){ window.print(); });
+    }
+});
+
+document.querySelectorAll(".btn-primary").forEach(btn => {
+    if (btn.textContent.includes("Print") && !btn.closest("form")) {
+        btn.addEventListener("click", function(){ window.print(); });
+    }
+});
+
+
+/* ===============================
+   REFRESH
+================================ */
+
+document.querySelectorAll(".btn-warning").forEach(btn => {
+    if (btn.textContent.includes("Refresh")) {
+        btn.addEventListener("click", function(){
+            loadDashboardStats();
+            loadSummary();
+            loadReports();
+        });
+    }
+});
+
+
+/* ===============================
+   PAGE LOAD
+================================ */
+
+loadDashboardStats();
+loadSummary();
+loadReports();
 
 </script>
 

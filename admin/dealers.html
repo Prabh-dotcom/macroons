@@ -520,6 +520,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
     <input
         type="text"
         class="form-control"
+        id="loginId"
         placeholder="Enter Login ID">
 
 </div>
@@ -537,6 +538,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
     <input
         type="password"
         class="form-control"
+        id="dealerPassword"
         placeholder="Enter Password">
 
 </div>
@@ -554,6 +556,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
     <input
         type="password"
         class="form-control"
+        id="confirmPassword"
         placeholder="Confirm Password">
 
 </div>
@@ -583,6 +586,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
     <input
         type="text"
         class="form-control"
+        id="dealerName"
         placeholder="Enter Dealer Name">
 
 </div>
@@ -600,6 +604,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
     <input
         type="tel"
         class="form-control"
+        id="mobile"
         placeholder="Enter Mobile Number">
 
 </div>
@@ -634,6 +639,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
     <input
         type="email"
         class="form-control"
+        id="email"
         placeholder="Enter Email ID">
 
 </div>
@@ -651,6 +657,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
     <input
         type="text"
         class="form-control"
+        id="gstNumber"
         placeholder="Enter GST Number">
 
 </div>
@@ -728,6 +735,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
     <input
         type="text"
         class="form-control"
+        id="city"
         placeholder="Enter City">
 
 </div>
@@ -743,6 +751,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
     <input
         type="text"
         class="form-control"
+        id="pincode"
         placeholder="Enter Pincode">
 
 </div>
@@ -757,6 +766,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
     <textarea
         class="form-control"
+        id="address"
         placeholder="Enter Complete Address"></textarea>
 
 </div>
@@ -869,11 +879,11 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
     </label>
 
-    <select class="form-select">
+    <select class="form-select" id="dealerStatus">
 
-        <option selected disabled>Select Status</option>
-        <option>Active</option>
-        <option>Inactive</option>
+        <option selected disabled value="">Select Status</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
 
     </select>
 
@@ -889,11 +899,11 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
     </label>
 
-    <select class="form-select">
+    <select class="form-select" id="rewardEligible">
 
-        <option selected disabled>Select Option</option>
-        <option>Yes</option>
-        <option>No</option>
+        <option selected disabled value="">Select Option</option>
+        <option value="1">Yes</option>
+        <option value="0">No</option>
 
     </select>
 
@@ -1053,97 +1063,253 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 <script>
 
 /* ===============================
-   AUTO DEALER ID
+   AUTH CHECK -- login token na ho to seedha login page bhej do
 ================================ */
 
-function generateDealerID(){
+const token = localStorage.getItem("token");
 
-    const random = Math.floor(Math.random()*9000)+1000;
-
-    document.getElementById("dealerId").value = "DLR"+random;
-
+if (!token) {
+    window.location.href = "login.html";
 }
 
-window.onload = generateDealerID;
+const authHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+};
 
 
 /* ===============================
-   PASSWORD VALIDATION
+   AUTO DEALER ID (sirf display ke liye,
+   asli dealer_code backend khud generate karta hai)
+================================ */
+
+function generateDealerID(){
+    document.getElementById("dealerId").value = "Auto Generate on Save";
+}
+
+let editingDealerId = null; // null = naya dealer add ho raha hai, warna edit mode
+
+
+/* ===============================
+   LOAD DEALERS FROM DATABASE
+================================ */
+
+async function loadDealers(){
+
+    const tbody = document.querySelector("table tbody");
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
+
+    try {
+        const response = await fetch("/api/dealers", { headers: authHeaders });
+        const result = await response.json();
+
+        if (!result.success) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">${result.message}</td></tr>`;
+            return;
+        }
+
+        const dealers = result.data.dealers;
+
+        if (dealers.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center">Koi dealer nahi mila. Upar form se add karo.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = dealers.map(d => `
+            <tr>
+                <td>${d.dealer_code}</td>
+                <td>${d.dealer_name}</td>
+                <td>${d.login_id}</td>
+                <td>${d.phone}</td>
+                <td>${d.city || "-"}</td>
+                <td>${d.reward_eligible ? "Yes" : "No"}</td>
+                <td><span class="badge ${d.dealer_status === 'active' ? 'bg-success' : 'bg-secondary'}">${d.dealer_status}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-info text-white" onclick="viewDealer(${d.dealer_id})"><i class="fa-solid fa-eye"></i></button>
+                    <button class="btn btn-sm btn-warning text-white" onclick="editDealer(${d.dealer_id})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteDealer(${d.dealer_id})"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+        `).join("");
+
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   SAVE / UPDATE DEALER (form submit)
 ================================ */
 
 const form = document.querySelector("form");
 
-form.addEventListener("submit",function(e){
+form.addEventListener("submit", async function(e){
 
     e.preventDefault();
 
-    const password = document.querySelectorAll('input[type="password"]')[0].value;
+    const password = document.getElementById("dealerPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
-    const confirmPassword = document.querySelectorAll('input[type="password"]')[1].value;
-
-    if(password !== confirmPassword){
-
+    if (!editingDealerId && password !== confirmPassword) {
         alert("Password and Confirm Password do not match.");
-
         return;
-
     }
 
-    alert("Dealer Saved Successfully.");
+    const payload = {
+        dealer_name: document.getElementById("dealerName").value.trim(),
+        login_id: document.getElementById("loginId").value.trim(),
+        password: password,
+        phone: document.getElementById("mobile").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        gst_number: document.getElementById("gstNumber").value.trim(),
+        city: document.getElementById("city").value.trim(),
+        pincode: document.getElementById("pincode").value.trim(),
+        address_line: document.getElementById("address").value.trim(),
+        dealer_status: document.getElementById("dealerStatus").value,
+        reward_eligible: document.getElementById("rewardEligible").value
+    };
 
+    const url = editingDealerId ? `/api/dealers/${editingDealerId}` : "/api/dealers";
+    const method = editingDealerId ? "PUT" : "POST";
+
+    try {
+        const response = await fetch(url, {
+            method,
+            headers: authHeaders,
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message || "Something went wrong.");
+            if (result.errors) alert(result.errors.join("\n"));
+            return;
+        }
+
+        alert(editingDealerId ? "Dealer Updated Successfully." : "Dealer Saved Successfully.");
+        form.reset();
+        editingDealerId = null;
+        generateDealerID();
+        loadDealers();
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
 });
 
 
 /* ===============================
-   SAVE & NEW BUTTON
+   VIEW DEALER
 ================================ */
 
-document.querySelector(".btn-primary").addEventListener("click",function(){
+async function viewDealer(id){
+    const response = await fetch(`/api/dealers/${id}`, { headers: authHeaders });
+    const result = await response.json();
+    if (!result.success) { alert(result.message); return; }
+    const d = result.data;
+    alert(
+        `Dealer: ${d.dealer_name}\nCode: ${d.dealer_code}\nLogin ID: ${d.login_id}\nPhone: ${d.phone}\nEmail: ${d.email || "-"}\nCity: ${d.city || "-"}\nStatus: ${d.dealer_status}`
+    );
+}
 
+
+/* ===============================
+   EDIT DEALER -- form ko us dealer ke data se bhar do
+================================ */
+
+async function editDealer(id){
+    const response = await fetch(`/api/dealers/${id}`, { headers: authHeaders });
+    const result = await response.json();
+    if (!result.success) { alert(result.message); return; }
+
+    const d = result.data;
+
+    editingDealerId = id;
+    document.getElementById("dealerId").value = d.dealer_code;
+    document.getElementById("loginId").value = d.login_id;
+    document.getElementById("dealerName").value = d.dealer_name;
+    document.getElementById("mobile").value = d.phone;
+    document.getElementById("email").value = d.email || "";
+    document.getElementById("gstNumber").value = d.gst_number || "";
+    document.getElementById("city").value = d.city || "";
+    document.getElementById("pincode").value = d.pincode || "";
+    document.getElementById("address").value = d.address_line || "";
+    document.getElementById("dealerStatus").value = d.dealer_status;
+    document.getElementById("rewardEligible").value = d.reward_eligible ? "1" : "0";
+
+    // Edit mode me password required nahi hai
+    document.getElementById("dealerPassword").removeAttribute("required");
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+
+/* ===============================
+   DELETE DEALER
+================================ */
+
+async function deleteDealer(id){
+    if (!confirm("Kya tum sach me is dealer ko delete karna chahte ho?")) return;
+
+    try {
+        const response = await fetch(`/api/dealers/${id}`, {
+            method: "DELETE",
+            headers: authHeaders
+        });
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
+
+        alert("Dealer Deleted Successfully.");
+        loadDealers();
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   SAVE & NEW / RESET BUTTONS
+================================ */
+
+document.querySelector(".btn-primary").addEventListener("click", function(){
     form.reset();
-
+    editingDealerId = null;
     generateDealerID();
-
 });
 
-
-/* ===============================
-   UPDATE BUTTON
-================================ */
-
-document.querySelector(".btn-warning").addEventListener("click",function(){
-
-    alert("Dealer Updated Successfully.");
-
-});
-
-
-/* ===============================
-   RESET BUTTON
-================================ */
-
-document.querySelector(".btn-secondary").addEventListener("click",function(){
-
+document.querySelector(".btn-secondary").addEventListener("click", function(){
     form.reset();
-
+    editingDealerId = null;
     generateDealerID();
+});
 
+// "Update Dealer" button ab form ke normal submit se hi handle ho raha hai
+// (editingDealerId set hoga to PUT chalega), isliye alag se click handler
+// nahi chahiye -- purana wala hata diya taaki double-submit na ho.
+document.querySelector(".btn-warning").addEventListener("click", function(e){
+    e.preventDefault();
+    form.requestSubmit();
 });
 
 
 /* ===============================
-   FUTURE DATABASE CONNECTION
-
-   Dealer ID
-   Login ID
-   Password
-   Dealer Details
-   Address
-   Documents
-   Dealer Status
-   Reward Eligible
-
+   PAGE LOAD
 ================================ */
+
+window.onload = function(){
+    generateDealerID();
+    loadDealers();
+};
 
 </script>
 

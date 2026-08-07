@@ -635,6 +635,7 @@ font-size:13px;
 
     <input type="text"
            class="form-control"
+           id="companyName"
            placeholder="Enter Company Name">
 
 </div>
@@ -653,6 +654,7 @@ font-size:13px;
 
         <input type="text"
                class="form-control"
+               id="serialSearch"
                placeholder="Search Serial Number">
 
         <button class="btn btn-primary">
@@ -675,7 +677,7 @@ font-size:13px;
 
     <input type="text"
            class="form-control"
-           value="JUL26A"
+           id="batchNumberDisplay"
            readonly>
 
 </div>
@@ -692,7 +694,7 @@ font-size:13px;
 
     <input type="text"
            class="form-control"
-           value="Lithium"
+           id="categoryDisplay"
            readonly>
 
 </div>
@@ -707,7 +709,7 @@ font-size:13px;
 
     <input type="text"
            class="form-control"
-           value="Lithium Battery 150Ah"
+           id="productDisplay"
            readonly>
 
 </div>
@@ -722,7 +724,7 @@ font-size:13px;
 
     <input type="text"
            class="form-control"
-           value="MPP-LI-150"
+           id="modelDisplay"
            readonly>
 
 </div>
@@ -745,6 +747,8 @@ Dealer Information
 
     <input type="text"
            class="form-control"
+           id="dealerNameDisplay"
+           readonly
            placeholder="Dealer Name">
 
 </div>
@@ -759,7 +763,8 @@ Dealer Information
 
     <input type="text"
            class="form-control"
-           placeholder="Dealer Code">
+           id="dealerCodeSearch"
+           placeholder="Dealer Code (type & press Tab)">
 
 </div>
 
@@ -773,6 +778,8 @@ Dealer Information
 
     <input type="text"
            class="form-control"
+           id="dealerMobileDisplay"
+           readonly
            placeholder="Mobile Number">
 
 </div>
@@ -787,6 +794,8 @@ Dealer Information
 
     <input type="text"
            class="form-control"
+           id="dealerStateDisplay"
+           readonly
            placeholder="State">
 
 </div>
@@ -801,6 +810,7 @@ Dealer Information
 
     <input type="text"
            class="form-control"
+           id="dealerDistrict"
            placeholder="District">
 
 </div>
@@ -823,6 +833,7 @@ Dispatch Details
 
     <input type="text"
            class="form-control"
+           id="invoiceNumber"
            placeholder="Invoice Number">
 
 </div>
@@ -836,7 +847,8 @@ Dispatch Details
     </label>
 
     <input type="date"
-           class="form-control">
+           class="form-control"
+           id="dispatchDate">
 
 </div>
 
@@ -850,6 +862,7 @@ Dispatch Details
 
     <input type="text"
            class="form-control"
+           id="transportName"
            placeholder="Transport Name">
 
 </div>
@@ -864,6 +877,7 @@ Dispatch Details
 
     <input type="text"
            class="form-control"
+           id="lrNumber"
            placeholder="LR Number">
 
 </div>
@@ -878,6 +892,7 @@ Dispatch Details
 
     <input type="text"
            class="form-control"
+           id="dispatchRemarks"
            placeholder="Remarks">
 
 </div>
@@ -957,247 +972,10 @@ Dispatch Records
 </thead>
 
 <tbody>
-    <!-- ================= SAMPLE RECORD 1 ================= -->
-
-<tr>
-
-    <td>1</td>
-
-    <td>INV-2026-0001</td>
-
-    <td>Macroon Power Plus</td>
-
-    <td>MPP260001</td>
-
-    <td>Sharma Battery House</td>
-
-    <td>18-07-2026</td>
-
-    <td>
-
-        <span class="badge bg-success">
-
-            Dispatched
-
-        </span>
-
-    </td>
-
-    <td>
-
-        <button class="btn btn-sm btn-info">
-
-            <i class="fa-solid fa-eye"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-warning">
-
-            <i class="fa-solid fa-pen"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-secondary">
-
-            <i class="fa-solid fa-print"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-danger">
-
-            <i class="fa-solid fa-trash"></i>
-
-        </button>
-
-    </td>
-
-</tr>
-
-<!-- ================= SAMPLE RECORD 2 ================= -->
-
-<tr>
-
-    <td>2</td>
-
-    <td>INV-2026-0002</td>
-
-    <td>Macroon Power Plus</td>
-
-    <td>MPP260002</td>
-
-    <td>Verma Traders</td>
-
-    <td>18-07-2026</td>
-
-    <td>
-
-        <span class="badge bg-success">
-
-            Dispatched
-
-        </span>
-
-    </td>
-
-    <td>
-
-        <button class="btn btn-sm btn-info">
-
-            <i class="fa-solid fa-eye"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-warning">
-
-            <i class="fa-solid fa-pen"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-secondary">
-
-            <i class="fa-solid fa-print"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-danger">
-
-            <i class="fa-solid fa-trash"></i>
-
-        </button>
-
-    </td>
-
-</tr>
-
-<!-- ================= SAMPLE RECORD 3 ================= -->
-
-<tr>
-
-    <td>3</td>
-
-    <td>INV-2026-0003</td>
-
-    <td>Macroon Power Plus</td>
-
-    <td>MPP260003</td>
-
-    <td>Gupta Enterprises</td>
-
-    <td>19-07-2026</td>
-
-    <td>
-
-        <span class="badge bg-warning text-dark">
-
-            Pending
-
-        </span>
-
-    </td>
-
-    <td>
-
-        <button class="btn btn-sm btn-info">
-
-            <i class="fa-solid fa-eye"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-warning">
-
-            <i class="fa-solid fa-pen"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-secondary">
-
-            <i class="fa-solid fa-print"></i>
-
-        </button>
-
-        <button class="btn btn-sm btn-danger">
-
-            <i class="fa-solid fa-trash"></i>
-
-        </button>
-
-    </td>
-
-</tr>
-
+<!-- Dispatch records will be loaded here from the database -->
 </tbody>
 
 </table>
-
-</div>
-
-<!-- ================= PAGINATION ================= -->
-
-<div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
-
-    <p class="text-muted mb-2">
-
-        Showing 1 to 3 of 185 Records
-
-    </p>
-
-    <nav>
-
-        <ul class="pagination mb-0">
-
-            <li class="page-item disabled">
-
-                <a class="page-link">
-
-                    Previous
-
-                </a>
-
-            </li>
-
-            <li class="page-item active">
-
-                <a class="page-link">
-
-                    1
-
-                </a>
-
-            </li>
-
-            <li class="page-item">
-
-                <a class="page-link">
-
-                    2
-
-                </a>
-
-            </li>
-
-            <li class="page-item">
-
-                <a class="page-link">
-
-                    3
-
-                </a>
-
-            </li>
-
-            <li class="page-item">
-
-                <a class="page-link">
-
-                    Next
-
-                </a>
-
-            </li>
-
-        </ul>
-
-    </nav>
 
 </div>
 
@@ -1335,22 +1113,269 @@ Dispatch Records
 <script>
 
 const sidebar = document.querySelector(".sidebar");
-
 const menuButton = document.createElement("button");
-
 menuButton.className = "btn btn-primary";
-
 menuButton.innerHTML = '<i class="fa-solid fa-bars"></i>';
-
 document.querySelector(".profile").prepend(menuButton);
-
 menuButton.onclick = function(){
-
     sidebar.classList.toggle("active");
-
 };
 
-console.log("Dispatch Module Loaded Successfully.");
+
+/* ===============================
+   AUTH CHECK
+================================ */
+
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "login.html";
+
+const authHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+};
+
+let resolvedInventoryId = null;
+let resolvedDealerId = null;
+
+
+/* ===============================
+   SERIAL NUMBER LOOKUP
+   (search icon ke bagal wala button)
+================================ */
+
+document.querySelector('.input-group .btn-primary').addEventListener("click", async function(e){
+    e.preventDefault();
+
+    const serial = document.getElementById("serialSearch").value.trim();
+    if (!serial) { alert("Serial number likho pehle."); return; }
+
+    try {
+        const response = await fetch(`/api/inventory?search=${encodeURIComponent(serial)}`, { headers: authHeaders });
+        const result = await response.json();
+
+        const match = result.data?.inventory?.find(i => i.serial_number === serial);
+
+        if (!match) {
+            alert("Yeh serial number inventory me nahi mila.");
+            resolvedInventoryId = null;
+            return;
+        }
+
+        if (match.status !== "in_stock") {
+            alert(`Yeh serial "${match.status}" state me hai, dispatch ke liye available nahi hai.`);
+            resolvedInventoryId = null;
+            return;
+        }
+
+        resolvedInventoryId = match.inventory_id;
+        document.getElementById("batchNumberDisplay").value = match.batch_number || "-";
+        document.getElementById("categoryDisplay").value = match.category_name;
+        document.getElementById("productDisplay").value = match.product_name;
+        document.getElementById("modelDisplay").value = match.model_name;
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+});
+
+
+/* ===============================
+   DEALER CODE LOOKUP
+================================ */
+
+document.getElementById("dealerCodeSearch").addEventListener("blur", async function(){
+    const code = this.value.trim();
+    if (!code) return;
+
+    try {
+        const response = await fetch(`/api/dealers?search=${encodeURIComponent(code)}`, { headers: authHeaders });
+        const result = await response.json();
+
+        const match = result.data?.dealers?.find(d => d.dealer_code === code);
+
+        if (!match) {
+            alert("Yeh dealer code database me nahi mila.");
+            resolvedDealerId = null;
+            document.getElementById("dealerNameDisplay").value = "";
+            document.getElementById("dealerMobileDisplay").value = "";
+            document.getElementById("dealerStateDisplay").value = "";
+            return;
+        }
+
+        resolvedDealerId = match.dealer_id;
+        document.getElementById("dealerNameDisplay").value = match.dealer_name;
+        document.getElementById("dealerMobileDisplay").value = match.phone;
+        document.getElementById("dealerStateDisplay").value = match.state || "-";
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+});
+
+
+/* ===============================
+   BADGE HELPER
+================================ */
+
+function badgeClassForStatus(status){
+    if (status === "dispatched") return "bg-success";
+    if (status === "pending") return "bg-warning text-dark";
+    if (status === "delivered") return "bg-primary";
+    if (status === "cancelled") return "bg-danger";
+    return "bg-secondary";
+}
+
+
+/* ===============================
+   LOAD DISPATCH RECORDS
+================================ */
+
+async function loadDispatch(){
+    const tbody = document.querySelector("table tbody");
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
+
+    try {
+        const response = await fetch("/api/dispatch", { headers: authHeaders });
+        const result = await response.json();
+
+        if (!result.success) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">${result.message}</td></tr>`;
+            return;
+        }
+
+        const records = result.data.dispatch;
+
+        if (records.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center">Koi dispatch record nahi mila.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = records.map((r, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${r.invoice_number}</td>
+                <td>${r.serial_number}</td>
+                <td>${r.dealer_name} (${r.dealer_code})</td>
+                <td>${new Date(r.dispatch_date).toLocaleDateString("en-GB")}</td>
+                <td><span class="badge ${badgeClassForStatus(r.status)}">${r.status}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick="viewDispatch(${r.dispatch_id})"><i class="fa-solid fa-eye"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteDispatch(${r.dispatch_id})"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+        `).join("");
+
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   SAVE DISPATCH
+================================ */
+
+const dispatchForm = document.querySelector("form");
+
+dispatchForm.addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    if (!resolvedInventoryId) {
+        alert("Pehle ek valid Serial Number search karo (search icon dabao).");
+        return;
+    }
+    if (!resolvedDealerId) {
+        alert("Pehle ek valid Dealer Code dalo (Tab dabao verify karne ke liye).");
+        return;
+    }
+
+    const payload = {
+        invoice_number: document.getElementById("invoiceNumber").value.trim(),
+        company_name: document.getElementById("companyName").value.trim(),
+        dealer_id: resolvedDealerId,
+        dispatch_date: document.getElementById("dispatchDate").value,
+        transport_name: document.getElementById("transportName").value.trim(),
+        lr_number: document.getElementById("lrNumber").value.trim(),
+        remarks: document.getElementById("dispatchRemarks").value.trim(),
+        inventory_id: resolvedInventoryId
+    };
+
+    if (!payload.invoice_number || !payload.dispatch_date) {
+        alert("Please fill all required (*) fields.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/dispatch", {
+            method: "POST",
+            headers: authHeaders,
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message || "Something went wrong.");
+            return;
+        }
+
+        alert("Battery Dispatched Successfully.");
+        dispatchForm.reset();
+        resolvedInventoryId = null;
+        resolvedDealerId = null;
+        loadDispatch();
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+});
+
+
+/* ===============================
+   VIEW / DELETE
+================================ */
+
+async function viewDispatch(id){
+    const response = await fetch(`/api/dispatch/${id}`, { headers: authHeaders });
+    const result = await response.json();
+    if (!result.success) { alert(result.message); return; }
+    const d = result.data;
+    alert(
+        `Invoice: ${d.invoice_number}\nDealer: ${d.dealer_name} (${d.dealer_code})\nSerial: ${d.serial_number}\nProduct: ${d.product_name} ${d.model_name}\nStatus: ${d.status}\nTransport: ${d.transport_name || "-"}\nLR No: ${d.lr_number || "-"}`
+    );
+}
+
+async function deleteDispatch(id){
+    if (!confirm("Delete karne se yeh serial number wapas 'In Stock' ho jayega. Confirm karo?")) return;
+
+    try {
+        const response = await fetch(`/api/dispatch/${id}`, {
+            method: "DELETE",
+            headers: authHeaders
+        });
+        const result = await response.json();
+
+        if (!result.success) { alert(result.message); return; }
+
+        alert("Dispatch record Deleted Successfully.");
+        loadDispatch();
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   PAGE LOAD
+================================ */
+
+loadDispatch();
 
 </script>
 

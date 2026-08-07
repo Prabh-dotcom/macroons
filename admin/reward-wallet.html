@@ -516,6 +516,7 @@ opacity:.9;
             <i class="fa-solid fa-magnifying-glass"></i>
 
             <input type="text"
+                   id="topbarDealerSearch"
                    placeholder="Search Dealer Code / Dealer Name">
 
         </div>
@@ -562,7 +563,7 @@ opacity:.9;
 
             <div class="d-flex flex-wrap gap-2 mt-3 mt-lg-0">
 
-                <button class="btn btn-success">
+                <button class="btn btn-success" id="topCreditBtn" type="button">
 
                     <i class="fa-solid fa-plus me-2"></i>
 
@@ -570,7 +571,7 @@ opacity:.9;
 
                 </button>
 
-                <button class="btn btn-danger">
+                <button class="btn btn-danger" id="topDebitBtn" type="button">
 
                     <i class="fa-solid fa-minus me-2"></i>
 
@@ -578,7 +579,7 @@ opacity:.9;
 
                 </button>
 
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" id="printStatementBtn" type="button">
 
                     <i class="fa-solid fa-print me-2"></i>
 
@@ -586,7 +587,7 @@ opacity:.9;
 
                 </button>
 
-                <button class="btn btn-warning text-white">
+                <button class="btn btn-warning text-white" id="refreshWalletBtn" type="button">
 
                     <i class="fa-solid fa-rotate-right me-2"></i>
 
@@ -608,7 +609,7 @@ opacity:.9;
 
                     <i class="fa-solid fa-coins fa-2x text-warning"></i>
 
-                    <h3>58,420</h3>
+                    <h3 id="cardTotalPoints">0</h3>
 
                     <p>Total Reward Points</p>
 
@@ -622,7 +623,7 @@ opacity:.9;
 
                     <i class="fa-solid fa-wallet fa-2x text-success"></i>
 
-                    <h3>41,800</h3>
+                    <h3 id="cardAvailablePoints">0</h3>
 
                     <p>Available Points</p>
 
@@ -636,7 +637,7 @@ opacity:.9;
 
                     <i class="fa-solid fa-gift fa-2x text-primary"></i>
 
-                    <h3>12,450</h3>
+                    <h3 id="cardRedeemedPoints">0</h3>
 
                     <p>Redeemed Points</p>
 
@@ -650,7 +651,7 @@ opacity:.9;
 
                     <i class="fa-solid fa-hourglass-half fa-2x text-danger"></i>
 
-                    <h3>18</h3>
+                    <h3 id="cardPendingRequests">0</h3>
 
                     <p>Pending Requests</p>
 
@@ -670,7 +671,7 @@ opacity:.9;
 
             </h4>
 
-            <form>
+            <form id="dealerSearchForm">
 
                 <div class="row">
 
@@ -684,6 +685,7 @@ opacity:.9;
 
                         <input type="text"
                                class="form-control"
+                               id="searchDealerCode"
                                placeholder="Enter Dealer Code">
 
                     </div>
@@ -698,13 +700,14 @@ opacity:.9;
 
                         <input type="text"
                                class="form-control"
+                               id="searchDealerName"
                                placeholder="Enter Dealer Name">
 
                     </div>
 
                     <div class="col-lg-4 d-flex align-items-end mb-3">
 
-                        <button class="btn btn-primary w-100">
+                        <button class="btn btn-primary w-100" type="submit">
 
                             <i class="fa-solid fa-magnifying-glass me-2"></i>
 
@@ -714,6 +717,12 @@ opacity:.9;
 
                     </div>
 
+                </div>
+
+                <div class="row" id="dealerSearchResults" style="display:none;">
+                    <div class="col-12">
+                        <div class="list-group" id="dealerSearchResultsList"></div>
+                    </div>
                 </div>
 
             </form>
@@ -726,7 +735,7 @@ opacity:.9;
 
             <small>Reward Wallet Balance</small>
 
-            <h2>12,450 Points</h2>
+            <h2 id="walletBoxBalance">0 Points</h2>
 
             <p>
 
@@ -747,7 +756,10 @@ opacity:.9;
 
             </h4>
 
-            <form>
+            <form id="rewardTxnForm">
+
+                <input type="hidden" id="selectedDealerId" value="">
+                <input type="hidden" id="editingTransactionId" value="">
 
                 <div class="row">
                     <!-- ================= DEALER DETAILS ================= -->
@@ -772,7 +784,8 @@ opacity:.9;
 
     <input type="text"
            class="form-control readonly"
-           value="Sharma Battery House"
+           id="txnDealerName"
+           value=""
            readonly>
 
 </div>
@@ -787,7 +800,8 @@ opacity:.9;
 
     <input type="text"
            class="form-control readonly"
-           value="DLR0001"
+           id="txnDealerCode"
+           value=""
            readonly>
 
 </div>
@@ -802,7 +816,8 @@ opacity:.9;
 
     <input type="text"
            class="form-control readonly"
-           value="9876543210"
+           id="txnDealerMobile"
+           value=""
            readonly>
 
 </div>
@@ -817,7 +832,8 @@ opacity:.9;
 
     <input type="text"
            class="form-control readonly"
-           value="Uttar Pradesh"
+           id="txnDealerState"
+           value=""
            readonly>
 
 </div>
@@ -832,7 +848,8 @@ opacity:.9;
 
     <input type="text"
            class="form-control readonly"
-           value="Bulandshahr"
+           id="txnDealerDistrict"
+           value=""
            readonly>
 
 </div>
@@ -847,7 +864,8 @@ opacity:.9;
 
     <input type="text"
            class="form-control readonly"
-           value="Active"
+           id="txnDealerStatus"
+           value=""
            readonly>
 
 </div>
@@ -874,7 +892,8 @@ opacity:.9;
 
     <input type="text"
            class="form-control readonly"
-           value="1250"
+           id="txnCurrentPoints"
+           value="0"
            readonly>
 
 </div>
@@ -889,7 +908,8 @@ opacity:.9;
 
     <input type="text"
            class="form-control readonly"
-           value="2650"
+           id="txnLifetimePoints"
+           value="0"
            readonly>
 
 </div>
@@ -904,7 +924,8 @@ opacity:.9;
 
     <input type="text"
            class="form-control readonly"
-           value="1400"
+           id="txnRedeemedPoints"
+           value="0"
            readonly>
 
 </div>
@@ -919,7 +940,8 @@ opacity:.9;
 
     <input type="text"
            class="form-control readonly"
-           value="1250"
+           id="txnAvailableBalance"
+           value="0"
            readonly>
 
 </div>
@@ -944,21 +966,21 @@ opacity:.9;
 
     </label>
 
-    <select class="form-select">
+    <select class="form-select" id="txnTypeSelect">
 
-        <option>Select Transaction</option>
+        <option value="">Select Transaction</option>
 
-        <option>Warranty Reward (+50)</option>
+        <option value="warranty:credit">Warranty Reward (+50)</option>
 
-        <option>Dispatch Bonus (+10)</option>
+        <option value="dispatch:credit">Dispatch Bonus (+10)</option>
 
-        <option>Sales Bonus</option>
+        <option value="sales:credit">Sales Bonus</option>
 
-        <option>Manual Credit</option>
+        <option value="manual:credit">Manual Credit</option>
 
-        <option>Manual Debit</option>
+        <option value="manual:debit">Manual Debit</option>
 
-        <option>Reward Redemption</option>
+        <option value="redemption:debit">Reward Redemption</option>
 
     </select>
 
@@ -974,6 +996,7 @@ opacity:.9;
 
     <input type="text"
            class="form-control"
+           id="txnReferenceId"
            placeholder="Warranty / Dispatch / Replacement ID">
 
 </div>
@@ -988,6 +1011,8 @@ opacity:.9;
 
     <input type="number"
            class="form-control"
+           id="txnPoints"
+           min="1"
            placeholder="Enter Points">
 
 </div>
@@ -1001,7 +1026,8 @@ opacity:.9;
     </label>
 
     <input type="date"
-           class="form-control">
+           class="form-control"
+           id="txnDate">
 
 </div>
 
@@ -1013,13 +1039,13 @@ opacity:.9;
 
     </label>
 
-    <select class="form-select">
+    <select class="form-select" id="txnStatusSelect">
 
-        <option>Completed</option>
+        <option value="approved">Completed</option>
 
-        <option>Pending</option>
+        <option value="pending">Pending</option>
 
-        <option>Cancelled</option>
+        <option value="rejected">Cancelled</option>
 
     </select>
 
@@ -1035,7 +1061,9 @@ opacity:.9;
 
     <input type="text"
            class="form-control"
-           placeholder="Admin Name">
+           id="txnApprovedBy"
+           placeholder="Admin Name"
+           readonly>
 
 </div>
 
@@ -1048,6 +1076,7 @@ opacity:.9;
     </label>
 
     <textarea class="form-control"
+              id="txnRemarks"
               placeholder="Enter transaction remarks..."></textarea>
 
 </div>
@@ -1056,7 +1085,7 @@ opacity:.9;
 
     <div class="d-flex flex-wrap gap-3">
 
-        <button class="btn btn-success">
+        <button class="btn btn-success" type="submit" id="saveTxnBtn">
 
             <i class="fa-solid fa-floppy-disk me-2"></i>
 
@@ -1064,7 +1093,7 @@ opacity:.9;
 
         </button>
 
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" type="button" id="formCreditBtn">
 
             <i class="fa-solid fa-plus me-2"></i>
 
@@ -1072,7 +1101,7 @@ opacity:.9;
 
         </button>
 
-        <button class="btn btn-danger">
+        <button class="btn btn-danger" type="button" id="formDebitBtn">
 
             <i class="fa-solid fa-minus me-2"></i>
 
@@ -1080,7 +1109,7 @@ opacity:.9;
 
         </button>
 
-        <button class="btn btn-warning text-white">
+        <button class="btn btn-warning text-white" type="reset" id="resetTxnBtn">
 
             <i class="fa-solid fa-rotate me-2"></i>
 
@@ -1107,6 +1136,37 @@ opacity:.9;
         Reward Transaction History
 
     </h4>
+
+    <div class="row g-2 mb-3">
+
+        <div class="col-lg-4">
+            <input type="text" class="form-control" id="txnSearchInput" placeholder="Search dealer, reference, remarks...">
+        </div>
+
+        <div class="col-lg-2">
+            <select class="form-select" id="txnFilterStatus">
+                <option value="">All Status</option>
+                <option value="approved">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="rejected">Cancelled</option>
+            </select>
+        </div>
+
+        <div class="col-lg-2">
+            <input type="date" class="form-control" id="txnFilterDateFrom" title="From date">
+        </div>
+
+        <div class="col-lg-2">
+            <input type="date" class="form-control" id="txnFilterDateTo" title="To date">
+        </div>
+
+        <div class="col-lg-2">
+            <button class="btn btn-outline-primary w-100" type="button" id="txnFilterBtn">
+                <i class="fa-solid fa-filter me-2"></i>Filter
+            </button>
+        </div>
+
+    </div>
 
     <div class="table-responsive">
 
@@ -1138,7 +1198,7 @@ opacity:.9;
 
             </thead>
 
-            <tbody>
+            <tbody id="txnTableBody">
                 <!-- ================= TRANSACTION 1 ================= -->
 
 <tr>
@@ -1369,75 +1429,11 @@ opacity:.9;
 
 </div>
 
-<!-- ================= PAGINATION ================= -->
+<p class="text-muted mb-2 mt-3" id="txnPaginationSummary">
 
-<div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
+    Showing 0 Transactions
 
-    <p class="text-muted mb-2">
-
-        Showing 1 to 4 of 356 Transactions
-
-    </p>
-
-    <nav>
-
-        <ul class="pagination mb-0">
-
-            <li class="page-item disabled">
-
-                <a class="page-link">
-
-                    Previous
-
-                </a>
-
-            </li>
-
-            <li class="page-item active">
-
-                <a class="page-link">
-
-                    1
-
-                </a>
-
-            </li>
-
-            <li class="page-item">
-
-                <a class="page-link">
-
-                    2
-
-                </a>
-
-            </li>
-
-            <li class="page-item">
-
-                <a class="page-link">
-
-                    3
-
-                </a>
-
-            </li>
-
-            <li class="page-item">
-
-                <a class="page-link">
-
-                    Next
-
-                </a>
-
-            </li>
-
-        </ul>
-
-    </nav>
-
-</div>
+</p>
 
 </div>
 
@@ -1618,58 +1614,554 @@ menuBtn.onclick = function(){
 
 };
 
-/* ================= PAGE LOAD ================= */
+/* =========================================================
+   AUTH CHECK -- login token na ho to seedha login page bhej do
+   (same pattern as dealers.html)
+========================================================= */
 
-console.log("Reward Wallet Module Loaded Successfully");
+const token = localStorage.getItem("token");
 
-/*
-=================================================
-BACKEND FLOW (Node.js + MySQL)
-=================================================
+if (!token) {
+    window.location.href = "login.html";
+}
 
-Warranty Activated
-        │
-        ▼
-Dealer Wallet +50 Points
+const authHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+};
 
-Dispatch Completed
-        │
-        ▼
-Dealer Wallet +10 Points
+/* =========================================================
+   STATE
+========================================================= */
 
-Replacement
-        │
-        ▼
-No Reward (Company Policy)
+let selectedDealer = null;   // full wallet object of the currently loaded dealer
 
-Manual Credit / Debit
-        │
-        ▼
-Admin Approval
+function fmt(n){
+    return Number(n || 0).toLocaleString("en-IN");
+}
 
-Reward Redemption
-        │
-        ▼
-Dealer Request
-        │
-        ▼
-Admin Approval
-        │
-        ▼
-Wallet Balance Updated
+function todayStr(){
+    return new Date().toISOString().split("T")[0];
+}
 
-=================================================
-DATABASE TABLES
+function toDateInputValue(dateStr){
+    return new Date(dateStr).toISOString().split("T")[0];
+}
 
-dealers
-reward_wallet
-reward_transactions
-warranty
-dispatch
-replacement
+/* =========================================================
+   GLOBAL STATS -- 4 dashboard cards
+========================================================= */
 
-=================================================
-*/
+async function loadStats(){
+    try {
+        const res = await fetch("/api/reward/stats", { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) return;
+
+        const s = result.data;
+        document.getElementById("cardTotalPoints").textContent = fmt(s.total_reward_points);
+        document.getElementById("cardAvailablePoints").textContent = fmt(s.available_points);
+        document.getElementById("cardRedeemedPoints").textContent = fmt(s.redeemed_points);
+        document.getElementById("cardPendingRequests").textContent = fmt(s.pending_requests);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+/* =========================================================
+   DEALER SEARCH -- "Dealer Reward Search" form + topbar search box
+========================================================= */
+
+const dealerSearchForm = document.getElementById("dealerSearchForm");
+const resultsWrap = document.getElementById("dealerSearchResults");
+const resultsList = document.getElementById("dealerSearchResultsList");
+
+dealerSearchForm.addEventListener("submit", async function(e){
+    e.preventDefault();
+    const code = document.getElementById("searchDealerCode").value.trim();
+    const name = document.getElementById("searchDealerName").value.trim();
+    const term = code || name;
+
+    if (!term) {
+        alert("Enter a Dealer Code or Dealer Name to search.");
+        return;
+    }
+
+    await runDealerSearch(term);
+});
+
+async function runDealerSearch(term){
+    try {
+        const res = await fetch(`/api/reward/dealers?search=${encodeURIComponent(term)}`, { headers: authHeaders });
+        const result = await res.json();
+
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
+
+        const dealers = result.data;
+
+        if (!dealers.length) {
+            resultsList.innerHTML = `<div class="list-group-item text-muted">No Results Found.</div>`;
+            resultsWrap.style.display = "block";
+            return;
+        }
+
+        resultsList.innerHTML = dealers.map(d => `
+            <button type="button" class="list-group-item list-group-item-action" onclick="selectDealer(${d.dealer_id})">
+                <strong>${d.dealer_name}</strong> (${d.dealer_code}) &middot; ${d.phone || "-"} &middot; ${d.city || "-"}
+                <span class="badge ${d.dealer_status === "active" ? "bg-success" : "bg-secondary"} float-end">${d.dealer_status}</span>
+            </button>
+        `).join("");
+        resultsWrap.style.display = "block";
+    } catch (err) {
+        console.error(err);
+        alert("Server se connect nahi ho paya.");
+    }
+}
+
+// Topbar search box -- placeholder says "Search Dealer Code / Dealer Name",
+// so it drives the same dealer search as the form below.
+document.getElementById("topbarDealerSearch").addEventListener("keydown", async function(e){
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const term = this.value.trim();
+    if (!term) return;
+    await runDealerSearch(term);
+    resultsWrap.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+/* =========================================================
+   SELECT A DEALER -> LOAD THEIR WALLET (Dealer Details +
+   Wallet Summary + wallet balance box), then reload their
+   transaction history.
+========================================================= */
+
+async function selectDealer(dealerId){
+    try {
+        const res = await fetch(`/api/reward/wallet/${dealerId}`, { headers: authHeaders });
+        const result = await res.json();
+
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
+
+        const w = result.data;
+        selectedDealer = w;
+        document.getElementById("selectedDealerId").value = w.dealer_id;
+
+        document.getElementById("txnDealerName").value = w.dealer_name;
+        document.getElementById("txnDealerCode").value = w.dealer_code;
+        document.getElementById("txnDealerMobile").value = w.phone || "-";
+        document.getElementById("txnDealerState").value = w.state || "-";
+        // schema has no separate "district" column -- city is the closest available field
+        document.getElementById("txnDealerDistrict").value = w.city || "-";
+        document.getElementById("txnDealerStatus").value = w.dealer_status;
+
+        document.getElementById("txnCurrentPoints").value = fmt(w.current_points);
+        document.getElementById("txnLifetimePoints").value = fmt(w.lifetime_points);
+        document.getElementById("txnRedeemedPoints").value = fmt(w.redeemed_points);
+        document.getElementById("txnAvailableBalance").value = fmt(w.available_balance);
+
+        document.getElementById("walletBoxBalance").textContent = fmt(w.available_balance) + " Points";
+
+        document.getElementById("searchDealerCode").value = w.dealer_code;
+        document.getElementById("searchDealerName").value = w.dealer_name;
+        resultsWrap.style.display = "none";
+
+        await loadTransactions();
+
+        document.querySelector(".wallet-box").scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch (err) {
+        console.error(err);
+        alert("Server se connect nahi ho paya.");
+    }
+}
+
+/* =========================================================
+   REWARD TRANSACTION FORM -- Save / Credit / Debit / Update
+========================================================= */
+
+const txnForm = document.getElementById("rewardTxnForm");
+const txnTypeSelect = document.getElementById("txnTypeSelect");
+
+document.getElementById("txnDate").value = todayStr();
+
+function resetTxnFormExtras(){
+    document.getElementById("editingTransactionId").value = "";
+    document.getElementById("txnDate").value = todayStr();
+    document.getElementById("saveTxnBtn").innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Save Transaction';
+}
+
+document.getElementById("resetTxnBtn").addEventListener("click", function(){
+    // native form reset() runs first, then clear our extra hidden/derived fields
+    setTimeout(resetTxnFormExtras, 0);
+});
+
+async function submitTransaction(forcedType){
+    if (!selectedDealer) {
+        alert("Please search and select a dealer first.");
+        return;
+    }
+
+    const typeVal = txnTypeSelect.value;
+    if (!typeVal && !forcedType) {
+        alert("Please select a Transaction Type.");
+        return;
+    }
+
+    let reference_type = "manual";
+    let transaction_type = forcedType;
+
+    if (typeVal) {
+        const [refType, txnType] = typeVal.split(":");
+        reference_type = refType;
+        if (!forcedType) transaction_type = txnType;
+    }
+
+    const points = Number(document.getElementById("txnPoints").value);
+    if (!points || points <= 0) {
+        alert("Enter a valid number of Reward Points.");
+        return;
+    }
+
+    const payload = {
+        dealer_id: Number(document.getElementById("selectedDealerId").value),
+        transaction_date: document.getElementById("txnDate").value || todayStr(),
+        transaction_type,
+        reference_type,
+        reference_id: document.getElementById("txnReferenceId").value.trim() || null,
+        points,
+        remarks: document.getElementById("txnRemarks").value.trim() || null,
+        status: document.getElementById("txnStatusSelect").value
+    };
+
+    const editId = document.getElementById("editingTransactionId").value;
+    const url = editId ? `/api/reward/transactions/${editId}` : "/api/reward/transactions";
+    const method = editId ? "PUT" : "POST";
+
+    try {
+        const res = await fetch(url, { method, headers: authHeaders, body: JSON.stringify(payload) });
+        const result = await res.json();
+
+        if (!result.success) {
+            alert(result.message || "Something went wrong.");
+            if (result.errors) alert(result.errors.join("\n"));
+            return;
+        }
+
+        alert(editId ? "Transaction updated successfully." : "Reward transaction saved successfully.");
+        txnForm.reset();
+        resetTxnFormExtras();
+
+        await selectDealer(payload.dealer_id); // refreshes wallet summary + balance + table
+        await loadStats();
+    } catch (err) {
+        console.error(err);
+        alert("Server se connect nahi ho paya.");
+    }
+}
+
+txnForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    submitTransaction(null);
+});
+
+document.getElementById("formCreditBtn").addEventListener("click", function(){ submitTransaction("credit"); });
+document.getElementById("formDebitBtn").addEventListener("click", function(){ submitTransaction("debit"); });
+
+// Top header quick-action buttons: jump to the form with the type pre-set
+document.getElementById("topCreditBtn").addEventListener("click", function(){
+    if (!selectedDealer) { alert("Please search and select a dealer first."); return; }
+    txnTypeSelect.value = "manual:credit";
+    txnForm.scrollIntoView({ behavior: "smooth" });
+});
+
+document.getElementById("topDebitBtn").addEventListener("click", function(){
+    if (!selectedDealer) { alert("Please search and select a dealer first."); return; }
+    txnTypeSelect.value = "manual:debit";
+    txnForm.scrollIntoView({ behavior: "smooth" });
+});
+
+/* =========================================================
+   TRANSACTION HISTORY -- load, search, filter, paginate
+========================================================= */
+
+const txnTableBody = document.getElementById("txnTableBody");
+
+function statusBadge(status){
+    const map = {
+        approved: ["Completed", "bg-success"],
+        pending: ["Pending", "bg-warning text-dark"],
+        rejected: ["Cancelled", "bg-danger"]
+    };
+    const [label, cls] = map[status] || [status, "bg-secondary"];
+    return `<span class="badge ${cls}">${label}</span>`;
+}
+
+function txnTypeLabel(t){
+    const map = {
+        warranty: "Warranty Reward",
+        dispatch: "Dispatch Bonus",
+        sales: "Sales Bonus",
+        manual: t.transaction_type === "credit" ? "Manual Credit" : "Manual Debit",
+        redemption: "Reward Redemption"
+    };
+    return map[t.reference_type] || (t.transaction_type === "credit" ? "Credit" : "Debit");
+}
+
+async function loadTransactions(){
+    txnTableBody.innerHTML = `<tr><td colspan="9" class="text-center">Loading...</td></tr>`;
+
+    const params = new URLSearchParams();
+    if (selectedDealer) params.set("dealer_id", selectedDealer.dealer_id);
+
+    const search = document.getElementById("txnSearchInput").value.trim();
+    if (search) params.set("search", search);
+
+    const status = document.getElementById("txnFilterStatus").value;
+    if (status) params.set("status", status);
+
+    const dateFrom = document.getElementById("txnFilterDateFrom").value;
+    if (dateFrom) params.set("dateFrom", dateFrom);
+
+    const dateTo = document.getElementById("txnFilterDateTo").value;
+    if (dateTo) params.set("dateTo", dateTo);
+
+    // No pagination -- just pull a generous flat list matching the filters
+    params.set("page", 1);
+    params.set("limit", 200);
+
+    try {
+        const res = await fetch(`/api/reward/transactions?${params.toString()}`, { headers: authHeaders });
+        const result = await res.json();
+
+        if (!result.success) {
+            txnTableBody.innerHTML = `<tr><td colspan="9" class="text-center text-danger">${result.message}</td></tr>`;
+            return;
+        }
+
+        const { transactions, pagination } = result.data;
+        renderTransactionRows(transactions);
+        document.getElementById("txnPaginationSummary").textContent =
+            `Showing ${transactions.length} of ${pagination.total} Transactions`;
+    } catch (err) {
+        console.error(err);
+        txnTableBody.innerHTML = `<tr><td colspan="9" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+    }
+}
+
+function renderTransactionRows(rows){
+    if (!rows.length) {
+        txnTableBody.innerHTML = `<tr><td colspan="9" class="text-center">No Results Found.</td></tr>`;
+        return;
+    }
+
+    txnTableBody.innerHTML = rows.map((t, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td>${new Date(t.transaction_date).toLocaleDateString("en-GB")}</td>
+            <td>${t.dealer_name} (${t.dealer_code})</td>
+            <td>${txnTypeLabel(t)}</td>
+            <td>${t.reference_id || "-"}</td>
+            <td class="fw-bold ${t.transaction_type === "credit" ? "text-success" : "text-danger"}">
+                ${t.transaction_type === "credit" ? "+" : "-"}${fmt(t.points)}
+            </td>
+            <td>${fmt(t.running_balance)}</td>
+            <td>${statusBadge(t.status)}</td>
+            <td>
+                <button class="btn btn-sm btn-info" onclick="viewTransaction(${t.transaction_id})" title="View">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-primary" onclick="printTransaction(${t.transaction_id})" title="Print">
+                    <i class="fa-solid fa-print"></i>
+                </button>
+                <button class="btn btn-sm btn-warning" onclick="editTransaction(${t.transaction_id})" title="Edit">
+                    <i class="fa-solid fa-pen"></i>
+                </button>
+            </td>
+        </tr>
+    `).join("");
+}
+
+document.getElementById("txnFilterBtn").addEventListener("click", function(){
+    loadTransactions();
+});
+
+document.getElementById("txnSearchInput").addEventListener("keydown", function(e){
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    loadTransactions();
+});
+
+document.getElementById("txnFilterStatus").addEventListener("change", function(){
+    loadTransactions();
+});
+
+/* =========================================================
+   ROW ACTIONS -- View / Print / Edit
+========================================================= */
+
+async function viewTransaction(id){
+    try {
+        const res = await fetch(`/api/reward/transactions/${id}`, { headers: authHeaders });
+        const result = await res.json();
+
+        if (!result.success) { alert(result.message); return; }
+
+        const t = result.data;
+        alert(
+            `Transaction #${t.transaction_id}\n` +
+            `Dealer: ${t.dealer_name} (${t.dealer_code})\n` +
+            `Date: ${new Date(t.transaction_date).toLocaleDateString("en-GB")}\n` +
+            `Type: ${t.transaction_type.toUpperCase()} (${t.reference_type || "manual"})\n` +
+            `Reference ID: ${t.reference_id || "-"}\n` +
+            `Points: ${t.points}\n` +
+            `Status: ${t.status}\n` +
+            `Remarks: ${t.remarks || "-"}`
+        );
+    } catch (err) {
+        console.error(err);
+        alert("Server se connect nahi ho paya.");
+    }
+}
+
+async function editTransaction(id){
+    try {
+        const res = await fetch(`/api/reward/transactions/${id}`, { headers: authHeaders });
+        const result = await res.json();
+
+        if (!result.success) { alert(result.message); return; }
+
+        const t = result.data;
+
+        if (!selectedDealer || Number(selectedDealer.dealer_id) !== Number(t.dealer_id)) {
+            await selectDealer(t.dealer_id);
+        }
+
+        document.getElementById("editingTransactionId").value = t.transaction_id;
+        txnTypeSelect.value = `${t.reference_type || "manual"}:${t.transaction_type}`;
+        document.getElementById("txnReferenceId").value = t.reference_id || "";
+        document.getElementById("txnPoints").value = t.points;
+        document.getElementById("txnDate").value = toDateInputValue(t.transaction_date);
+        document.getElementById("txnStatusSelect").value = t.status;
+        document.getElementById("txnRemarks").value = t.remarks || "";
+        document.getElementById("saveTxnBtn").innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Update Transaction';
+
+        txnForm.scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch (err) {
+        console.error(err);
+        alert("Server se connect nahi ho paya.");
+    }
+}
+
+function printTransaction(id){
+    fetch(`/api/reward/transactions/${id}`, { headers: authHeaders })
+        .then(r => r.json())
+        .then(result => {
+            if (!result.success) { alert(result.message); return; }
+            const t = result.data;
+            const w = window.open("", "_blank");
+            w.document.write(`
+                <html><head><title>Reward Transaction Receipt</title></head>
+                <body style="font-family:sans-serif;padding:24px;">
+                    <h3>Battery ERP &mdash; Reward Transaction Receipt</h3>
+                    <p><b>Transaction ID:</b> ${t.transaction_id}</p>
+                    <p><b>Dealer:</b> ${t.dealer_name} (${t.dealer_code})</p>
+                    <p><b>Date:</b> ${new Date(t.transaction_date).toLocaleDateString("en-GB")}</p>
+                    <p><b>Type:</b> ${t.transaction_type.toUpperCase()} (${t.reference_type || "manual"})</p>
+                    <p><b>Reference ID:</b> ${t.reference_id || "-"}</p>
+                    <p><b>Points:</b> ${t.points}</p>
+                    <p><b>Status:</b> ${t.status}</p>
+                    <p><b>Remarks:</b> ${t.remarks || "-"}</p>
+                </body></html>
+            `);
+            w.document.close();
+            w.print();
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Server se connect nahi ho paya.");
+        });
+}
+
+/* =========================================================
+   PRINT STATEMENT (top header button) -- full statement for
+   the currently selected dealer
+========================================================= */
+
+document.getElementById("printStatementBtn").addEventListener("click", function(){
+    if (!selectedDealer) {
+        alert("Please search and select a dealer first to print their statement.");
+        return;
+    }
+    printDealerStatement(selectedDealer.dealer_id);
+});
+
+async function printDealerStatement(dealerId){
+    try {
+        const res = await fetch(`/api/reward/transactions?dealer_id=${dealerId}&limit=1000&page=1`, { headers: authHeaders });
+        const result = await res.json();
+
+        if (!result.success) { alert(result.message); return; }
+
+        const { transactions } = result.data;
+        const rowsHtml = transactions.map(t => `
+            <tr>
+                <td>${new Date(t.transaction_date).toLocaleDateString("en-GB")}</td>
+                <td>${txnTypeLabel(t)}</td>
+                <td>${t.reference_id || "-"}</td>
+                <td>${t.transaction_type === "credit" ? "+" : "-"}${t.points}</td>
+                <td>${fmt(t.running_balance)}</td>
+                <td>${t.status}</td>
+            </tr>
+        `).join("");
+
+        const w = window.open("", "_blank");
+        w.document.write(`
+            <html><head><title>Reward Wallet Statement</title></head>
+            <body style="font-family:sans-serif;padding:24px;">
+                <h3>Battery ERP &mdash; Reward Wallet Statement</h3>
+                <p><b>Dealer:</b> ${selectedDealer.dealer_name} (${selectedDealer.dealer_code})</p>
+                <p><b>Available Balance:</b> ${fmt(selectedDealer.available_balance)} Points</p>
+                <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;">
+                    <thead>
+                        <tr><th>Date</th><th>Transaction</th><th>Reference</th><th>Points</th><th>Balance</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+            </body></html>
+        `);
+        w.document.close();
+        w.print();
+    } catch (err) {
+        console.error(err);
+        alert("Server se connect nahi ho paya.");
+    }
+}
+
+/* =========================================================
+   REFRESH (top header button) -- re-pull everything live
+   from SQL: stats, current dealer's wallet, transaction table
+========================================================= */
+
+document.getElementById("refreshWalletBtn").addEventListener("click", async function(){
+    await loadStats();
+    if (selectedDealer) {
+        await selectDealer(selectedDealer.dealer_id); // also reloads the table
+    } else {
+        await loadTransactions();
+    }
+});
+
+/* =========================================================
+   PAGE LOAD
+========================================================= */
+
+loadStats();
+loadTransactions();
 
 </script>
 

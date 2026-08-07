@@ -536,6 +536,7 @@ margin-right:8px;
             <i class="fa-solid fa-magnifying-glass"></i>
 
             <input type="text"
+                   id="topSearchBox"
                    placeholder="Search Replacement ID / Serial Number">
 
         </div>
@@ -628,7 +629,7 @@ margin-right:8px;
 
                     <i class="fa-solid fa-repeat fa-2x text-primary"></i>
 
-                    <h3>215</h3>
+                    <h3 id="statTotal">0</h3>
 
                     <p>Total Replacements</p>
 
@@ -642,7 +643,7 @@ margin-right:8px;
 
                     <i class="fa-solid fa-circle-check fa-2x text-success"></i>
 
-                    <h3>186</h3>
+                    <h3 id="statApproved">0</h3>
 
                     <p>Approved</p>
 
@@ -656,7 +657,7 @@ margin-right:8px;
 
                     <i class="fa-solid fa-hourglass-half fa-2x text-warning"></i>
 
-                    <h3>21</h3>
+                    <h3 id="statPending">0</h3>
 
                     <p>Pending Approval</p>
 
@@ -670,7 +671,7 @@ margin-right:8px;
 
                     <i class="fa-solid fa-circle-xmark fa-2x text-danger"></i>
 
-                    <h3>08</h3>
+                    <h3 id="statRejected">0</h3>
 
                     <p>Rejected</p>
 
@@ -736,6 +737,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control"
+           id="repCompanyName"
            placeholder="Enter Company Name">
 
 </div>
@@ -752,6 +754,7 @@ margin-right:8px;
 
         <input type="text"
                class="form-control"
+           id="oldSerialSearch"
                placeholder="Search Old Serial Number">
 
         <button class="btn btn-primary">
@@ -774,6 +777,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="replacementIdDisplay"
            value="Auto Generate"
            readonly>
 
@@ -789,6 +793,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repCategory"
            value="Lithium"
            readonly>
 
@@ -804,6 +809,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repProductName"
            value="Lithium Battery"
            readonly>
 
@@ -819,6 +825,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repModelNumber"
            value="MPP-LI-150"
            readonly>
 
@@ -834,6 +841,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repBatchNumber"
            readonly>
 
 </div>
@@ -860,6 +868,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repWarrantyStatus"
            value="Active"
            readonly>
 
@@ -875,6 +884,7 @@ margin-right:8px;
 
     <input type="date"
            class="form-control readonly"
+           id="repActivationDate"
            readonly>
 
 </div>
@@ -889,6 +899,7 @@ margin-right:8px;
 
     <input type="date"
            class="form-control readonly"
+           id="repWarrantyExpiry"
            readonly>
 
 </div>
@@ -903,6 +914,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repRemainingWarranty"
            value="42 Months"
            readonly>
 
@@ -930,6 +942,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repDealerName"
            readonly>
 
 </div>
@@ -944,6 +957,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repDealerCode"
            readonly>
 
 </div>
@@ -958,6 +972,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repDealerMobile"
            readonly>
 
 </div>
@@ -984,6 +999,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repCustomerName"
            readonly>
 
 </div>
@@ -998,6 +1014,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repCustomerMobile"
            readonly>
 
 </div>
@@ -1012,6 +1029,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="repCustomerCity"
            readonly>
 
 </div>
@@ -1025,6 +1043,7 @@ margin-right:8px;
     </label>
 
     <textarea class="form-control readonly"
+           id="repCustomerAddress"
               readonly></textarea>
 
 </div>
@@ -1051,6 +1070,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control"
+           id="complaintType"
            placeholder="Complaint Type">
 
 </div>
@@ -1065,6 +1085,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control"
+           id="replacementReason"
            placeholder="Replacement Reason">
 
 </div>
@@ -1079,6 +1100,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control"
+           id="inspectionStatus"
            placeholder="Pass / Fail">
 
 </div>
@@ -1092,6 +1114,7 @@ margin-right:8px;
     </label>
 
     <textarea class="form-control"
+           id="inspectionRemarks"
               placeholder="Enter Inspection Remarks"></textarea>
 
 </div> 
@@ -1230,6 +1253,7 @@ margin-right:8px;
 
         <input type="text"
                class="form-control"
+           id="newSerialSearch"
                placeholder="Search New Serial Number">
 
         <button class="btn btn-success">
@@ -1252,6 +1276,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="newBatchNumber"
            readonly>
 
 </div>
@@ -1265,7 +1290,8 @@ margin-right:8px;
     </label>
 
     <input type="date"
-           class="form-control">
+           class="form-control"
+           id="replacementDate">
 
 </div>
 
@@ -1279,6 +1305,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="newCategory"
            readonly>
 
 </div>
@@ -1293,6 +1320,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="newProductName"
            readonly>
 
 </div>
@@ -1307,6 +1335,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="newModelNumber"
            readonly>
 
 </div>
@@ -1319,13 +1348,14 @@ margin-right:8px;
 
     </label>
 
-    <select class="form-select">
+    <select class="form-select"
+           id="replacementStatus">
 
-        <option>Pending</option>
+        <option value="pending" selected>Pending</option>
 
-        <option>Approved</option>
+        <option value="approved">Approved</option>
 
-        <option>Rejected</option>
+        <option value="rejected">Rejected</option>
 
     </select>
 
@@ -1353,6 +1383,7 @@ margin-right:8px;
 
     <input type="date"
            class="form-control readonly"
+           id="origWarrantyStart"
            readonly>
 
 </div>
@@ -1367,6 +1398,7 @@ margin-right:8px;
 
     <input type="date"
            class="form-control readonly"
+           id="transferWarrantyExpiry"
            readonly>
 
 </div>
@@ -1381,6 +1413,7 @@ margin-right:8px;
 
     <input type="text"
            class="form-control readonly"
+           id="transferRemainingWarranty"
            value="Auto Calculate"
            readonly>
 
@@ -1488,134 +1521,10 @@ Replacement Records
 </thead>
 
 <tbody>
-
-<tr>
-
-<td>1</td>
-
-<td>RPL-2026-0001</td>
-
-<td>MPP260021</td>
-
-<td>MPP261205</td>
-
-<td>Sharma Battery House</td>
-
-<td>Rohit Sharma</td>
-
-<td><span class="badge bg-success">Approved</span></td>
-
-<td>
-
-<button class="btn btn-sm btn-info">
-
-<i class="fa-solid fa-eye"></i>
-
-</button>
-
-<button class="btn btn-sm btn-primary">
-
-<i class="fa-solid fa-print"></i>
-
-</button>
-
-<button class="btn btn-sm btn-secondary">
-
-<i class="fa-solid fa-clock-rotate-left"></i>
-
-</button>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>2</td>
-
-<td>RPL-2026-0002</td>
-
-<td>MPP260118</td>
-
-<td>-</td>
-
-<td>Gupta Traders</td>
-
-<td>Amit Kumar</td>
-
-<td><span class="badge bg-warning text-dark">Pending</span></td>
-
-<td>
-
-<button class="btn btn-sm btn-info">
-
-<i class="fa-solid fa-eye"></i>
-
-</button>
-
-<button class="btn btn-sm btn-success">
-
-<i class="fa-solid fa-circle-check"></i>
-
-</button>
-
-<button class="btn btn-sm btn-danger">
-
-<i class="fa-solid fa-circle-xmark"></i>
-
-</button>
-
-</td>
-
-</tr>
-
+<!-- Replacement records will be loaded here from the database -->
 </tbody>
 
 </table>
-
-</div>
-
-<!-- ================= PAGINATION ================= -->
-
-<div class="d-flex justify-content-between align-items-center mt-4">
-
-<p class="text-muted">
-
-Showing 1 to 2 of 215 Records
-
-</p>
-
-<nav>
-
-<ul class="pagination mb-0">
-
-<li class="page-item disabled">
-
-<a class="page-link">Previous</a>
-
-</li>
-
-<li class="page-item active">
-
-<a class="page-link">1</a>
-
-</li>
-
-<li class="page-item">
-
-<a class="page-link">2</a>
-
-</li>
-
-<li class="page-item">
-
-<a class="page-link">Next</a>
-
-</li>
-
-</ul>
-
-</nav>
 
 </div>
 
@@ -1771,101 +1680,375 @@ justify-content:center;
 /* ================= SIDEBAR TOGGLE ================= */
 
 const sidebar = document.querySelector(".sidebar");
-
 const menuBtn = document.createElement("button");
-
 menuBtn.className = "btn btn-primary";
-
 menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-
 document.querySelector(".profile").prepend(menuBtn);
-
 menuBtn.onclick = function(){
-
     sidebar.classList.toggle("active");
-
 };
 
-/* ================= PAGE LOAD ================= */
 
-console.log("Replacement Module Loaded Successfully");
+/* ===============================
+   AUTH CHECK
+================================ */
 
-/*
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "login.html";
 
-===========================
-BACKEND FLOW (Node.js + MySQL)
-===========================
+const authHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+};
 
-1. Search Old Serial Number
+let resolvedOldInventoryId = null;
+let resolvedNewInventoryId = null;
+let resolvedDealerId = null;
 
-↓
 
-Fetch Data From
+/* ===============================
+   DASHBOARD STAT CARDS
+================================ */
 
-Inventory
-Warranty
-Dispatch
-Dealer
+async function loadStats(){
+    try {
+        const response = await fetch("/api/replacement/stats", { headers: authHeaders });
+        const result = await response.json();
+        if (!result.success) return;
 
-↓
+        document.getElementById("statTotal").textContent = result.data.total;
+        document.getElementById("statApproved").textContent = result.data.approved;
+        document.getElementById("statPending").textContent = result.data.pending;
+        document.getElementById("statRejected").textContent = result.data.rejected;
 
-2. Verify Warranty
+    } catch (err) {
+        console.error(err);
+    }
+}
 
-Active?
 
-Expired?
+/* ===============================
+   OLD SERIAL LOOKUP
+   -- product + warranty + dealer + customer sab auto-fill hote hain
+================================ */
 
-Already Replaced?
+document.getElementById("oldSerialSearch").parentElement.querySelector(".btn-primary").addEventListener("click", async function(e){
+    e.preventDefault();
 
-↓
+    const serial = document.getElementById("oldSerialSearch").value.trim();
+    if (!serial) { alert("Old serial number likho pehle."); return; }
 
-3. Admin Approval
+    try {
+        const response = await fetch(`/api/replacement/lookup-old-serial?serial=${encodeURIComponent(serial)}`, { headers: authHeaders });
+        const result = await response.json();
 
-↓
+        if (!result.success) {
+            alert(result.message);
+            resolvedOldInventoryId = null;
+            resolvedDealerId = null;
+            return;
+        }
 
-4. Search New Battery
+        const d = result.data;
+        resolvedOldInventoryId = d.inventory_id;
+        resolvedDealerId = d.dealer_id;
 
-↓
+        document.getElementById("repCategory").value = d.category_name;
+        document.getElementById("repProductName").value = d.product_name;
+        document.getElementById("repModelNumber").value = d.model_name;
+        document.getElementById("repBatchNumber").value = d.batch_number || "-";
 
-Inventory Status
+        document.getElementById("repWarrantyStatus").value = d.warranty_status;
+        document.getElementById("repActivationDate").value = d.activation_date.split("T")[0];
+        document.getElementById("repWarrantyExpiry").value = d.expiry_date.split("T")[0];
 
-Available
+        const monthsLeft = Math.max(0, Math.round((new Date(d.expiry_date) - new Date()) / (1000*60*60*24*30)));
+        document.getElementById("repRemainingWarranty").value = monthsLeft + " Months";
+        document.getElementById("transferWarrantyExpiry").value = d.expiry_date.split("T")[0];
+        document.getElementById("transferRemainingWarranty").value = monthsLeft + " Months";
+        document.getElementById("origWarrantyStart").value = d.activation_date.split("T")[0];
 
-↓
+        document.getElementById("repDealerName").value = d.dealer_name || "-";
+        document.getElementById("repDealerCode").value = d.dealer_code || "-";
+        document.getElementById("repDealerMobile").value = d.dealer_phone || "-";
 
-5. Approve Replacement
+        document.getElementById("repCustomerName").value = d.customer_name || "-";
+        document.getElementById("repCustomerMobile").value = d.customer_phone || "-";
+        document.getElementById("repCustomerCity").value = d.customer_city || "-";
+        document.getElementById("repCustomerAddress").value = d.customer_address || "-";
 
-Old Battery = Replaced
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+});
 
-New Battery = Active
 
-↓
+/* ===============================
+   NEW SERIAL LOOKUP
+================================ */
 
-Warranty Transfer
+document.getElementById("newSerialSearch").parentElement.querySelector(".btn-success").addEventListener("click", async function(e){
+    e.preventDefault();
 
-Old Expiry Date
+    const serial = document.getElementById("newSerialSearch").value.trim();
+    if (!serial) { alert("New serial number likho pehle."); return; }
 
-↓
+    try {
+        const response = await fetch(`/api/replacement/lookup-new-serial?serial=${encodeURIComponent(serial)}`, { headers: authHeaders });
+        const result = await response.json();
 
-New Serial
+        if (!result.success) {
+            alert(result.message);
+            resolvedNewInventoryId = null;
+            return;
+        }
 
-Same Expiry Date
+        const d = result.data;
+        resolvedNewInventoryId = d.inventory_id;
 
-↓
+        document.getElementById("newBatchNumber").value = d.batch_number || "-";
+        document.getElementById("newCategory").value = d.category_name;
+        document.getElementById("newProductName").value = d.product_name;
+        document.getElementById("newModelNumber").value = d.model_name;
 
-Update
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+});
 
-Inventory
 
-Warranty
+/* ===============================
+   LOAD REPLACEMENT RECORDS (+ search)
+================================ */
 
-Dealer Dashboard
+function badgeClassForRStatus(status){
+    if (status === "approved" || status === "completed") return "bg-success";
+    if (status === "pending") return "bg-warning text-dark";
+    if (status === "rejected") return "bg-danger";
+    return "bg-secondary";
+}
 
-Reports
+async function loadReplacements(searchTerm){
+    const tbody = document.querySelector(".form-card:last-of-type table tbody");
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
-Replacement History
+    try {
+        const url = searchTerm
+            ? `/api/replacement?search=${encodeURIComponent(searchTerm)}`
+            : "/api/replacement";
 
-*/
+        const response = await fetch(url, { headers: authHeaders });
+        const result = await response.json();
+
+        if (!result.success) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">${result.message}</td></tr>`;
+            return;
+        }
+
+        const records = result.data.replacements;
+
+        if (records.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center">No Records Found.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = records.map((r, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td>RPL${String(r.replacement_id).padStart(4,"0")}</td>
+                <td>${r.old_serial_number}</td>
+                <td>${r.new_serial_number || "-"}</td>
+                <td>${r.dealer_name} (${r.dealer_code})</td>
+                <td>${r.customer_name}</td>
+                <td><span class="badge ${badgeClassForRStatus(r.status)}">${r.status}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick="viewReplacement(${r.replacement_id})"><i class="fa-solid fa-eye"></i></button>
+                    <button class="btn btn-sm btn-success" onclick="setReplacementStatus(${r.replacement_id}, 'approved')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="setReplacementStatus(${r.replacement_id}, 'rejected')"><i class="fa-solid fa-xmark"></i></button>
+                </td>
+            </tr>
+        `).join("");
+
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   TOPBAR SEARCH + "Search" BUTTON
+================================ */
+
+document.getElementById("topSearchBox").addEventListener("keyup", function(e){
+    if (e.key === "Enter") loadReplacements(this.value.trim());
+});
+
+document.querySelectorAll(".btn-primary").forEach(btn => {
+    if (btn.textContent.includes("Search") && !btn.closest(".input-group")) {
+        btn.addEventListener("click", function(e){
+            e.preventDefault();
+            loadReplacements(document.getElementById("topSearchBox").value.trim());
+        });
+    }
+});
+
+
+/* ===============================
+   NEW REPLACEMENT / PRINT / REFRESH BUTTONS
+================================ */
+
+document.querySelectorAll(".btn-success").forEach(btn => {
+    if (btn.textContent.includes("New Replacement")) {
+        btn.addEventListener("click", function(){
+            document.querySelector("form").reset();
+            resolvedOldInventoryId = null;
+            resolvedNewInventoryId = null;
+            resolvedDealerId = null;
+            document.querySelector(".form-card").scrollIntoView({ behavior: "smooth" });
+        });
+    }
+});
+
+document.querySelectorAll(".btn-secondary").forEach(btn => {
+    if (btn.textContent.includes("Print")) {
+        btn.addEventListener("click", function(){ window.print(); });
+    }
+});
+
+document.querySelectorAll(".btn-warning").forEach(btn => {
+    if (btn.textContent.includes("Refresh")) {
+        btn.addEventListener("click", function(){
+            loadStats();
+            loadReplacements();
+        });
+    }
+});
+
+
+/* ===============================
+   SAVE (form submit)
+================================ */
+
+const replacementForm = document.querySelector("form");
+
+replacementForm.addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    if (!resolvedOldInventoryId || !resolvedDealerId) {
+        alert("Pehle ek valid Old Serial Number search karo.");
+        return;
+    }
+
+    const payload = {
+        old_inventory_id: resolvedOldInventoryId,
+        new_inventory_id: resolvedNewInventoryId,
+        dealer_id: resolvedDealerId,
+        company_name: document.getElementById("repCompanyName").value.trim(),
+        customer_name: document.getElementById("repCustomerName").value.trim(),
+        customer_phone: document.getElementById("repCustomerMobile").value.trim(),
+        customer_city: document.getElementById("repCustomerCity").value.trim(),
+        customer_address: document.getElementById("repCustomerAddress").value.trim(),
+        reason: document.getElementById("replacementReason").value.trim(),
+        complaint_type: document.getElementById("complaintType").value.trim(),
+        inspection_status: document.getElementById("inspectionStatus").value.trim(),
+        inspection_remarks: document.getElementById("inspectionRemarks").value.trim(),
+        replacement_date: document.getElementById("replacementDate").value || null,
+        status: document.getElementById("replacementStatus").value
+    };
+
+    if (!payload.customer_name || !payload.customer_phone) {
+        alert("Customer Name aur Mobile Number required hain (Old Serial search se auto-fill honi chahiye).");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/replacement", {
+            method: "POST",
+            headers: authHeaders,
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message || "Something went wrong.");
+            return;
+        }
+
+        alert("Replacement request saved successfully.");
+        replacementForm.reset();
+        resolvedOldInventoryId = null;
+        resolvedNewInventoryId = null;
+        resolvedDealerId = null;
+        loadStats();
+        loadReplacements();
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+});
+
+
+/* ===============================
+   VIEW / APPROVE / REJECT / RESET
+================================ */
+
+async function viewReplacement(id){
+    const response = await fetch(`/api/replacement/${id}`, { headers: authHeaders });
+    const result = await response.json();
+    if (!result.success) { alert(result.message); return; }
+    const d = result.data;
+    alert(
+        `Old Serial: ${d.old_serial_number}\nNew Serial: ${d.new_serial_number || "-"}\nDealer: ${d.dealer_name}\nCustomer: ${d.customer_name} (${d.customer_phone})\nReason: ${d.reason || "-"}\nStatus: ${d.status}`
+    );
+}
+
+async function setReplacementStatus(id, status){
+    if (!confirm(`Replacement ko "${status}" mark karna hai?`)) return;
+
+    try {
+        const response = await fetch(`/api/replacement/${id}/status`, {
+            method: "PUT",
+            headers: authHeaders,
+            body: JSON.stringify({ status })
+        });
+        const result = await response.json();
+
+        if (!result.success) { alert(result.message); return; }
+
+        alert(result.message);
+        loadStats();
+        loadReplacements();
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+}
+
+document.querySelectorAll('button[class*="btn-warning"]').forEach(btn => {
+    if (btn.textContent.includes("Reset")) {
+        btn.addEventListener("click", function(){
+            setTimeout(function(){
+                resolvedOldInventoryId = null;
+                resolvedNewInventoryId = null;
+                resolvedDealerId = null;
+            }, 100);
+        });
+    }
+});
+
+
+/* ===============================
+   PAGE LOAD
+================================ */
+
+loadStats();
+loadReplacements();
 
 </script>
 
