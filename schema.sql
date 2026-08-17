@@ -46,9 +46,11 @@ CREATE TABLE dealers (
     email           VARCHAR(150)    NULL,
     address_line    VARCHAR(255)    NULL,
     city            VARCHAR(100)    NULL,
+    district        VARCHAR(100)    NULL,
     state           VARCHAR(100)    NULL,
     pincode         VARCHAR(10)     NULL,
     gst_number      VARCHAR(20)     NULL,
+    photo_path      VARCHAR(255)    NULL,             -- dealer's own profile photo (uploads/dealers/<file>)
     dealer_status   ENUM('active','inactive','blocked') NOT NULL DEFAULT 'active',
     reward_eligible TINYINT(1)      NOT NULL DEFAULT 1,
     created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -137,6 +139,22 @@ CREATE TABLE inventory (
 --    directly merge kar diye taaki fresh install pe alag migration
 --    na chalani pade.
 -- =====================================================================
+-- FIX_dispatch_table.sql
+--
+-- Yeh EK HI file hai jo chalani hai. Kuch aur nahi karna.
+--
+-- Yeh dispatch aur dispatch_items table ko DROP karke (mita ke) dobara
+-- sahi structure ke saath banata hai -- safe hai kyunki abhi tak in
+-- tables me koi successful data save nahi hua (har save error ki wajah
+-- se fail hua tha).
+
+USE battery_erp;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS dispatch_items;
+DROP TABLE IF EXISTS dispatch;
+
 CREATE TABLE dispatch (
     dispatch_id     INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     invoice_number  VARCHAR(50)     NOT NULL,
@@ -148,7 +166,7 @@ CREATE TABLE dispatch (
     remarks         VARCHAR(255)    NULL,
     status          ENUM('pending','dispatched','delivered','cancelled')
                                      NOT NULL DEFAULT 'pending',
-    created_by      INT UNSIGNED    NULL,               -- which staff user created it
+    created_by      INT UNSIGNED    NULL,
     created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP
                                      ON UPDATE CURRENT_TIMESTAMP,
@@ -174,9 +192,12 @@ CREATE TABLE dispatch_items (
     CONSTRAINT fk_ditems_inventory
         FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
         ON DELETE RESTRICT,
-    UNIQUE KEY uq_ditems_inventory (inventory_id), -- ek serial ek hi dispatch me ja sakta hai
+    UNIQUE KEY uq_ditems_inventory (inventory_id),
     INDEX idx_ditems_dispatch (dispatch_id)
 ) ENGINE=InnoDB;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
 
 -- =====================================================================
 -- 6. WARRANTY  (customer activation against a serial number)
@@ -243,6 +264,11 @@ CREATE TABLE replacements (
     customer_address      VARCHAR(255)    NULL,
     reason               VARCHAR(255)    NULL,
     complaint_type        VARCHAR(150)    NULL,
+    invoice_number        VARCHAR(100)    NULL,
+    battery_condition     VARCHAR(50)     NULL,
+    problem_description   VARCHAR(500)    NULL,
+    battery_images        VARCHAR(1000)   NULL,
+    invoice_file          VARCHAR(255)    NULL,
     inspection_status     VARCHAR(50)     NULL,
     inspection_remarks    VARCHAR(255)    NULL,
     status                ENUM('pending','approved','completed','rejected')
@@ -328,3 +354,52 @@ SELECT
 FROM reward_transactions
 WHERE status = 'approved'
 GROUP BY dealer_id;
+
+-- =====================================================================
+-- NOTIFICATIONS
+-- In-app notifications -- e.g. dealer replacement request -> admin ko
+-- bell icon me notification. audience='admin' sab admins ko dikhta hai;
+-- audience='dealer' sirf us dealer_id wale dealer ko.
+-- =====================================================================
+CREATE TABLE notifications (
+    notification_id  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    audience          ENUM('admin','dealer') NOT NULL,
+    dealer_id         INT UNSIGNED    NULL,
+    title             VARCHAR(200)    NOT NULL,
+    message           VARCHAR(500)    NULL,
+    link              VARCHAR(255)    NULL,
+    is_read           TINYINT(1)      NOT NULL DEFAULT 0,
+    created_at        DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_notification_dealer
+        FOREIGN KEY (dealer_id) REFERENCES dealers(dealer_id)
+        ON DELETE CASCADE,
+    INDEX idx_notification_audience (audience, is_read),
+    INDEX idx_notification_dealer (dealer_id, is_read)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =====================================================================
+-- SYSTEM SETTINGS
+-- Admin panel "Settings" page (Warranty/Reward/Security) yahan se
+-- padhta-likhta hai -- simple key/value store.
+-- =====================================================================
+CREATE TABLE system_settings (
+    setting_key    VARCHAR(100)  PRIMARY KEY,
+    setting_value  VARCHAR(255)  NOT NULL,
+    updated_at     DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                  ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO system_settings (setting_key, setting_value) VALUES
+    ('warranty_default_months',      '24'),
+    ('warranty_start_from',          'dispatch_date'),
+    ('grace_period_days',            '90'),
+    ('replacement_allowed',          'yes'),
+    ('warranty_expiry_alert',        'enabled'),
+    ('reminder_before_expiry_days',  '30'),
+    ('warranty_reward_points',       '50'),
+    ('dispatch_reward_points',       '10'),
+    ('replacement_reward_points',    '0'),
+    ('min_redeem_points',            '500'),
+    ('max_redeem_per_month',         '5000'),
+    ('session_timeout_minutes',      '30'),
+    ('two_factor_enabled',           'no');

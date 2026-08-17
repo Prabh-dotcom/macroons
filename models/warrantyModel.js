@@ -13,7 +13,8 @@ exports.lookupSerialForWarranty = async (serialNumber) => {
             p.product_name, p.model_name, p.warranty_months,
             c.category_name,
             dl.dealer_id, dl.dealer_name, dl.dealer_code, dl.phone AS dealer_phone,
-            dl.email AS dealer_email, dl.state AS dealer_state, dl.city AS dealer_city
+            dl.email AS dealer_email, dl.state AS dealer_state, dl.city AS dealer_city,
+            dp.dispatch_date
          FROM inventory inv
          JOIN products p ON inv.product_id = p.product_id
          JOIN product_categories c ON p.category_id = c.category_id
@@ -28,7 +29,37 @@ exports.lookupSerialForWarranty = async (serialNumber) => {
     return rows[0] || null;
 };
 
-exports.getAll = async ({ search, status, page = 1, limit = 10 }) => {
+// Re-checked independently at CREATE time (not just trusted from the
+// earlier lookup response) -- returns null if this serial was never
+// dispatched at all.
+exports.getDispatchDateForInventory = async (inventoryId) => {
+    const [rows] = await db.query(
+        `SELECT dp.dispatch_date
+         FROM dispatch_items di
+         JOIN dispatch dp ON dp.dispatch_id = di.dispatch_id
+         WHERE di.inventory_id = ?
+         LIMIT 1`,
+        [inventoryId]
+    );
+    return rows[0] ? rows[0].dispatch_date : null;
+};
+
+// Product master (admin-set) warranty period for a given serial's
+// inventory row -- used to enforce the real value server-side when a
+// dealer self-activates, so the client can never override it.
+exports.getWarrantyMonthsForInventory = async (inventoryId) => {
+    const [rows] = await db.query(
+        `SELECT p.warranty_months
+         FROM inventory inv
+         JOIN products p ON inv.product_id = p.product_id
+         WHERE inv.inventory_id = ?
+         LIMIT 1`,
+        [inventoryId]
+    );
+    return rows[0] ? rows[0].warranty_months : null;
+};
+
+exports.getAll = async ({ search, status, dealer_id, page = 1, limit = 10 }) => {
     const offset = (Math.max(1, page) - 1) * limit;
 
     let whereClauses = [];
@@ -45,12 +76,17 @@ exports.getAll = async ({ search, status, page = 1, limit = 10 }) => {
         params.push(status);
     }
 
+    if (dealer_id) {
+        whereClauses.push("w.dealer_id = ?");
+        params.push(dealer_id);
+    }
+
     const whereSql = whereClauses.length ? `WHERE ${whereClauses.join(" AND ")}` : "";
 
     const dataQuery = `
         SELECT
             w.warranty_id, w.activation_date, w.expiry_date, w.status,
-            w.customer_name, w.customer_phone, w.remarks, w.created_at,
+            w.customer_name, w.customer_phone, w.created_at,
             inv.serial_number, p.product_name, p.model_name, c.category_name,
             dl.dealer_id, dl.dealer_name, dl.dealer_code
         FROM warranty w
@@ -119,11 +155,12 @@ exports.create = async (data) => {
              invoice_number, purchase_date, activation_date, expiry_date, status, activated_by, remarks)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
-            data.inventory_id, data.dealer_id, data.customer_name, data.customer_phone,
+            data.inventory_id ?? null, data.dealer_id ?? null,
+            data.customer_name ?? null, data.customer_phone ?? null,
             data.customer_email || null, data.customer_state || null, data.customer_district || null,
             data.customer_city || null, data.customer_pincode || null, data.customer_address || null,
-            data.invoice_number || null, data.purchase_date || null, data.activation_date,
-            data.expiry_date, data.status || "active", data.activated_by || null, data.remarks || null
+            data.invoice_number || null, data.purchase_date || null, data.activation_date ?? null,
+            data.expiry_date ?? null, data.status || "active", data.activated_by || null, data.remarks || null
         ]
     );
     return result.insertId;
@@ -132,4 +169,31 @@ exports.create = async (data) => {
 exports.remove = async (warrantyId) => {
     const [result] = await db.query("DELETE FROM warranty WHERE warranty_id = ?", [warrantyId]);
     return result.affectedRows > 0;
+};
+
+/* =========================================================
+   DASHBOARD STATS -- 4 summary cards
+========================================================= */
+exports.getStats = async (dealerId) => {
+    const whereSql = dealerId ? "WHERE dealer_id = ?" : "";
+    const params = dealerId ? [dealerId] : [];
+
+    const [[row]] = await db.query(`
+        SELECT
+            COUNT(*) AS total_warranty,
+            COALESCE(SUM(CASE WHEN activation_date = CURDATE() THEN 1 ELSE 0 END), 0) AS today_activation,
+            COALESCE(SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END), 0) AS active_warranty,
+            COALESCE(SUM(CASE WHEN status = 'expired' THEN 1 ELSE 0 END), 0) AS expired_warranty,
+            COALESCE(SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END), 0) AS pending_warranty
+        FROM warranty
+        ${whereSql}
+    `, params);
+
+    return {
+        total_warranty: Number(row.total_warranty),
+        today_activation: Number(row.today_activation),
+        active_warranty: Number(row.active_warranty),
+        expired_warranty: Number(row.expired_warranty),
+        pending_warranty: Number(row.pending_warranty)
+    };
 };

@@ -8,6 +8,7 @@ const { verifyToken, allowRoles } = require("../middlewares/authMiddleware");
 
 router.use(verifyToken);
 
+router.get("/stats", dispatchController.getStats);
 router.get("/", dispatchController.getAllDispatch);
 router.get("/:id", dispatchController.getDispatchById);
 router.post("/", allowRoles("admin", "super_admin", "staff"), dispatchController.createDispatch);

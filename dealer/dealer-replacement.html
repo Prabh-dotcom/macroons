@@ -513,6 +513,7 @@ Old Battery Serial Number
 <input
 type="text"
 class="form-control"
+id="oldSerialInput"
 placeholder="Enter Old Battery Serial Number">
 
 </div>
@@ -521,6 +522,7 @@ placeholder="Enter Old Battery Serial Number">
 
 <button
 class="btn btn-success w-100"
+id="searchOldBtn"
 style="height:48px;">
 
 <i class="fa-solid fa-magnifying-glass me-2"></i>
@@ -580,7 +582,7 @@ Product Name
 <input
 type="text"
 class="form-control"
-value="Macroon Power Plus"
+id="oldProductName"
 readonly>
 
 </div>
@@ -596,7 +598,7 @@ Model Number
 <input
 type="text"
 class="form-control"
-value="MPP-150AH"
+id="oldModelNumber"
 readonly>
 
 </div>
@@ -612,7 +614,7 @@ Old Serial Number
 <input
 type="text"
 class="form-control"
-value="MPP240001"
+id="oldSerialNumber"
 readonly>
 
 </div>
@@ -628,7 +630,7 @@ Batch Number
 <input
 type="text"
 class="form-control"
-value="BATCH-2026-001"
+id="oldBatchNumber"
 readonly>
 
 </div>
@@ -644,7 +646,7 @@ Warranty Start Date
 <input
 type="date"
 class="form-control"
-value="2026-07-21"
+id="oldWarrantyStart"
 readonly>
 
 </div>
@@ -660,7 +662,7 @@ Warranty Expiry Date
 <input
 type="date"
 class="form-control"
-value="2028-07-21"
+id="oldWarrantyExpiry"
 readonly>
 
 </div>
@@ -676,7 +678,7 @@ Remaining Warranty
 <input
 type="text"
 class="form-control"
-value="18 Months Remaining"
+id="oldRemainingWarranty"
 readonly>
 
 </div>
@@ -692,7 +694,7 @@ Warranty Status
 <input
 type="text"
 class="form-control"
-value="Active"
+id="oldWarrantyStatus"
 readonly>
 
 </div>
@@ -726,7 +728,7 @@ Customer Name
 <input
 type="text"
 class="form-control"
-value="Rahul Sharma"
+id="customerName"
 readonly>
 
 </div>
@@ -742,7 +744,7 @@ Mobile Number
 <input
 type="text"
 class="form-control"
-value="9876543210"
+id="customerPhone"
 readonly>
 
 </div>
@@ -751,15 +753,15 @@ readonly>
 
 <label class="form-label">
 
-Vehicle Number
+Vehicle Number <small class="text-muted">(optional, manual entry)</small>
 
 </label>
 
 <input
 type="text"
 class="form-control"
-value="UP14AB1234"
-readonly>
+id="customerVehicle"
+placeholder="e.g. UP14AB1234">
 
 </div>
 
@@ -774,7 +776,7 @@ Battery Installed On
 <input
 type="date"
 class="form-control"
-value="2026-07-21"
+id="customerInstalledOn"
 readonly>
 
 </div>
@@ -789,11 +791,8 @@ Customer Address
 
 <textarea
 class="form-control"
-readonly>
-
-Bulandshahr, Uttar Pradesh
-
-</textarea>
+id="customerAddress"
+readonly></textarea>
 
 </div>
 
@@ -824,9 +823,9 @@ Replacement Reason <span class="text-danger">*</span>
 
 </label>
 
-<select class="form-select">
+<select class="form-select" id="reasonSelect">
 
-<option selected disabled>
+<option selected disabled value="">
 
 Select Reason
 
@@ -860,7 +859,8 @@ Replacement Request Date
 
 <input
 type="date"
-class="form-control">
+class="form-control"
+id="requestDate">
 
 </div>
 
@@ -872,9 +872,9 @@ Battery Condition
 
 </label>
 
-<select class="form-select">
+<select class="form-select" id="conditionSelect">
 
-<option selected disabled>
+<option selected disabled value="">
 
 Select Condition
 
@@ -903,6 +903,7 @@ Invoice Number
 <input
 type="text"
 class="form-control"
+id="invoiceNumber"
 placeholder="Invoice Number">
 
 </div>
@@ -917,6 +918,7 @@ Problem Description
 
 <textarea
 class="form-control"
+id="problemDescription"
 placeholder="Describe the battery issue in detail..."></textarea>
 
 </div>
@@ -925,13 +927,14 @@ placeholder="Describe the battery issue in detail..."></textarea>
 
 <label class="form-label">
 
-Upload Battery Images
+Upload Battery Images <small class="text-muted">(max 5, JPG/PNG, 5MB each)</small>
 
 </label>
 
 <input
 type="file"
 class="form-control"
+id="batteryImagesInput"
 accept="image/*"
 multiple>
 
@@ -941,13 +944,14 @@ multiple>
 
 <label class="form-label">
 
-Upload Purchase Invoice
+Upload Purchase Invoice <small class="text-muted">(JPG/PNG/PDF, 5MB)</small>
 
 </label>
 
 <input
 type="file"
 class="form-control"
+id="invoiceFileInput"
 accept=".jpg,.jpeg,.png,.pdf">
 
 </div>
@@ -981,6 +985,7 @@ New Battery Serial Number
 <input
 type="text"
 class="form-control"
+id="newSerialInput"
 placeholder="Enter New Battery Serial Number">
 
 </div>
@@ -989,6 +994,7 @@ placeholder="Enter New Battery Serial Number">
 
 <button
 class="btn btn-success w-100"
+id="searchNewBtn"
 style="height:48px;">
 
 <i class="fa-solid fa-magnifying-glass me-2"></i>
@@ -1010,7 +1016,7 @@ Product Name
 <input
 type="text"
 class="form-control"
-value="Macroon Power Plus"
+id="newProductName"
 readonly>
 
 </div>
@@ -1026,7 +1032,7 @@ Model Number
 <input
 type="text"
 class="form-control"
-value="MPP-150AH"
+id="newModelNumber"
 readonly>
 
 </div>
@@ -1042,7 +1048,7 @@ New Serial Number
 <input
 type="text"
 class="form-control"
-value="MPP240985"
+id="newSerialNumber"
 readonly>
 
 </div>
@@ -1058,7 +1064,7 @@ Batch Number
 <input
 type="text"
 class="form-control"
-value="BATCH-2026-015"
+id="newBatchNumber"
 readonly>
 
 </div>
@@ -1074,7 +1080,7 @@ Manufacturing Date
 <input
 type="date"
 class="form-control"
-value="2026-07-15"
+id="newMfgDate"
 readonly>
 
 </div>
@@ -1090,7 +1096,7 @@ Battery Status
 <input
 type="text"
 class="form-control"
-value="Available In Stock"
+id="newBatteryStatus"
 readonly>
 
 </div>
@@ -1125,7 +1131,7 @@ Old Warranty Start
 <input
 type="date"
 class="form-control"
-value="2026-07-21"
+id="transferOldStart"
 readonly>
 
 </div>
@@ -1141,7 +1147,7 @@ Old Warranty End
 <input
 type="date"
 class="form-control"
-value="2028-07-21"
+id="transferOldEnd"
 readonly>
 
 </div>
@@ -1157,7 +1163,7 @@ Remaining Warranty
 <input
 type="text"
 class="form-control"
-value="18 Months"
+id="transferRemaining"
 readonly>
 
 </div>
@@ -1172,7 +1178,8 @@ Replacement Date
 
 <input
 type="date"
-class="form-control">
+class="form-control"
+id="replacementDateInput">
 
 </div>
 
@@ -1187,7 +1194,7 @@ New Battery Warranty Expiry
 <input
 type="date"
 class="form-control"
-value="2028-07-21"
+id="transferNewExpiry"
 readonly>
 
 </div>
@@ -1327,7 +1334,7 @@ Request Submitted Successfully
 
 Request ID :
 
-<strong>REP24000125</strong>
+<strong id="modalRequestId">-</strong>
 
 </p>
 
@@ -1343,9 +1350,17 @@ Status :
 
 Warranty expiry of the new battery will remain
 
-<strong>20 Jul 2028</strong>
+<strong id="modalWarrantyExpiry">-</strong>
 
 (No New Warranty Created)
+
+</div>
+
+<div class="alert alert-success mb-0">
+
+<i class="fa-solid fa-bell me-1"></i>
+
+Admin ko is request ki notification already bhej di gayi hai — approval ka wait karein.
 
 </div>
 
@@ -1376,211 +1391,333 @@ OK
 
 <script>
 
-/* ================= SEARCH OLD BATTERY ================= */
+/* ===============================
+   AUTH
+================================ */
 
-document.querySelector(".search-box button").addEventListener("click",function(){
+const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
 
-alert("Old Battery Details Loaded Successfully");
+if (!token || role !== "dealer") {
+    window.location.href = "/admin/login.html";
+}
 
-/*
+const authHeaders = {
+    "Authorization": "Bearer " + token
+};
 
-Backend Flow
 
-Search Old Serial Number
+/* ===============================
+   STATE -- last successful search results
+================================ */
 
-↓
+let oldBatteryData = null;   // full lookup-old-serial response
+let newBatteryData = null;   // full lookup-new-serial response
 
-Inventory Table
 
-↓
+/* ===============================
+   HELPERS
+================================ */
 
-Warranty Table
+function todayISO(){
+    return new Date().toISOString().split("T")[0];
+}
 
-↓
+// "2028-07-21" -> readable "18 Months 4 Days Remaining" / "Expired"
+function formatRemainingWarranty(expiryDateStr){
+    const expiry = new Date(expiryDateStr);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    expiry.setHours(0,0,0,0);
 
-Customer Details
+    if (expiry <= today) return "Expired";
 
-↓
+    let months = (expiry.getFullYear() - today.getFullYear()) * 12 + (expiry.getMonth() - today.getMonth());
+    let days = expiry.getDate() - today.getDate();
+    if (days < 0) {
+        months -= 1;
+        const daysInPrevMonth = new Date(expiry.getFullYear(), expiry.getMonth(), 0).getDate();
+        days += daysInPrevMonth;
+    }
 
-Replacement Eligible?
+    const parts = [];
+    if (months > 0) parts.push(`${months} Month${months === 1 ? "" : "s"}`);
+    if (days > 0) parts.push(`${days} Day${days === 1 ? "" : "s"}`);
+    if (parts.length === 0) parts.push("Less than a day");
 
-↓
+    return parts.join(" ") + " Remaining";
+}
 
-Load Data
+function setFieldsDisabled(disabled){
+    document.getElementById("newSerialInput").disabled = disabled;
+    document.getElementById("searchNewBtn").disabled = disabled;
+    document.getElementById("reasonSelect").disabled = disabled;
+    document.getElementById("conditionSelect").disabled = disabled;
+    document.getElementById("invoiceNumber").disabled = disabled;
+    document.getElementById("problemDescription").disabled = disabled;
+    document.getElementById("customerVehicle").disabled = disabled;
+}
 
-*/
+// New Battery section shuru me locked rehta hai jab tak Old Battery
+// search successful na ho jaye -- warna warranty transfer summary ke
+// liye old battery ki expiry date hi nahi hogi.
+setFieldsDisabled(true);
 
+
+/* ===============================
+   SEARCH OLD BATTERY
+================================ */
+
+document.getElementById("searchOldBtn").addEventListener("click", async function(){
+    const serial = document.getElementById("oldSerialInput").value.trim();
+    if (!serial) { alert("Please enter the old battery serial number."); return; }
+
+    const btn = this;
+    const originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Searching...`;
+
+    try {
+        const response = await fetch(`/api/replacement/lookup-old-serial?serial=${encodeURIComponent(serial)}`, { headers: authHeaders });
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message || "Battery not found.");
+            oldBatteryData = null;
+            setFieldsDisabled(true);
+            return;
+        }
+
+        const d = result.data;
+        oldBatteryData = d;
+
+        // Old Battery Details
+        document.getElementById("oldProductName").value = d.product_name;
+        document.getElementById("oldModelNumber").value = d.model_name;
+        document.getElementById("oldSerialNumber").value = d.serial_number;
+        document.getElementById("oldBatchNumber").value = d.batch_number || "-";
+        document.getElementById("oldWarrantyStart").value = d.activation_date ? d.activation_date.split("T")[0] : "";
+        document.getElementById("oldWarrantyExpiry").value = d.expiry_date ? d.expiry_date.split("T")[0] : "";
+        document.getElementById("oldRemainingWarranty").value = d.expiry_date ? formatRemainingWarranty(d.expiry_date) : "-";
+        document.getElementById("oldWarrantyStatus").value = d.warranty_status;
+
+        // Customer Information
+        document.getElementById("customerName").value = d.customer_name || "-";
+        document.getElementById("customerPhone").value = d.customer_phone || "-";
+        document.getElementById("customerInstalledOn").value = d.activation_date ? d.activation_date.split("T")[0] : "";
+        document.getElementById("customerAddress").value = [d.customer_address, d.customer_city].filter(Boolean).join(", ") || "-";
+
+        // Warranty Transfer Summary
+        document.getElementById("transferOldStart").value = d.activation_date ? d.activation_date.split("T")[0] : "";
+        document.getElementById("transferOldEnd").value = d.expiry_date ? d.expiry_date.split("T")[0] : "";
+        document.getElementById("transferRemaining").value = d.expiry_date ? formatRemainingWarranty(d.expiry_date) : "-";
+        document.getElementById("transferNewExpiry").value = d.expiry_date ? d.expiry_date.split("T")[0] : "";
+
+        if (d.warranty_status !== "active") {
+            alert(`Heads up: is battery ki warranty status "${d.warranty_status}" hai, "active" nahi. Aap aage badh sakte ho lekin admin isse reject bhi kar sakta hai.`);
+        }
+
+        setFieldsDisabled(false);
+        document.getElementById("newSerialInput").focus();
+
+    } catch (err) {
+        console.error(err);
+        alert("Server se connect nahi ho paya. Dobara try karo.");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+    }
 });
+
 
 /* ================= SEARCH NEW BATTERY ================= */
 
-document.querySelectorAll(".btn-success")[1].addEventListener("click",function(){
+document.getElementById("searchNewBtn").addEventListener("click", async function(){
+    if (!oldBatteryData) { alert("Pehle Old Battery search karo."); return; }
 
-alert("New Battery Found & Ready For Replacement");
+    const serial = document.getElementById("newSerialInput").value.trim();
+    if (!serial) { alert("Please enter the new battery serial number."); return; }
 
-/*
+    if (serial === oldBatteryData.serial_number) {
+        alert("New battery ka serial number old battery se alag hona chahiye.");
+        return;
+    }
 
-Backend
+    const btn = this;
+    const originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Searching...`;
 
-Search New Battery
+    try {
+        const response = await fetch(`/api/replacement/lookup-new-serial?serial=${encodeURIComponent(serial)}`, { headers: authHeaders });
+        const result = await response.json();
 
-↓
+        if (!result.success) {
+            alert(result.message || "Battery not found.");
+            newBatteryData = null;
+            return;
+        }
 
-Inventory
+        const d = result.data;
+        newBatteryData = d;
 
-↓
+        document.getElementById("newProductName").value = d.product_name;
+        document.getElementById("newModelNumber").value = d.model_name;
+        document.getElementById("newSerialNumber").value = d.serial_number;
+        document.getElementById("newBatchNumber").value = d.batch_number || "-";
+        document.getElementById("newMfgDate").value = d.mfg_date ? d.mfg_date.split("T")[0] : "";
+        document.getElementById("newBatteryStatus").value = "Available In Stock";
 
-Available?
-
-↓
-
-Already Sold?
-
-↓
-
-Already Activated?
-
-↓
-
-Load Battery Details
-
-*/
-
+    } catch (err) {
+        console.error(err);
+        alert("Server se connect nahi ho paya. Dobara try karo.");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+    }
 });
+
+
+/* ================= DEFAULT DATES ================= */
+
+document.getElementById("requestDate").value = todayISO();
+document.getElementById("replacementDateInput").value = todayISO();
+
 
 /* ================= SUBMIT REPLACEMENT ================= */
 
-document.getElementById("submitReplacement")
+document.getElementById("submitReplacement").addEventListener("click", async function(){
 
-.addEventListener("click",function(){
+    if (!oldBatteryData) {
+        alert("Pehle Old Battery Serial Number search karo.");
+        return;
+    }
 
-const agree=document.getElementById("confirmReplacement");
+    const reason = document.getElementById("reasonSelect").value;
+    const condition = document.getElementById("conditionSelect").value;
+    const agree = document.getElementById("confirmReplacement");
 
-if(!agree.checked){
+    if (!reason) { alert("Please select a Replacement Reason."); return; }
+    if (!condition) { alert("Please select the Battery Condition."); return; }
+    if (!agree.checked) { alert("Please accept the declaration."); return; }
 
-alert("Please accept the declaration.");
+    const btn = this;
+    const originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Submitting...`;
 
-return;
+    try {
+        const formData = new FormData();
+        formData.append("old_inventory_id", oldBatteryData.inventory_id);
+        if (newBatteryData) formData.append("new_inventory_id", newBatteryData.inventory_id);
+        formData.append("customer_name", oldBatteryData.customer_name || "");
+        formData.append("customer_phone", oldBatteryData.customer_phone || "");
+        formData.append("customer_city", oldBatteryData.customer_city || "");
+        formData.append("customer_address", oldBatteryData.customer_address || "");
+        formData.append("reason", reason);
+        formData.append("invoice_number", document.getElementById("invoiceNumber").value.trim());
+        formData.append("battery_condition", condition);
+        formData.append("problem_description", document.getElementById("problemDescription").value.trim());
+        formData.append("replacement_date", document.getElementById("replacementDateInput").value || todayISO());
 
-}
+        const imagesInput = document.getElementById("batteryImagesInput");
+        for (const file of imagesInput.files) formData.append("battery_images", file);
 
-/*
+        const invoiceInput = document.getElementById("invoiceFileInput");
+        if (invoiceInput.files[0]) formData.append("invoice_file", invoiceInput.files[0]);
 
-========================================
+        // NOTE: Content-Type header jaan-bujh ke set nahi kiya -- FormData
+        // ke saath browser khud "multipart/form-data; boundary=..." set
+        // karta hai. Yahan manually laga dete to file upload TOOT jaata.
+        const response = await fetch("/api/dealer-portal/replacements", {
+            method: "POST",
+            headers: authHeaders,
+            body: formData
+        });
 
-BUSINESS LOGIC
+        const result = await response.json();
 
-========================================
+        if (!result.success) {
+            alert(result.message || "Replacement request submit nahi ho payi.");
+            return;
+        }
 
-1. Old Battery Warranty Exists?
+        document.getElementById("modalRequestId").textContent = result.data.display_id;
+        document.getElementById("modalWarrantyExpiry").textContent =
+            new Date(oldBatteryData.expiry_date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 
-2. Warranty Active?
+        let modal = new bootstrap.Modal(document.getElementById("replacementModal"));
+        modal.show();
 
-3. Replacement Eligible?
+        // Form reset taaki dealer agla request bina purana data carry kiye submit kar sake
+        document.querySelectorAll(".content input, .content textarea, .content select").forEach(el => {
+            if (el.type === "checkbox") { el.checked = false; return; }
+            if (el.type === "file") { el.value = ""; return; }
+            if (!el.readOnly && el.tagName !== "SELECT") el.value = "";
+        });
+        document.querySelectorAll(".content select").forEach(s => s.selectedIndex = 0);
+        oldBatteryData = null;
+        newBatteryData = null;
+        setFieldsDisabled(true);
+        document.getElementById("requestDate").value = todayISO();
+        document.getElementById("replacementDateInput").value = todayISO();
 
-4. New Battery Available?
-
-5. Old Battery Received?
-
-6. Create Replacement Request
-
-Status = Pending
-
-========================================
-
-*/
-
-let modal=new bootstrap.Modal(
-
-document.getElementById("replacementModal")
-
-);
-
-modal.show();
-
-console.log("Replacement Request Submitted");
-
-/*
-
-========================================
-
-ADMIN APPROVAL
-
-========================================
-
-Approve Request
-
-↓
-
-Old Battery
-
-Status = Replaced
-
-↓
-
-New Battery
-
-Assign Customer
-
-↓
-
-Warranty Expiry
-
-Copy Old Warranty Expiry
-
-↓
-
-No New Warranty
-
-↓
-
-Dealer Dashboard Update
-
-↓
-
-Admin Dashboard Update
-
-========================================
-
-*/
-
+    } catch (err) {
+        console.error(err);
+        alert("Server se connect nahi ho paya. Dobara try karo.");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+    }
 });
+
 
 /* ================= SIDEBAR ACTIVE ================= */
 
-document.querySelectorAll(".sidebar a")
-
-.forEach(link=>{
-
-link.addEventListener("click",function(){
-
-document.querySelectorAll(".sidebar a")
-
-.forEach(item=>{
-
-item.classList.remove("active");
-
+document.querySelectorAll(".sidebar a").forEach(link => {
+    link.addEventListener("click", function(){
+        document.querySelectorAll(".sidebar a").forEach(item => item.classList.remove("active"));
+        this.classList.add("active");
+    });
 });
 
-this.classList.add("active");
 
-});
+/* ================= NOTIFICATION BELL (real unread count) ================= */
 
-});
+const bell = document.querySelector(".fa-bell");
 
-/* ================= NOTIFICATION ICON ================= */
+async function refreshNotificationBadge(){
+    try {
+        const response = await fetch("/api/notifications/unread-count", { headers: authHeaders });
+        const result = await response.json();
+        if (!result.success) return;
 
-const bell=document.querySelector(".fa-bell");
+        const count = result.data.count;
+        let badge = document.getElementById("notifBadge");
 
-if(bell){
-
-setInterval(()=>{
-
-bell.classList.toggle("text-success");
-
-},1000);
-
+        if (count > 0) {
+            if (!badge) {
+                badge = document.createElement("span");
+                badge.id = "notifBadge";
+                badge.className = "badge bg-danger";
+                badge.style.cssText = "position:absolute;top:-4px;right:-4px;border-radius:50%;font-size:10px;padding:3px 6px;";
+                bell.parentElement.style.position = "relative";
+                bell.parentElement.appendChild(badge);
+            }
+            badge.textContent = count > 9 ? "9+" : count;
+        } else if (badge) {
+            badge.remove();
+        }
+    } catch (err) {
+        console.error(err);
+    }
 }
+
+if (bell) {
+    refreshNotificationBadge();
+    setInterval(refreshNotificationBadge, 15000); // har 15 second me naya check
+}
+
 
 /* ================= PAGE LOADED ================= */
 

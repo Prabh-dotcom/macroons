@@ -5,16 +5,23 @@ const asyncHandler = require("../utils/asyncHandler");
 const apiResponse = require("../utils/apiResponse");
 
 exports.getAllDispatch = asyncHandler(async (req, res) => {
-    const { search, status, page, limit } = req.query;
+    const { search, status, page, limit, sortBy, sortOrder } = req.query;
 
     const result = await DispatchModel.getAll({
         search,
         status,
         page: page ? Number(page) : 1,
-        limit: limit ? Number(limit) : 10
+        limit: limit ? Number(limit) : 10,
+        sortBy,
+        sortOrder
     });
 
     return apiResponse.success(res, 200, "Dispatch records fetched successfully.", result);
+});
+
+exports.getStats = asyncHandler(async (req, res) => {
+    const stats = await DispatchModel.getStats();
+    return apiResponse.success(res, 200, "Stats fetched successfully.", stats);
 });
 
 exports.getDispatchById = asyncHandler(async (req, res) => {

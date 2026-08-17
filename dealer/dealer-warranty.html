@@ -48,7 +48,7 @@ left:0;
 width:260px;
 height:100vh;
 
-background:#0B5ED7;
+background:linear-gradient(180deg,#198754,#0f6b43);
 
 padding:20px;
 
@@ -71,7 +71,7 @@ color:#fff;
 
 .logo i{
 
-font-size:32px;
+font-size:34px;
 
 margin-right:12px;
 
@@ -87,7 +87,7 @@ font-weight:700;
 
 .logo small{
 
-opacity:.8;
+opacity:.85;
 
 }
 
@@ -109,30 +109,34 @@ margin-bottom:8px;
 display:flex;
 align-items:center;
 
-padding:13px 15px;
+padding:14px 18px;
 
 text-decoration:none;
 
 color:#fff;
 
-border-radius:10px;
+border-radius:12px;
 
 transition:.3s;
+
+font-weight:500;
 
 }
 
 .sidebar ul li a:hover,
 .sidebar ul li a.active{
 
-background:rgba(255,255,255,.15);
+background:rgba(255,255,255,.18);
 
-padding-left:20px;
+padding-left:24px;
 
 }
 
 .sidebar ul li a i{
 
 width:28px;
+
+font-size:17px;
 
 }
 
@@ -335,6 +339,12 @@ border-bottom:2px solid #eee;
 
 }
 
+@media print {
+    body * { visibility: hidden; }
+    #warrantyTableSection, #warrantyTableSection * { visibility: visible; }
+    #warrantyTableSection { position: absolute; top: 0; left: 0; width: 100%; }
+}
+
 </style>
 
 </head>
@@ -372,9 +382,6 @@ Dashboard
 </a>
 
 </li>
-
-<li>
-
 
 <li>
 
@@ -426,11 +433,11 @@ Reports
 
 <li>
 
-<a href="settings.html">
+<a href="dealer-profile.html">
 
-<i class="fa-solid fa-gear"></i>
+<i class="fa-solid fa-user"></i>
 
-Settings
+Profile
 
 </a>
 
@@ -448,10 +455,11 @@ Settings
 
 <div class="search-box">
 
-<i class="fa-solid fa-magnifying-glass"></i>
+<i class="fa-solid fa-magnifying-glass" id="topbarWarrantySearchIcon" style="cursor:pointer;"></i>
 
 <input
 type="text"
+id="topbarWarrantySearch"
 placeholder="Search Serial Number / Warranty ID">
 
 </div>
@@ -498,7 +506,7 @@ Dashboard > Warranty Activation
 
 <div class="d-flex gap-2">
 
-<button class="btn btn-success">
+<button class="btn btn-success" id="activateWarrantyTopBtn" type="button">
 
 <i class="fa-solid fa-bolt me-2"></i>
 
@@ -506,7 +514,7 @@ Activate Warranty
 
 </button>
 
-<button class="btn btn-secondary">
+<button class="btn btn-secondary" id="printWarrantyListBtn" type="button">
 
 <i class="fa-solid fa-print me-2"></i>
 
@@ -514,7 +522,7 @@ Print
 
 </button>
 
-<button class="btn btn-warning text-white">
+<button class="btn btn-warning text-white" id="refreshWarrantyBtn" type="button">
 
 <i class="fa-solid fa-rotate-right me-2"></i>
 
@@ -536,7 +544,7 @@ Refresh
 
 <i class="fa-solid fa-shield-halved fa-2x text-primary"></i>
 
-<h3>9,245</h3>
+<h3 id="cardTotalWarranty">0</h3>
 
 <p>Total Warranty</p>
 
@@ -550,7 +558,7 @@ Refresh
 
 <i class="fa-solid fa-calendar-check fa-2x text-success"></i>
 
-<h3>32</h3>
+<h3 id="cardTodayActivation">0</h3>
 
 <p>Today's Activation</p>
 
@@ -564,7 +572,7 @@ Refresh
 
 <i class="fa-solid fa-clock fa-2x text-warning"></i>
 
-<h3>18</h3>
+<h3 id="cardPendingVerification">0</h3>
 
 <p>Pending Verification</p>
 
@@ -578,7 +586,7 @@ Refresh
 
 <i class="fa-solid fa-gift fa-2x text-danger"></i>
 
-<h3>4,850</h3>
+<h3 id="cardRewardPoints">0</h3>
 
 <p>Reward Points</p>
 
@@ -590,7 +598,7 @@ Refresh
 
 <!-- ================= WARRANTY FORM ================= -->
 
-<div class="form-card">
+<div class="form-card" id="warrantyFormCard">
 
 <h4 class="fw-bold mb-4">
 
@@ -598,100 +606,17 @@ Warranty Activation Form
 
 </h4>
 
-<form>
+<form id="warrantyForm">
 
 <div class="row">
-    <!-- ================= PRODUCT INFORMATION ================= -->
 
 <div class="col-12 mb-3">
 
 <h5 class="section-title">
 
-Product Information
+Product Details
 
 </h5>
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Product Category *
-
-</label>
-
-<select class="form-select" id="category">
-
-<option value="">Select Category</option>
-
-<option value="lead">Lead Acid Battery</option>
-
-<option value="lithium">Lithium Battery</option>
-
-<option value="solar">Solar Product</option>
-
-<option value="inverter">Inverter</option>
-
-<option value="charger">Battery Charger</option>
-
-</select>
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Company Name *
-
-</label>
-
-<select class="form-select">
-
-<option>Select Company</option>
-
-<option>Macroon Power Plus</option>
-
-<option>Macro Power</option>
-
-<option>Wonder Ace</option>
-
-<option>Crew Power</option>
-
-<option>Rex Power</option>
-
-</select>
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Product Name *
-
-</label>
-
-<input
-type="text"
-class="form-control"
-placeholder="Product Name">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Model Number *
-
-</label>
-
-<input
-type="text"
-class="form-control"
-placeholder="Model Number">
 
 </div>
 
@@ -699,44 +624,75 @@ placeholder="Model Number">
 
 <label class="form-label">
 
-Serial Number *
+Product Category
+
+</label>
+
+<select class="form-select" id="productCategory" disabled>
+
+<option selected disabled>Auto-filled from Serial Number search</option>
+
+</select>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+<label class="form-label">
+
+Product Name
+
+</label>
+
+<input type="text" class="form-control readonly" id="warProductName" readonly>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+<label class="form-label">
+
+Model Number
+
+</label>
+
+<input type="text" class="form-control readonly" id="warModelNumber" readonly>
+
+</div>
+
+<div class="col-lg-4 mb-3">
+
+<label class="form-label">
+
+Serial Number <span class="text-danger">*</span>
 
 </label>
 
 <div class="input-group">
 
-<input
-type="text"
-class="form-control"
-placeholder="Enter / Scan Serial Number">
+<input type="text" class="form-control" id="warrantySerialSearch" placeholder="Enter / Scan Serial Number">
 
-<button class="btn btn-primary">
-
+<button class="btn btn-primary" id="serialLookupBtn" type="button">
 <i class="fa-solid fa-magnifying-glass"></i>
-
 </button>
 
 </div>
 
 </div>
 
-<div class="col-lg-2 mb-3">
+<div class="col-lg-4 mb-3">
 
 <label class="form-label">
 
-Batch No.
+Batch Number
 
 </label>
 
-<input
-type="text"
-class="form-control readonly"
-readonly
-value="Auto">
+<input type="text" class="form-control readonly" id="warBatchNumber" readonly>
 
 </div>
 
-<div class="col-lg-3 mb-3">
+<div class="col-lg-4 mb-3">
 
 <label class="form-label">
 
@@ -744,93 +700,31 @@ Manufacturing Date
 
 </label>
 
-<input
-type="date"
-class="form-control">
+<input type="date" class="form-control readonly" id="warMfgDate" readonly>
 
 </div>
 
-<div class="col-lg-3 mb-3">
+<div class="col-lg-4 mb-3">
 
 <label class="form-label">
 
-Warranty Period
+Purchase Date
 
 </label>
 
-<select class="form-select">
-
-<option>12 Months</option>
-<option>24 Months</option>
-<option>36 Months</option>
-<option>48 Months</option>
-<option>60 Months</option>
-
-</select>
+<input type="date" class="form-control" id="purchaseDate">
 
 </div>
 
-<!-- ================= PRODUCT STATUS ================= -->
-
-<div class="col-lg-3 mb-3">
+<div class="col-lg-4 mb-3">
 
 <label class="form-label">
 
-Product Status
+Invoice Number
 
 </label>
 
-<input
-type="text"
-class="form-control readonly"
-readonly
-value="Available">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Stock Location
-
-</label>
-
-<input
-type="text"
-class="form-control readonly"
-readonly
-value="Main Warehouse">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Warranty ID
-
-</label>
-
-<input
-type="text"
-class="form-control readonly"
-readonly
-value="Auto Generate">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Activation Date
-
-</label>
-
-<input
-type="date"
-class="form-control">
+<input type="text" class="form-control" id="warInvoiceNumber" placeholder="Enter Invoice Number">
 
 </div>
 
@@ -840,7 +734,7 @@ class="form-control">
 
 <h5 class="section-title">
 
-Dealer Details
+Dealer Details (Auto-filled)
 
 </h5>
 
@@ -854,11 +748,7 @@ Dealer Name
 
 </label>
 
-<input
-type="text"
-class="form-control readonly"
-value="Sharma Battery House"
-readonly>
+<input type="text" class="form-control readonly" id="warDealerName" readonly>
 
 </div>
 
@@ -870,11 +760,7 @@ Dealer Code
 
 </label>
 
-<input
-type="text"
-class="form-control readonly"
-value="DLR001"
-readonly>
+<input type="text" class="form-control readonly" id="warDealerId" readonly>
 
 </div>
 
@@ -886,11 +772,7 @@ Dealer Mobile
 
 </label>
 
-<input
-type="text"
-class="form-control readonly"
-value="9876543210"
-readonly>
+<input type="text" class="form-control readonly" id="warDealerMobile" readonly>
 
 </div>
 
@@ -902,13 +784,11 @@ Dealer City
 
 </label>
 
-<input
-type="text"
-class="form-control readonly"
-value="Bulandshahr"
-readonly>
+<input type="text" class="form-control readonly" id="warDealerCity" readonly>
 
-</div><!-- ================= CUSTOMER DETAILS ================= -->
+</div>
+
+<!-- ================= CUSTOMER DETAILS ================= -->
 
 <div class="col-12 mt-4 mb-3">
 
@@ -924,14 +804,11 @@ Customer Details
 
 <label class="form-label">
 
-Customer Name *
+Customer Name <span class="text-danger">*</span>
 
 </label>
 
-<input
-type="text"
-class="form-control"
-placeholder="Enter Customer Name">
+<input type="text" class="form-control" id="customerName" placeholder="Enter Customer Name">
 
 </div>
 
@@ -939,14 +816,11 @@ placeholder="Enter Customer Name">
 
 <label class="form-label">
 
-Mobile Number *
+Mobile Number <span class="text-danger">*</span>
 
 </label>
 
-<input
-type="text"
-class="form-control"
-placeholder="Enter Mobile Number">
+<input type="text" class="form-control" id="customerMobile" maxlength="15" placeholder="Enter Mobile Number">
 
 </div>
 
@@ -954,33 +828,15 @@ placeholder="Enter Mobile Number">
 
 <label class="form-label">
 
-Alternate Mobile
+Email ID
 
 </label>
 
-<input
-type="text"
-class="form-control"
-placeholder="Alternate Mobile">
+<input type="email" class="form-control" id="customerEmail" placeholder="Enter Email ID">
 
 </div>
 
-<div class="col-lg-4 mb-3">
-
-<label class="form-label">
-
-Email
-
-</label>
-
-<input
-type="email"
-class="form-control"
-placeholder="Email Address">
-
-</div>
-
-<div class="col-lg-4 mb-3">
+<div class="col-lg-3 mb-3">
 
 <label class="form-label">
 
@@ -988,14 +844,23 @@ State
 
 </label>
 
-<input
-type="text"
-class="form-control"
-placeholder="State">
+<input type="text" class="form-control" id="customerState" placeholder="Enter State">
 
 </div>
 
-<div class="col-lg-4 mb-3">
+<div class="col-lg-3 mb-3">
+
+<label class="form-label">
+
+District
+
+</label>
+
+<input type="text" class="form-control" id="customerDistrict" placeholder="Enter District">
+
+</div>
+
+<div class="col-lg-3 mb-3">
 
 <label class="form-label">
 
@@ -1003,10 +868,19 @@ City
 
 </label>
 
-<input
-type="text"
-class="form-control"
-placeholder="City">
+<input type="text" class="form-control" id="customerCity" placeholder="Enter City">
+
+</div>
+
+<div class="col-lg-3 mb-3">
+
+<label class="form-label">
+
+Pincode
+
+</label>
+
+<input type="text" class="form-control" id="customerPincode" placeholder="Enter Pincode">
 
 </div>
 
@@ -1014,316 +888,21 @@ placeholder="City">
 
 <label class="form-label">
 
-Complete Address
+Full Address
 
 </label>
 
-<textarea
-class="form-control"
-placeholder="Complete Address"></textarea>
+<textarea class="form-control" id="customerAddress" placeholder="Enter Complete Address"></textarea>
 
 </div>
 
-<!-- ================= PURCHASE DETAILS ================= -->
+<!-- ================= WARRANTY DETAILS ================= -->
 
 <div class="col-12 mt-4 mb-3">
 
 <h5 class="section-title">
 
-Purchase Details
-
-</h5>
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Invoice Number *
-
-</label>
-
-<input
-type="text"
-class="form-control"
-placeholder="Invoice Number">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Purchase Date *
-
-</label>
-
-<input
-type="date"
-class="form-control">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Installation Date
-
-</label>
-
-<input
-type="date"
-class="form-control">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Warranty Expiry
-
-</label>
-
-<input
-type="date"
-class="form-control readonly"
-value=""
-readonly>
-
-</div>
-
-<!-- ================= CATEGORY SPECIFIC DETAILS ================= -->
-
-<div class="col-12 mt-4 mb-3">
-
-<h5 class="section-title">
-
-Category Specific Details
-
-</h5>
-
-</div>
-
-<!-- Lead Acid -->
-
-<div id="leadSection" class="row">
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Battery Capacity (AH)
-
-</label>
-
-<select class="form-select">
-
-<option>35 AH</option>
-<option>40 AH</option>
-<option>65 AH</option>
-<option>80 AH</option>
-<option>100 AH</option>
-<option>120 AH</option>
-<option>150 AH</option>
-<option>180 AH</option>
-<option>200 AH</option>
-
-</select>
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Battery Type
-
-</label>
-
-<select class="form-select">
-
-<option>Flat Plate</option>
-<option>Tubular</option>
-<option>Automotive</option>
-<option>Commercial</option>
-
-</select>
-
-</div>
-
-</div>
-
-<!-- Lithium -->
-
-<div id="lithiumSection" class="row" style="display:none;">
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Voltage
-
-</label>
-
-<select class="form-select">
-
-<option>12V</option>
-<option>24V</option>
-<option>48V</option>
-
-</select>
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-BMS Number
-
-</label>
-
-<input
-type="text"
-class="form-control"
-placeholder="BMS Number">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Battery Capacity
-
-</label>
-
-<input
-type="text"
-class="form-control"
-placeholder="100 AH">
-
-</div>
-
-</div>
-
-<!-- Solar -->
-
-<div id="solarSection" class="row" style="display:none;">
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Panel Wattage
-
-</label>
-
-<input
-type="text"
-class="form-control"
-placeholder="550W">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Panel Quantity
-
-</label>
-
-<input
-type="number"
-class="form-control"
-placeholder="Panels">
-
-</div>
-
-</div>
-
-<!-- Inverter -->
-
-<div id="inverterSection" class="row" style="display:none;">
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-VA Rating
-
-</label>
-
-<input
-type="text"
-class="form-control"
-placeholder="1500 VA">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Output Voltage
-
-</label>
-
-<input
-type="text"
-class="form-control"
-placeholder="230V">
-
-</div>
-
-</div>
-
-<!-- Charger -->
-
-<div id="chargerSection" class="row" style="display:none;">
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Output Voltage
-
-</label>
-
-<input
-type="text"
-class="form-control"
-placeholder="12V">
-
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Output Current
-
-</label>
-
-<input
-type="text"
-class="form-control"
-placeholder="20A">
-
-</div>
-
-</div>
-<!-- ================= WARRANTY SUMMARY ================= -->
-
-<div class="col-12 mt-4">
-
-<h5 class="section-title">
-
-Warranty Summary
+Warranty Details
 
 </h5>
 
@@ -1337,11 +916,7 @@ Warranty ID
 
 </label>
 
-<input
-type="text"
-class="form-control readonly"
-value="WAR-2026-00001"
-readonly>
+<input type="text" class="form-control readonly" id="warrantyId" placeholder="Auto Generate" readonly>
 
 </div>
 
@@ -1349,13 +924,11 @@ readonly>
 
 <label class="form-label">
 
-Activation Date
+Activation Date <span class="text-danger">*</span>
 
 </label>
 
-<input
-type="date"
-class="form-control">
+<input type="date" class="form-control" id="activationDate">
 
 </div>
 
@@ -1363,30 +936,19 @@ class="form-control">
 
 <label class="form-label">
 
-Expiry Date
+Warranty Period <span class="text-danger">*</span>
 
 </label>
 
-<input
-type="date"
-class="form-control readonly"
-readonly>
+<select class="form-select" id="warrantyPeriod">
 
-</div>
-
-<div class="col-lg-3 mb-3">
-
-<label class="form-label">
-
-Warranty Status
-
-</label>
-
-<select class="form-select">
-
-<option>Active</option>
-<option>Pending</option>
-<option>Expired</option>
+<option selected disabled value="">Select Warranty Period</option>
+<option value="6">6 Months</option>
+<option value="12">12 Months</option>
+<option value="24">24 Months</option>
+<option value="36">36 Months</option>
+<option value="48">48 Months</option>
+<option value="60">60 Months</option>
 
 </select>
 
@@ -1396,35 +958,32 @@ Warranty Status
 
 <label class="form-label">
 
-Reward Points
+Warranty Expiry Date
 
 </label>
 
-<input
-type="text"
-class="form-control readonly"
-value="+50 Points"
-readonly>
+<input type="date" class="form-control readonly" id="expiryDateDisplay" readonly>
 
 </div>
 
-<div class="col-lg-3 mb-3">
+<div class="col-lg-4 mb-3">
 
 <label class="form-label">
 
-Reward Status
+Warranty Status
 
 </label>
 
-<input
-type="text"
-class="form-control readonly"
-value="Will Credit Automatically"
-readonly>
+<select class="form-select" id="warrantyStatus">
+
+<option value="active">Active</option>
+<option value="pending" selected>Pending</option>
+
+</select>
 
 </div>
 
-<div class="col-lg-6 mb-3">
+<div class="col-lg-8 mb-3">
 
 <label class="form-label">
 
@@ -1432,9 +991,7 @@ Remarks
 
 </label>
 
-<textarea
-class="form-control"
-placeholder="Enter Remarks (Optional)"></textarea>
+<input type="text" class="form-control" id="warrantyRemarks" placeholder="Enter Remarks (Optional)">
 
 </div>
 
@@ -1442,46 +999,26 @@ placeholder="Enter Remarks (Optional)"></textarea>
 
 <div class="col-12 mt-4">
 
-<div class="d-flex flex-wrap gap-3">
+<div class="d-flex flex-wrap gap-2">
 
-<button
-type="submit"
-class="btn btn-success">
-
+<button type="submit" class="btn btn-success" id="activateWarrantySubmitBtn">
 <i class="fa-solid fa-shield-halved me-2"></i>
-
 Activate Warranty
-
 </button>
 
-<button
-type="reset"
-class="btn btn-secondary">
-
-<i class="fa-solid fa-rotate-left me-2"></i>
-
-Reset
-
-</button>
-
-<button
-type="button"
-class="btn btn-primary">
-
+<button type="button" class="btn btn-primary" id="printWarrantyCardBtn">
 <i class="fa-solid fa-print me-2"></i>
-
 Print Warranty Card
-
 </button>
 
-<button
-type="button"
-class="btn btn-warning text-white">
-
+<button type="button" class="btn btn-warning text-white" id="downloadWarrantyPdfBtn">
 <i class="fa-solid fa-download me-2"></i>
-
 Download PDF
+</button>
 
+<button type="button" class="btn btn-secondary" id="resetWarrantyBtn">
+<i class="fa-solid fa-rotate-left me-2"></i>
+Reset
 </button>
 
 </div>
@@ -1492,15 +1029,41 @@ Download PDF
 
 </form>
 
+</div>
+
 <!-- ================= RECENT WARRANTY ACTIVATIONS ================= -->
 
-<div class="form-card mt-4">
+<div class="form-card mt-4" id="warrantyTableSection">
 
 <h4 class="fw-bold mb-4">
 
 Recent Warranty Activations
 
 </h4>
+
+<div class="row g-2 mb-3">
+
+<div class="col-lg-6">
+<input type="text" class="form-control" id="tableWarrantySearch" placeholder="Search serial number or customer...">
+</div>
+
+<div class="col-lg-4">
+<select class="form-select" id="filterWarrantyStatus">
+<option value="">All Status</option>
+<option value="pending">Pending</option>
+<option value="active">Active</option>
+<option value="expired">Expired</option>
+<option value="claimed">Claimed</option>
+</select>
+</div>
+
+<div class="col-lg-2">
+<button class="btn btn-outline-primary w-100" type="button" id="applyWarrantyFilterBtn">
+<i class="fa-solid fa-filter me-2"></i>Filter
+</button>
+</div>
+
+</div>
 
 <div class="table-responsive">
 
@@ -1518,87 +1081,21 @@ Recent Warranty Activations
 
 <th>Customer</th>
 
-<th>Dealer</th>
-
 <th>Activation</th>
 
 <th>Expiry</th>
 
 <th>Status</th>
 
-<th>Reward</th>
+<th>Action</th>
 
 </tr>
 
 </thead>
 
-<tbody>
+<tbody id="warrantyTableBody">
 
-<tr>
-
-<td>WAR-1001</td>
-
-<td>MPP240001</td>
-
-<td>Lead Acid</td>
-
-<td>Rahul Sharma</td>
-
-<td>DLR001</td>
-
-<td>12-07-2026</td>
-
-<td>12-07-2028</td>
-
-<td><span class="badge bg-success">Active</span></td>
-
-<td>+50</td>
-
-</tr>
-
-<tr>
-
-<td>WAR-1002</td>
-
-<td>LI240115</td>
-
-<td>Lithium</td>
-
-<td>Amit Kumar</td>
-
-<td>DLR003</td>
-
-<td>15-07-2026</td>
-
-<td>15-07-2031</td>
-
-<td><span class="badge bg-success">Active</span></td>
-
-<td>+50</td>
-
-</tr>
-
-<tr>
-
-<td>WAR-1003</td>
-
-<td>SP550210</td>
-
-<td>Solar</td>
-
-<td>Rohit Singh</td>
-
-<td>DLR005</td>
-
-<td>18-07-2026</td>
-
-<td>18-07-2036</td>
-
-<td><span class="badge bg-warning">Pending</span></td>
-
-<td>0</td>
-
-</tr>
+<!-- Warranty records will come from database -->
 
 </tbody>
 
@@ -1607,97 +1104,478 @@ Recent Warranty Activations
 </div>
 
 </div>
+
 <!-- ================= JAVASCRIPT ================= -->
 
 <script>
 
-// ================= CATEGORY SHOW / HIDE =================
+/* ===============================
+   AUTH CHECK
+================================ */
 
-const category = document.getElementById("category");
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "/admin/login.html";
 
-const lead = document.getElementById("leadSection");
-const lithium = document.getElementById("lithiumSection");
-const solar = document.getElementById("solarSection");
-const inverter = document.getElementById("inverterSection");
-const charger = document.getElementById("chargerSection");
+const authHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+};
 
-function hideAllSections(){
+let resolvedInventoryId = null;
+let resolvedDealerId = null;
+let lastLookedUpSerial = null;
 
-lead.style.display="none";
-lithium.style.display="none";
-solar.style.display="none";
-inverter.style.display="none";
-charger.style.display="none";
-
+function fmt(n){
+    return Number(n || 0).toLocaleString("en-IN");
 }
 
-category.addEventListener("change",function(){
-
-hideAllSections();
-
-switch(this.value){
-
-case "lead":
-lead.style.display="flex";
-break;
-
-case "lithium":
-lithium.style.display="flex";
-break;
-
-case "solar":
-solar.style.display="flex";
-break;
-
-case "inverter":
-inverter.style.display="flex";
-break;
-
-case "charger":
-charger.style.display="flex";
-break;
-
+function generateWarrantyID(){
+    document.getElementById("warrantyId").value = "Auto Generate on Save";
 }
 
+function resetWarrantyFormState(){
+    resolvedInventoryId = null;
+    resolvedDealerId = null;
+    lastLookedUpSerial = null;
+    document.getElementById("warrantyPeriod").disabled = false;
+    document.getElementById("activationDate").disabled = false;
+    document.getElementById("warrantyStatus").disabled = false;
+    generateWarrantyID();
+}
+
+
+/* ===============================
+   DASHBOARD STATS -- 4 cards
+   (Total Warranty, Today's Activation,
+   Pending Verification, Reward Points --
+   all scoped to just THIS dealer, server-side)
+================================ */
+
+async function loadStats(){
+    try {
+        const res = await fetch("/api/dealer-portal/warranty/stats", { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) return;
+
+        const s = result.data;
+        document.getElementById("cardTotalWarranty").textContent = fmt(s.total_warranty);
+        document.getElementById("cardTodayActivation").textContent = fmt(s.today_activation);
+        document.getElementById("cardPendingVerification").textContent = fmt(s.pending_verification);
+        document.getElementById("cardRewardPoints").textContent = fmt(s.reward_points);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
+/* ===========================================
+   SERIAL NUMBER LOOKUP -- product + dealer
+   details auto-fill. Backend independently
+   confirms this serial actually belongs to
+   YOUR dealer account (and the 90-day
+   self-activation window) -- so this will
+   always resolve to your own dealer info.
+=========================================== */
+
+document.getElementById("serialLookupBtn").addEventListener("click", async function(e){
+    e.preventDefault();
+
+    const serial = document.getElementById("warrantySerialSearch").value.trim();
+    if (!serial) { alert("Serial number likho pehle."); return; }
+
+    try {
+        const response = await fetch(`/api/warranty/lookup-serial?serial=${encodeURIComponent(serial)}`, { headers: authHeaders });
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message);
+            resolvedInventoryId = null;
+            resolvedDealerId = null;
+            return;
+        }
+
+        const d = result.data;
+        resolvedInventoryId = d.inventory_id;
+        resolvedDealerId = d.dealer_id;
+        lastLookedUpSerial = d.serial_number;
+
+        document.getElementById("productCategory").innerHTML = `<option selected>${d.category_name}</option>`;
+        document.getElementById("warProductName").value = d.product_name;
+        document.getElementById("warModelNumber").value = d.model_name;
+        document.getElementById("warBatchNumber").value = d.batch_number || "-";
+        document.getElementById("warMfgDate").value = d.mfg_date.split("T")[0];
+
+        document.getElementById("warDealerId").value = d.dealer_code;
+        document.getElementById("warDealerName").value = d.dealer_name;
+        document.getElementById("warDealerMobile").value = d.dealer_phone;
+        document.getElementById("warDealerCity").value = d.dealer_city || "-";
+
+        const periodSelect = document.getElementById("warrantyPeriod");
+        const monthsStr = String(d.warranty_months);
+        let matchingOption = Array.from(periodSelect.options).find(o => o.value === monthsStr);
+        if (!matchingOption) {
+            matchingOption = document.createElement("option");
+            matchingOption.value = monthsStr;
+            matchingOption.textContent = `${monthsStr} Months`;
+            periodSelect.appendChild(matchingOption);
+        }
+        periodSelect.value = monthsStr;
+        // Admin ne product master me jo warranty period set kiya hai wahi
+        // yahan aa gaya hai -- ab dealer ise change nahi kar sakta, sirf
+        // dekh sakta hai. (Server bhi isi value ko independently enforce
+        // karta hai, chahe koi is lock ko bypass karke API seedha hi
+        // call kare.)
+        periodSelect.disabled = true;
+
+        // Activation date = jis din yeh battery dispatch hui thi, wahi
+        // warranty start date hai -- yeh fact hamare apne dispatch record
+        // se aata hai, dealer ko type karne ki zaroorat nahi aur woh isko
+        // badal bhi nahi sakta. (Server bhi yahi value independently set
+        // karta hai.)
+        activationDateInput.value = d.dispatch_date.split("T")[0];
+        activationDateInput.disabled = true;
+
+        // Dealer khud activate kar raha hai to status hamesha "Active"
+        // hi hoga -- Pending/Expired/Claimed sirf admin baad me set karta
+        // hai, dealer ke haath me nahi hai.
+        const statusSelect = document.getElementById("warrantyStatus");
+        statusSelect.value = "active";
+        statusSelect.disabled = true;
+
+        recalcExpiry();
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
 });
 
-// Default
-hideAllSections();
+
+/* ===========================================
+   AUTO EXPIRY DATE
+=========================================== */
+
+const activationDateInput = document.getElementById("activationDate");
+const periodSelectEl = document.getElementById("warrantyPeriod");
+const expiryDateDisplay = document.getElementById("expiryDateDisplay");
+
+function recalcExpiry(){
+    if (!activationDateInput.value || !periodSelectEl.value) return;
+    const date = new Date(activationDateInput.value);
+    date.setMonth(date.getMonth() + parseInt(periodSelectEl.value));
+    expiryDateDisplay.value = date.toISOString().split("T")[0];
+}
+
+activationDateInput.addEventListener("change", recalcExpiry);
+periodSelectEl.addEventListener("change", recalcExpiry);
 
 
-// ================= WARRANTY ACTIVATION =================
+/* ===============================
+   LOAD WARRANTY RECORDS (this dealer only --
+   /api/dealer-portal/warranty force-filters by
+   dealer_id from your JWT on the server side)
+================================ */
 
-const warrantyForm=document.querySelector("form");
+function badgeClassForWStatus(status){
+    if (status === "active") return "bg-success";
+    if (status === "pending") return "bg-warning text-dark";
+    if (status === "expired") return "bg-secondary";
+    if (status === "claimed") return "bg-info";
+    return "bg-secondary";
+}
 
-warrantyForm.addEventListener("submit",function(e){
+function currentWarrantyFilters(){
+    return {
+        search: document.getElementById("tableWarrantySearch").value.trim(),
+        status: document.getElementById("filterWarrantyStatus").value
+    };
+}
 
-e.preventDefault();
+async function loadWarranty(){
+    const tbody = document.getElementById("warrantyTableBody");
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
-alert(
-"✅ Warranty Activated Successfully!\n\n" +
-"Dealer Reward : +50 Points\n" +
-"Status : Active"
-);
+    const { search, status } = currentWarrantyFilters();
 
-// Future Backend Logic
-// 1. Save Warranty
-// 2. Change Product Status = Warranty Active
-// 3. Add +50 Reward Points
-// 4. Insert Warranty History
-// 5. Print Warranty Card
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (status) params.set("status", status);
+    params.set("page", 1);
+    params.set("limit", 200);
 
+    try {
+        const response = await fetch(`/api/dealer-portal/warranty?${params.toString()}`, { headers: authHeaders });
+        const result = await response.json();
+
+        if (!result.success) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">${result.message}</td></tr>`;
+            return;
+        }
+
+        const records = result.data.warranty;
+
+        if (records.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center">No Records Found.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = records.map(r => `
+            <tr id="warranty-row-${r.warranty_id}">
+                <td>${r.warranty_id}</td>
+                <td>${r.serial_number}</td>
+                <td>${r.category_name}</td>
+                <td>${r.customer_name}</td>
+                <td>${new Date(r.activation_date).toLocaleDateString("en-GB")}</td>
+                <td>${new Date(r.expiry_date).toLocaleDateString("en-GB")}</td>
+                <td><span class="badge ${badgeClassForWStatus(r.status)}">${r.status}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick="viewWarranty(${r.warranty_id})"><i class="fa-solid fa-eye"></i></button>
+                </td>
+            </tr>
+        `).join("");
+
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
+
+document.getElementById("applyWarrantyFilterBtn").addEventListener("click", function(){
+    loadWarranty();
+});
+
+document.getElementById("tableWarrantySearch").addEventListener("keydown", function(e){
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    loadWarranty();
+});
+
+document.getElementById("filterWarrantyStatus").addEventListener("change", function(){
+    loadWarranty();
+});
+
+// Topbar search -- Enter, clicking the icon, or live typing (debounced) all
+// trigger the same search + scroll-to-table + highlight matched rows.
+async function runTopbarWarrantySearch(){
+    const term = document.getElementById("topbarWarrantySearch").value.trim();
+    if (!term) return;
+
+    document.getElementById("tableWarrantySearch").value = term;
+    await loadWarranty();
+
+    document.getElementById("warrantyTableSection").scrollIntoView({ behavior: "smooth", block: "start" });
+
+    document.querySelectorAll("#warrantyTableBody tr[id^='warranty-row-']").forEach(row => {
+        row.style.transition = "background-color 0.3s";
+        row.style.backgroundColor = "#fff3cd";
+        setTimeout(() => { row.style.backgroundColor = ""; }, 2500);
+    });
+}
+
+document.getElementById("topbarWarrantySearchIcon").addEventListener("click", function(){
+    runTopbarWarrantySearch();
+});
+
+let topbarWarrantySearchDebounce = null;
+document.getElementById("topbarWarrantySearch").addEventListener("input", function(){
+    clearTimeout(topbarWarrantySearchDebounce);
+    topbarWarrantySearchDebounce = setTimeout(runTopbarWarrantySearch, 400);
+});
+
+document.getElementById("topbarWarrantySearch").addEventListener("keydown", async function(e){
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    clearTimeout(topbarWarrantySearchDebounce);
+    await runTopbarWarrantySearch();
 });
 
 
-// ================= AUTO WARRANTY ID =================
+/* ===========================================
+   FORM SUBMIT -- "Activate Warranty"
+=========================================== */
 
-const warrantyID=document.querySelectorAll(".readonly")[2];
+const warrantyForm = document.getElementById("warrantyForm");
 
-const randomID="WAR-"+new Date().getFullYear()+"-"+Math.floor(Math.random()*90000+10000);
-
-if(warrantyID){
-warrantyID.value=randomID;
+function buildWarrantyPayload(){
+    return {
+        inventory_id: resolvedInventoryId,
+        dealer_id: resolvedDealerId,
+        customer_name: document.getElementById("customerName").value.trim(),
+        customer_phone: document.getElementById("customerMobile").value.trim(),
+        customer_email: document.getElementById("customerEmail").value.trim(),
+        customer_state: document.getElementById("customerState").value.trim(),
+        customer_district: document.getElementById("customerDistrict").value.trim(),
+        customer_city: document.getElementById("customerCity").value.trim(),
+        customer_pincode: document.getElementById("customerPincode").value.trim(),
+        customer_address: document.getElementById("customerAddress").value.trim(),
+        invoice_number: document.getElementById("warInvoiceNumber").value.trim(),
+        purchase_date: document.getElementById("purchaseDate").value || null,
+        activation_date: document.getElementById("activationDate").value,
+        warranty_months: document.getElementById("warrantyPeriod").value,
+        status: document.getElementById("warrantyStatus").value,
+        remarks: document.getElementById("warrantyRemarks").value.trim()
+    };
 }
+
+async function submitWarranty(){
+    if (!resolvedInventoryId || !resolvedDealerId) {
+        alert("Pehle ek valid Serial Number search karo (search icon dabao).");
+        return;
+    }
+
+    const payload = buildWarrantyPayload();
+
+    if (!payload.customer_name || !payload.customer_phone || !payload.activation_date || !payload.warranty_months) {
+        alert("Please fill all required (*) fields.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/warranty", {
+            method: "POST",
+            headers: authHeaders,
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message || "Something went wrong.");
+            if (result.errors) alert(result.errors.join("\n"));
+            return;
+        }
+
+        alert("Warranty Activated Successfully.");
+        warrantyForm.reset();
+        resetWarrantyFormState();
+
+        await loadWarranty();
+        await loadStats();
+
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+}
+
+warrantyForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    submitWarranty();
+});
+
+
+/* ===========================================
+   VIEW
+=========================================== */
+
+async function viewWarranty(id){
+    const response = await fetch(`/api/warranty/${id}`, { headers: authHeaders });
+    const result = await response.json();
+    if (!result.success) { alert(result.message); return; }
+    const d = result.data;
+    alert(
+        `Serial: ${d.serial_number}\nProduct: ${d.product_name} ${d.model_name}\nCustomer: ${d.customer_name} (${d.customer_phone})\nActivation: ${d.activation_date.split("T")[0]}\nExpiry: ${d.expiry_date.split("T")[0]}\nStatus: ${d.status}`
+    );
+}
+
+
+/* ===========================================
+   TOP HEADER BUTTONS
+=========================================== */
+
+document.getElementById("activateWarrantyTopBtn").addEventListener("click", function(){
+    warrantyForm.reset();
+    resetWarrantyFormState();
+    document.getElementById("warrantyFormCard").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+document.getElementById("refreshWarrantyBtn").addEventListener("click", async function(){
+    await loadStats();
+    await loadWarranty();
+});
+
+// Print -- only #warrantyTableSection is visible in print media (see <style>)
+document.getElementById("printWarrantyListBtn").addEventListener("click", function(){
+    window.print();
+});
+
+
+/* ===========================================
+   PRINT WARRANTY CARD / DOWNLOAD PDF -- both
+   build the same customer-facing certificate
+   from whatever is currently filled in the
+   form. "Download PDF" opens the print dialog
+   too -- choose "Save as PDF" as the
+   destination there (browsers don't let a
+   webpage save a PDF straight to disk without
+   that dialog).
+=========================================== */
+
+function openWarrantyCertificate(){
+    if (!resolvedInventoryId || !resolvedDealerId) {
+        alert("Pehle ek valid Serial Number search karo, tabhi warranty card print/download hoga.");
+        return null;
+    }
+
+    const customerName = document.getElementById("customerName").value.trim() || "-";
+    const customerPhone = document.getElementById("customerMobile").value.trim() || "-";
+    const productName = document.getElementById("warProductName").value || "-";
+    const modelName = document.getElementById("warModelNumber").value || "-";
+    const dealerName = document.getElementById("warDealerName").value || "-";
+    const dealerCode = document.getElementById("warDealerId").value || "-";
+    const activation = activationDateInput.value || "-";
+    const expiry = expiryDateDisplay.value || "-";
+    const period = periodSelectEl.value ? `${periodSelectEl.value} Months` : "-";
+
+    const w = window.open("", "_blank");
+    w.document.write(`
+        <html><head><title>Warranty Card</title></head>
+        <body style="font-family:sans-serif;padding:24px;">
+            <h3>Battery ERP &mdash; Warranty Card</h3>
+            <p><b>Serial Number:</b> ${lastLookedUpSerial || "-"}</p>
+            <p><b>Product:</b> ${productName} ${modelName}</p>
+            <p><b>Customer:</b> ${customerName} (${customerPhone})</p>
+            <p><b>Dealer:</b> ${dealerName} (${dealerCode})</p>
+            <p><b>Warranty Period:</b> ${period}</p>
+            <p><b>Activation Date:</b> ${activation}</p>
+            <p><b>Expiry Date:</b> ${expiry}</p>
+        </body></html>
+    `);
+    w.document.close();
+    return w;
+}
+
+document.getElementById("printWarrantyCardBtn").addEventListener("click", function(){
+    const w = openWarrantyCertificate();
+    if (w) w.print();
+});
+
+document.getElementById("downloadWarrantyPdfBtn").addEventListener("click", function(){
+    const w = openWarrantyCertificate();
+    if (!w) return;
+    alert("Print dialog mein 'Save as PDF' destination choose karke save kar lo.");
+    w.print();
+});
+
+
+/* ===========================================
+   RESET FORM
+=========================================== */
+
+document.getElementById("resetWarrantyBtn").addEventListener("click", function(){
+    setTimeout(function(){
+        resetWarrantyFormState();
+    }, 0);
+});
+
+
+/* ===========================================
+   PAGE LOAD
+=========================================== */
+
+generateWarrantyID();
+loadStats();
+loadWarranty();
 
 </script>
 

@@ -108,3 +108,11 @@ exports.remove = async (userId) => {
     const [result] = await db.query("DELETE FROM users WHERE user_id = ?", [userId]);
     return result.affectedRows > 0;
 };
+
+
+// Self-service "Change Password" ke liye -- current password verify
+// karna hai isliye password_hash bhi chahiye (normal getById me nahi hota)
+exports.getByIdWithPassword = async (userId) => {
+    const [rows] = await db.query("SELECT * FROM users WHERE user_id = ?", [userId]);
+    return rows[0] || null;
+};

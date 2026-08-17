@@ -13,6 +13,10 @@ const replacementRoutes = require("./routes/replacementRoutes");
 const rewardRoutes = require("./routes/rewardRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const userRoutes = require("./routes/userRoutes");
+const dealerPortalRoutes = require("./routes/dealerPortalRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
+const settingsRoutes = require("./routes/settingsRoutes");
 
 
 const errorHandler = require("./middlewares/errorHandler");
@@ -44,6 +48,10 @@ app.use("/api/replacement", replacementRoutes);
 app.use("/api/reward", rewardRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/dealer-portal", dealerPortalRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/settings", settingsRoutes);
 
 app.get("/", (req, res) => {
     // "/" pe seedha admin login page dikhao, plain text nahi

@@ -93,9 +93,32 @@ exports.deleteInventory = asyncHandler(async (req, res) => {
         return apiResponse.error(res, 404, "Inventory item not found.");
     }
 
-    // NOTE: agar yeh serial kisi dispatch/warranty/replacement me use ho
-    // chuka hai, foreign key ON DELETE RESTRICT isse block karega
-    // (errorHandler.js isko clean message me convert karta hai).
+    // Delete se pehle exact wajah pata karo -- generic FK error ke
+    // bajaye specific batao ki serial dispatch/warranty/replacement
+    // mein kahan use ho raha hai, taaki confusion na ho ki "delete
+    // kyun nahi ho raha".
+    const usage = await InventoryModel.getUsageInfo(req.params.id);
+
+    if (usage.isDispatched || usage.hasWarranty || usage.inReplacement) {
+        const reasons = [];
+        if (usage.isDispatched) reasons.push("already dispatched to a dealer");
+        if (usage.hasWarranty) reasons.push("has a warranty record");
+        if (usage.inReplacement) reasons.push("is part of a replacement request");
+
+        return apiResponse.error(
+            res, 409,
+            `This serial cannot be deleted because it is ${reasons.join(" and ")}. ` +
+            `Deleting it would break those linked records. ` +
+            `If this battery is no longer usable, update its Status to "Defective" or "Returned" instead of deleting it.`
+        );
+    }
+
+    // NOTE: yahan tak pahunchne ka matlab hai serial kabhi dispatch/
+    // warranty/replacement mein use hi nahi hua -- ab safely delete
+    // ho sakta hai. FK ON DELETE RESTRICT ab bhi ek aakhri safety net
+    // ki tarah rahega (errorHandler.js isko clean message me convert
+    // karta hai) agar kabhi koi aur reference mil jaaye jo yahan check
+    // nahi ki gayi.
     await InventoryModel.remove(req.params.id);
 
     return apiResponse.success(res, 200, "Inventory item deleted successfully.");

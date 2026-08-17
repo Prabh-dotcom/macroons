@@ -85,3 +85,31 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 
     return apiResponse.success(res, 200, "User deleted successfully.");
 });
+
+
+// PUT /api/users/change-password  -- logged-in user apna khud ka password badalta hai
+exports.changeOwnPassword = asyncHandler(async (req, res) => {
+    const { current_password, new_password } = req.body;
+
+    if (!current_password || !new_password) {
+        return apiResponse.error(res, 400, "Current password and new password are required.");
+    }
+    if (new_password.length < 6) {
+        return apiResponse.error(res, 400, "New password must be at least 6 characters.");
+    }
+
+    const user = await UserModel.getByIdWithPassword(req.user.user_id);
+    if (!user) {
+        return apiResponse.error(res, 404, "User not found.");
+    }
+
+    const isMatch = await bcrypt.compare(current_password, user.password_hash);
+    if (!isMatch) {
+        return apiResponse.error(res, 401, "Current password is incorrect.");
+    }
+
+    const newHash = await bcrypt.hash(new_password, 10);
+    await UserModel.updatePassword(req.user.user_id, newHash);
+
+    return apiResponse.success(res, 200, "Password changed successfully.");
+});

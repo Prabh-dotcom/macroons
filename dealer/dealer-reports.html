@@ -421,6 +421,19 @@ gap:15px;
 
 }
 
+@media print {
+    body * { visibility: hidden; }
+    #salesReportSection, #salesReportSection *,
+    #warrantyReportSection, #warrantyReportSection *,
+    #replacementReportSection, #replacementReportSection *,
+    #rewardReportSection, #rewardReportSection * { visibility: visible; }
+    #salesReportSection, #warrantyReportSection,
+    #replacementReportSection, #rewardReportSection {
+        position: static;
+        width: 100%;
+        page-break-inside: avoid;
+        margin-bottom: 20px;
+    }
 }
 
 </style>
@@ -546,7 +559,7 @@ Dealer Reports
 
 <h6>Total Batteries Sold</h6>
 
-<h2>325</h2>
+<h2 id="cardTotalSales">0</h2>
 
 <small class="text-success">
 
@@ -570,7 +583,7 @@ This Year
 
 <h6>Warranty Activated</h6>
 
-<h2>298</h2>
+<h2 id="cardWarrantyActivated">0</h2>
 
 <small class="text-primary">
 
@@ -594,7 +607,7 @@ Successfully Activated
 
 <h6>Replacement Requests</h6>
 
-<h2>12</h2>
+<h2 id="cardReplacementRequests">0</h2>
 
 <small class="text-warning">
 
@@ -618,7 +631,7 @@ Total Requests
 
 <h6>Reward Points</h6>
 
-<h2>1250</h2>
+<h2 id="cardRewardPointsEarned">0</h2>
 
 <small class="text-danger">
 
@@ -656,6 +669,7 @@ From Date
 
 <input
 type="date"
+id="reportFromDate"
 class="form-control">
 
 </div>
@@ -670,6 +684,7 @@ To Date
 
 <input
 type="date"
+id="reportToDate"
 class="form-control">
 
 </div>
@@ -682,33 +697,33 @@ Report Type
 
 </label>
 
-<select class="form-select">
+<select class="form-select" id="reportTypeSelect">
 
-<option selected>
+<option value="all" selected>
 
 All Reports
 
 </option>
 
-<option>
+<option value="sales">
 
 Sales Report
 
 </option>
 
-<option>
+<option value="warranty">
 
 Warranty Report
 
 </option>
 
-<option>
+<option value="replacement">
 
 Replacement Report
 
 </option>
 
-<option>
+<option value="reward">
 
 Reward Report
 
@@ -728,6 +743,7 @@ Search
 
 <input
 type="text"
+id="reportSearchInput"
 class="form-control"
 placeholder="Customer / Serial No.">
 
@@ -737,7 +753,7 @@ placeholder="Customer / Serial No.">
 
 <div class="text-end mt-3">
 
-<button class="btn btn-success px-4">
+<button class="btn btn-success px-4" id="generateReportBtn" type="button">
 
 <i class="fa-solid fa-magnifying-glass me-2"></i>
 
@@ -752,7 +768,7 @@ Generate Report
 <!-- ================= NEXT PART START ================= -->
  <!-- ================= SALES REPORT ================= -->
 
-<div class="table-card">
+<div class="table-card" id="salesReportSection">
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -764,9 +780,9 @@ Sales Report
 
 </h5>
 
-<span class="badge bg-success">
+<span class="badge bg-success" id="salesReportCount">
 
-325 Records
+0 Records
 
 </span>
 
@@ -788,7 +804,7 @@ Sales Report
 
 <th>Product</th>
 
-<th>Customer</th>
+<th>Transport</th>
 
 <th>Status</th>
 
@@ -796,127 +812,7 @@ Sales Report
 
 </thead>
 
-<tbody>
-
-<tr>
-
-<td>INV240001</td>
-
-<td>21 Jul 2026</td>
-
-<td>MPP240001</td>
-
-<td>MPP 150AH</td>
-
-<td>Rahul Sharma</td>
-
-<td>
-
-<span class="badge-active">
-
-Sold
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>INV240002</td>
-
-<td>20 Jul 2026</td>
-
-<td>MPP240005</td>
-
-<td>MPP 180AH</td>
-
-<td>Amit Kumar</td>
-
-<td>
-
-<span class="badge-active">
-
-Sold
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>INV240003</td>
-
-<td>18 Jul 2026</td>
-
-<td>MPP240011</td>
-
-<td>MPP 220AH</td>
-
-<td>Sachin Verma</td>
-
-<td>
-
-<span class="badge-active">
-
-Sold
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>INV240004</td>
-
-<td>16 Jul 2026</td>
-
-<td>MPP240018</td>
-
-<td>MPP 150AH</td>
-
-<td>Mohit Singh</td>
-
-<td>
-
-<span class="badge-active">
-
-Sold
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>INV240005</td>
-
-<td>15 Jul 2026</td>
-
-<td>MPP240025</td>
-
-<td>MPP 200AH</td>
-
-<td>Rohit Gupta</td>
-
-<td>
-
-<span class="badge-active">
-
-Sold
-
-</span>
-
-</td>
-
-</tr>
+<tbody id="salesReportBody">
 
 </tbody>
 
@@ -928,7 +824,7 @@ Sold
 
 <!-- ================= WARRANTY REPORT ================= -->
 
-<div class="table-card">
+<div class="table-card" id="warrantyReportSection">
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -940,9 +836,9 @@ Warranty Report
 
 </h5>
 
-<span class="badge bg-primary">
+<span class="badge bg-primary" id="warrantyReportCount">
 
-298 Records
+0 Records
 
 </span>
 
@@ -972,127 +868,7 @@ Warranty Report
 
 </thead>
 
-<tbody>
-
-<tr>
-
-<td>WAR240001</td>
-
-<td>MPP240001</td>
-
-<td>Rahul Sharma</td>
-
-<td>21 Jul 2026</td>
-
-<td>21 Jul 2028</td>
-
-<td>
-
-<span class="badge-active">
-
-Active
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>WAR240002</td>
-
-<td>MPP240005</td>
-
-<td>Amit Kumar</td>
-
-<td>20 Jul 2026</td>
-
-<td>20 Jul 2028</td>
-
-<td>
-
-<span class="badge-active">
-
-Active
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>WAR240003</td>
-
-<td>MPP240011</td>
-
-<td>Sachin Verma</td>
-
-<td>18 Jul 2026</td>
-
-<td>18 Jul 2028</td>
-
-<td>
-
-<span class="badge-active">
-
-Active
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>WAR240004</td>
-
-<td>MPP240018</td>
-
-<td>Mohit Singh</td>
-
-<td>16 Jul 2026</td>
-
-<td>16 Jul 2028</td>
-
-<td>
-
-<span class="badge-pending">
-
-Pending
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>WAR240005</td>
-
-<td>MPP240025</td>
-
-<td>Rohit Gupta</td>
-
-<td>15 Jul 2026</td>
-
-<td>15 Jul 2028</td>
-
-<td>
-
-<span class="badge-active">
-
-Active
-
-</span>
-
-</td>
-
-</tr>
+<tbody id="warrantyReportBody">
 
 </tbody>
 
@@ -1102,70 +878,10 @@ Active
 
 </div>
 
-<!-- ================= PAGINATION ================= -->
-
-<nav class="mt-4">
-
-<ul class="pagination justify-content-end">
-
-<li class="page-item disabled">
-
-<a class="page-link">
-
-Previous
-
-</a>
-
-</li>
-
-<li class="page-item active">
-
-<a class="page-link">
-
-1
-
-</a>
-
-</li>
-
-<li class="page-item">
-
-<a class="page-link">
-
-2
-
-</a>
-
-</li>
-
-<li class="page-item">
-
-<a class="page-link">
-
-3
-
-</a>
-
-</li>
-
-<li class="page-item">
-
-<a class="page-link">
-
-Next
-
-</a>
-
-</li>
-
-</ul>
-
-</nav>
-
 <!-- ================= NEXT PART START ================= -->
  <!-- ================= REPLACEMENT REPORT ================= -->
 
-<div class="table-card">
+<div class="table-card" id="replacementReportSection">
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -1177,9 +893,9 @@ Replacement Report
 
 </h5>
 
-<span class="badge bg-warning text-dark">
+<span class="badge bg-warning text-dark" id="replacementReportCount">
 
-12 Records
+0 Records
 
 </span>
 
@@ -1201,79 +917,13 @@ Replacement Report
 
 <th>Request Date</th>
 
-<th>Approval Status</th>
-
-<th>Warranty Status</th>
+<th>Status</th>
 
 </tr>
 
 </thead>
 
-<tbody>
-
-<tr>
-
-<td>REP240001</td>
-
-<td>MPP240001</td>
-
-<td>MPP241001</td>
-
-<td>21 Jul 2026</td>
-
-<td><span class="badge-active">Approved</span></td>
-
-<td><span class="badge-active">Transferred</span></td>
-
-</tr>
-
-<tr>
-
-<td>REP240002</td>
-
-<td>MPP240005</td>
-
-<td>MPP241008</td>
-
-<td>19 Jul 2026</td>
-
-<td><span class="badge-pending">Pending</span></td>
-
-<td><span class="badge-pending">Waiting</span></td>
-
-</tr>
-
-<tr>
-
-<td>REP240003</td>
-
-<td>MPP240011</td>
-
-<td>MPP241015</td>
-
-<td>17 Jul 2026</td>
-
-<td><span class="badge-active">Approved</span></td>
-
-<td><span class="badge-active">Transferred</span></td>
-
-</tr>
-
-<tr>
-
-<td>REP240004</td>
-
-<td>MPP240018</td>
-
-<td>MPP241020</td>
-
-<td>15 Jul 2026</td>
-
-<td><span class="badge-replaced">Rejected</span></td>
-
-<td><span class="badge-replaced">Not Replaced</span></td>
-
-</tr>
+<tbody id="replacementReportBody">
 
 </tbody>
 
@@ -1285,7 +935,7 @@ Replacement Report
 
 <!-- ================= REWARD REPORT ================= -->
 
-<div class="table-card">
+<div class="table-card" id="rewardReportSection">
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -1297,9 +947,9 @@ Reward Report
 
 </h5>
 
-<span class="badge bg-success">
+<span class="badge bg-success" id="rewardReportCount">
 
-1250 Points Earned
+0 Points Earned
 
 </span>
 
@@ -1329,71 +979,7 @@ Reward Report
 
 </thead>
 
-<tbody>
-
-<tr>
-
-<td>RW240001</td>
-
-<td>21 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240001</td>
-
-<td class="text-success fw-bold">+50</td>
-
-<td><span class="badge-active">Credited</span></td>
-
-</tr>
-
-<tr>
-
-<td>RW240002</td>
-
-<td>20 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240005</td>
-
-<td class="text-success fw-bold">+50</td>
-
-<td><span class="badge-active">Credited</span></td>
-
-</tr>
-
-<tr>
-
-<td>RW240003</td>
-
-<td>18 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240011</td>
-
-<td class="text-success fw-bold">+50</td>
-
-<td><span class="badge-active">Credited</span></td>
-
-</tr>
-
-<tr>
-
-<td>RW240004</td>
-
-<td>15 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240018</td>
-
-<td class="text-success fw-bold">+50</td>
-
-<td><span class="badge-active">Credited</span></td>
-
-</tr>
+<tbody id="rewardReportBody">
 
 </tbody>
 
@@ -1405,7 +991,7 @@ Reward Report
 
 <!-- ================= EXPORT REPORTS ================= -->
 
-<div class="table-card">
+<div class="table-card" id="exportReportSection">
 
 <div class="row align-items-center">
 
@@ -1429,7 +1015,7 @@ Download or print your reports for record keeping.
 
 <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
 
-<button class="btn btn-danger me-2">
+<button class="btn btn-danger me-2" type="button" id="exportPdfBtn">
 
 <i class="fa-solid fa-file-pdf me-2"></i>
 
@@ -1437,7 +1023,7 @@ Export PDF
 
 </button>
 
-<button class="btn btn-success me-2">
+<button class="btn btn-success me-2" type="button" id="exportExcelBtn">
 
 <i class="fa-solid fa-file-excel me-2"></i>
 
@@ -1445,7 +1031,7 @@ Export Excel
 
 </button>
 
-<button class="btn btn-primary">
+<button class="btn btn-primary" type="button" id="printReportBtn">
 
 <i class="fa-solid fa-print me-2"></i>
 
@@ -1477,7 +1063,7 @@ Dealer Performance Summary
 
 <strong>Total Sales</strong><br>
 
-325 Batteries
+<span id="summaryTotalSales">0</span> Batteries
 
 </div>
 
@@ -1485,7 +1071,7 @@ Dealer Performance Summary
 
 <strong>Warranty Activated</strong><br>
 
-298 Batteries
+<span id="summaryWarrantyActivated">0</span> Batteries
 
 </div>
 
@@ -1493,7 +1079,7 @@ Dealer Performance Summary
 
 <strong>Replacement Requests</strong><br>
 
-12 Requests
+<span id="summaryReplacementRequests">0</span> Requests
 
 </div>
 
@@ -1501,7 +1087,7 @@ Dealer Performance Summary
 
 <strong>Total Rewards</strong><br>
 
-1250 Points
+<span id="summaryTotalRewards">0</span> Points
 
 </div>
 
@@ -1514,247 +1100,436 @@ Dealer Performance Summary
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
 <script>
 
-/* ==========================================
-   GENERATE REPORT
-========================================== */
-
-document.querySelector(".btn-success").addEventListener("click",function(){
-
-alert("Report Generated Successfully!");
-
-/*
-
-Backend Flow
-
-Read Filters
-
-↓
-
-Dealer ID
-
-↓
-
-Sales
-
-↓
-
-Warranty
-
-↓
-
-Replacement
-
-↓
-
-Reward
-
-↓
-
-Display Report
-
-*/
-
-});
-
-/* ==========================================
-   SEARCH REPORT
-========================================== */
-
-const searchBox=document.querySelector('input[placeholder="Customer / Serial No."]');
-
-searchBox.addEventListener("keyup",function(){
-
-let filter=this.value.toUpperCase();
-
-let tables=document.querySelectorAll("table tbody");
-
-tables.forEach(function(body){
-
-let rows=body.querySelectorAll("tr");
-
-rows.forEach(function(row){
-
-let text=row.innerText.toUpperCase();
-
-row.style.display=text.indexOf(filter)>-1 ? "" : "none";
-
-});
-
-});
-
-});
-
-/* ==========================================
-   DATE FILTER
-========================================== */
-
-document.querySelectorAll('input[type="date"]').forEach(function(date){
-
-date.addEventListener("change",function(){
-
-console.log("Date Filter Applied");
-
-/*
-
-Backend
-
-WHERE Date BETWEEN
-
-From_Date
-
-AND
-
-To_Date
-
-*/
-
-});
-
-});
-
-/* ==========================================
-   EXPORT PDF
-========================================== */
-
-document.querySelector(".btn-danger")
-
-.addEventListener("click",function(){
-
-alert("PDF Export Started...");
-
-/*
-
-Backend
-
-Generate Dealer Report PDF
-
-↓
-
-Download
-
-*/
-
-});
-
-/* ==========================================
-   EXPORT EXCEL
-========================================== */
-
-document.querySelector(".btn-success.me-2")
-
-.addEventListener("click",function(){
-
-alert("Excel Export Started...");
-
-/*
-
-Backend
-
-Export XLSX
-
-*/
-
-});
-
-/* ==========================================
-   PRINT REPORT
-========================================== */
-
-document.querySelector(".btn-primary")
-
-.addEventListener("click",function(){
-
-window.print();
-
-});
-
-/* ==========================================
-   SIDEBAR ACTIVE
-========================================== */
-
-document.querySelectorAll(".sidebar a")
-
-.forEach(function(link){
-
-link.addEventListener("click",function(){
-
-document.querySelectorAll(".sidebar a")
-
-.forEach(function(item){
-
-item.classList.remove("active");
-
-});
-
-this.classList.add("active");
-
-});
-
-});
-
-/* ==========================================
-   NOTIFICATION ICON
-========================================== */
-
-const bell=document.querySelector(".fa-bell");
-
-if(bell){
-
-setInterval(function(){
-
-bell.classList.toggle("text-success");
-
-},1000);
-
+/* ===============================
+   AUTH CHECK
+================================ */
+
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "/admin/login.html";
+
+const authHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+};
+
+function fmt(n){
+    return Number(n || 0).toLocaleString("en-IN");
 }
 
-/* ==========================================
-   BUSINESS LOGIC
-========================================== */
+function fmtDate(d){
+    if (!d) return "-";
+    return new Date(d).toLocaleDateString("en-GB");
+}
 
-/*
+function badgeClass(status){
+    const s = (status || "").toLowerCase();
+    if (["active", "approved", "completed", "delivered"].includes(s)) return "badge-active";
+    if (["pending", "dispatched"].includes(s)) return "badge-pending";
+    if (["rejected", "cancelled", "expired"].includes(s)) return "badge-rejected";
+    return "badge-active";
+}
 
-Sales Report
 
-↓
+/* ===============================
+   4 CARDS + PERFORMANCE SUMMARY
+   (both read from the same endpoint,
+   force-filtered to this dealer server-side)
+================================ */
 
-Dealer Sales
+async function loadSummary(){
+    try {
+        const res = await fetch("/api/dealer-portal/reports/summary", { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) return;
 
-Warranty Report
+        const s = result.data;
 
-↓
+        document.getElementById("cardTotalSales").textContent = fmt(s.total_sales);
+        document.getElementById("cardWarrantyActivated").textContent = fmt(s.warranty_activated);
+        document.getElementById("cardReplacementRequests").textContent = fmt(s.replacement_requests);
+        document.getElementById("cardRewardPointsEarned").textContent = fmt(s.reward_points_earned);
 
-Activated Warranty
+        document.getElementById("summaryTotalSales").textContent = fmt(s.total_sales);
+        document.getElementById("summaryWarrantyActivated").textContent = fmt(s.warranty_activated);
+        document.getElementById("summaryReplacementRequests").textContent = fmt(s.replacement_requests);
+        document.getElementById("summaryTotalRewards").textContent = fmt(s.reward_points_earned);
+    } catch (err) {
+        console.error(err);
+    }
+}
 
-Replacement Report
 
-↓
+/* ===============================
+   CURRENT FILTERS (read once, used
+   by all 4 report loads together)
+================================ */
 
-Approved Replacement
+function currentReportFilters(){
+    return {
+        fromDate: document.getElementById("reportFromDate").value,
+        toDate: document.getElementById("reportToDate").value,
+        search: document.getElementById("reportSearchInput").value.trim()
+    };
+}
 
-Reward Report
+function buildQuery(filters){
+    const params = new URLSearchParams();
+    if (filters.fromDate) params.set("fromDate", filters.fromDate);
+    if (filters.toDate) params.set("toDate", filters.toDate);
+    if (filters.search) params.set("search", filters.search);
+    return params.toString();
+}
 
-↓
 
-+50 per Warranty Activation
+/* ===============================
+   SALES REPORT
+================================ */
 
-↓
+let salesReportRows = [];
 
-Reports Auto Update
+async function loadSalesReport(filters){
+    const tbody = document.getElementById("salesReportBody");
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
 
-↓
+    try {
+        const res = await fetch(`/api/dealer-portal/reports/sales?${buildQuery(filters)}`, { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) { tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">${result.message}</td></tr>`; return; }
 
-Admin Dashboard Sync
+        salesReportRows = result.data;
+        document.getElementById("salesReportCount").textContent = `${salesReportRows.length} Records`;
 
-*/
+        if (salesReportRows.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center">No Records Found.</td></tr>`;
+            return;
+        }
 
-/* ==========================================
+        tbody.innerHTML = salesReportRows.map(r => `
+            <tr>
+                <td>${r.invoice_number}</td>
+                <td>${fmtDate(r.dispatch_date)}</td>
+                <td>${r.serial_number}</td>
+                <td>${r.product_name} ${r.model_name}</td>
+                <td>${r.transport_name || "-"}</td>
+                <td><span class="${badgeClass(r.status)}">${r.status}</span></td>
+            </tr>
+        `).join("");
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   WARRANTY REPORT
+================================ */
+
+let warrantyReportRows = [];
+
+async function loadWarrantyReport(filters){
+    const tbody = document.getElementById("warrantyReportBody");
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
+
+    try {
+        const res = await fetch(`/api/dealer-portal/reports/warranty?${buildQuery(filters)}`, { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) { tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">${result.message}</td></tr>`; return; }
+
+        warrantyReportRows = result.data;
+        document.getElementById("warrantyReportCount").textContent = `${warrantyReportRows.length} Records`;
+
+        if (warrantyReportRows.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center">No Records Found.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = warrantyReportRows.map(r => `
+            <tr>
+                <td>WAR${String(r.warranty_id).padStart(4, "0")}</td>
+                <td>${r.serial_number}</td>
+                <td>${r.customer_name}</td>
+                <td>${fmtDate(r.activation_date)}</td>
+                <td>${fmtDate(r.expiry_date)}</td>
+                <td><span class="${badgeClass(r.status)}">${r.status}</span></td>
+            </tr>
+        `).join("");
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   REPLACEMENT REPORT
+================================ */
+
+let replacementReportRows = [];
+
+async function loadReplacementReport(filters){
+    const tbody = document.getElementById("replacementReportBody");
+    tbody.innerHTML = `<tr><td colspan="5" class="text-center">Loading...</td></tr>`;
+
+    try {
+        const res = await fetch(`/api/dealer-portal/reports/replacement?${buildQuery(filters)}`, { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) { tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">${result.message}</td></tr>`; return; }
+
+        replacementReportRows = result.data;
+        document.getElementById("replacementReportCount").textContent = `${replacementReportRows.length} Records`;
+
+        if (replacementReportRows.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center">No Records Found.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = replacementReportRows.map(r => `
+            <tr>
+                <td>RPL${String(r.replacement_id).padStart(4, "0")}</td>
+                <td>${r.old_serial_number}</td>
+                <td>${r.new_serial_number || "-"}</td>
+                <td>${fmtDate(r.created_at)}</td>
+                <td><span class="${badgeClass(r.status)}">${r.status}</span></td>
+            </tr>
+        `).join("");
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   REWARD REPORT
+================================ */
+
+let rewardReportRows = [];
+
+async function loadRewardReport(filters){
+    const tbody = document.getElementById("rewardReportBody");
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
+
+    try {
+        const res = await fetch(`/api/dealer-portal/reports/reward?${buildQuery(filters)}`, { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) { tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">${result.message}</td></tr>`; return; }
+
+        rewardReportRows = result.data;
+
+        const totalEarned = rewardReportRows
+            .filter(r => r.transaction_type === "credit")
+            .reduce((sum, r) => sum + Number(r.points), 0);
+        document.getElementById("rewardReportCount").textContent = `${fmt(totalEarned)} Points Earned`;
+
+        if (rewardReportRows.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center">No Records Found.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = rewardReportRows.map(r => `
+            <tr>
+                <td>RWD${String(r.transaction_id).padStart(4, "0")}</td>
+                <td>${fmtDate(r.transaction_date)}</td>
+                <td>${r.remarks || r.reference_type || "-"}</td>
+                <td>${r.serial_number || "-"}</td>
+                <td class="${r.transaction_type === 'credit' ? 'text-success' : 'text-danger'} fw-bold">
+                    ${r.transaction_type === 'credit' ? '+' : '-'}${r.points}
+                </td>
+                <td><span class="${badgeClass(r.status)}">${r.status}</span></td>
+            </tr>
+        `).join("");
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   GENERATE REPORT -- loads all 4
+   tables with the current filters,
+   then scrolls to the section picked
+   in "Report Type" (or top if "All")
+================================ */
+
+async function generateAllReports(){
+    const filters = currentReportFilters();
+
+    await Promise.all([
+        loadSalesReport(filters),
+        loadWarrantyReport(filters),
+        loadReplacementReport(filters),
+        loadRewardReport(filters)
+    ]);
+
+    const reportType = document.getElementById("reportTypeSelect").value;
+    const sectionMap = {
+        sales: "salesReportSection",
+        warranty: "warrantyReportSection",
+        replacement: "replacementReportSection",
+        reward: "rewardReportSection"
+    };
+
+    if (sectionMap[reportType]) {
+        document.getElementById(sectionMap[reportType]).scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+        document.getElementById("salesReportSection").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+}
+
+document.getElementById("generateReportBtn").addEventListener("click", generateAllReports);
+
+
+/* ===============================
+   EXPORT PDF -- real .pdf file (jsPDF + autotable), same 4
+   report sections as Export Excel, built from whatever data
+   is currently loaded on the page.
+================================ */
+
+document.getElementById("exportPdfBtn").addEventListener("click", function(){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: "landscape" });
+
+    const today = new Date().toLocaleDateString("en-IN");
+    let y = 15;
+
+    doc.setFontSize(16);
+    doc.text("Battery ERP -- Dealer Reports", 14, y);
+    doc.setFontSize(10);
+    doc.text(`Generated: ${today}`, 14, y + 6);
+    y += 14;
+
+    function addSection(title, head, rows){
+        if (y > 170) { doc.addPage(); y = 15; }
+
+        doc.setFontSize(13);
+        doc.text(title, 14, y);
+        y += 4;
+
+        doc.autoTable({
+            startY: y,
+            head: [head],
+            body: rows,
+            styles: { fontSize: 8 },
+            headStyles: { fillColor: [11, 94, 215] },
+            margin: { left: 14, right: 14 }
+        });
+
+        y = doc.lastAutoTable.finalY + 12;
+    }
+
+    addSection(
+        "Sales Report",
+        ["Invoice No.", "Date", "Serial Number", "Product", "Transport", "Status"],
+        salesReportRows.map(r => [
+            r.invoice_number, fmtDate(r.dispatch_date), r.serial_number,
+            `${r.product_name} ${r.model_name}`, r.transport_name || "-", r.status
+        ])
+    );
+
+    addSection(
+        "Warranty Report",
+        ["Warranty ID", "Serial No.", "Customer", "Activation Date", "Expiry Date", "Status"],
+        warrantyReportRows.map(r => [
+            `WAR${String(r.warranty_id).padStart(4, "0")}`, r.serial_number, r.customer_name,
+            fmtDate(r.activation_date), fmtDate(r.expiry_date), r.status
+        ])
+    );
+
+    addSection(
+        "Replacement Report",
+        ["Request ID", "Old Serial", "New Serial", "Request Date", "Status"],
+        replacementReportRows.map(r => [
+            `RPL${String(r.replacement_id).padStart(4, "0")}`, r.old_serial_number,
+            r.new_serial_number || "-", fmtDate(r.created_at), r.status
+        ])
+    );
+
+    addSection(
+        "Reward Report",
+        ["Transaction ID", "Date", "Activity", "Battery Serial", "Reward", "Status"],
+        rewardReportRows.map(r => [
+            `RWD${String(r.transaction_id).padStart(4, "0")}`, fmtDate(r.transaction_date),
+            r.remarks || r.reference_type || "-", r.serial_number || "-",
+            (r.transaction_type === "credit" ? "+" : "-") + r.points, r.status
+        ])
+    );
+
+    doc.save(`Dealer_Reports_${new Date().toISOString().split("T")[0]}.pdf`);
+});
+
+document.getElementById("printReportBtn").addEventListener("click", function(){
+    window.print();
+});
+
+
+/* ===============================
+   EXPORT EXCEL -- real .xlsx file,
+   one sheet per report, built from
+   whatever is currently loaded.
+================================ */
+
+document.getElementById("exportExcelBtn").addEventListener("click", function(){
+    const wb = XLSX.utils.book_new();
+
+    const salesSheet = salesReportRows.map(r => ({
+        "Invoice No.": r.invoice_number,
+        "Date": fmtDate(r.dispatch_date),
+        "Serial Number": r.serial_number,
+        "Product": `${r.product_name} ${r.model_name}`,
+        "Transport": r.transport_name || "-",
+        "Status": r.status
+    }));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(salesSheet), "Sales Report");
+
+    const warrantySheet = warrantyReportRows.map(r => ({
+        "Warranty ID": `WAR${String(r.warranty_id).padStart(4, "0")}`,
+        "Serial No.": r.serial_number,
+        "Customer": r.customer_name,
+        "Activation Date": fmtDate(r.activation_date),
+        "Expiry Date": fmtDate(r.expiry_date),
+        "Status": r.status
+    }));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(warrantySheet), "Warranty Report");
+
+    const replacementSheet = replacementReportRows.map(r => ({
+        "Request ID": `RPL${String(r.replacement_id).padStart(4, "0")}`,
+        "Old Serial": r.old_serial_number,
+        "New Serial": r.new_serial_number || "-",
+        "Request Date": fmtDate(r.created_at),
+        "Status": r.status
+    }));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(replacementSheet), "Replacement Report");
+
+    const rewardSheet = rewardReportRows.map(r => ({
+        "Transaction ID": `RWD${String(r.transaction_id).padStart(4, "0")}`,
+        "Date": fmtDate(r.transaction_date),
+        "Activity": r.remarks || r.reference_type || "-",
+        "Battery Serial": r.serial_number || "-",
+        "Reward": (r.transaction_type === "credit" ? "+" : "-") + r.points,
+        "Status": r.status
+    }));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rewardSheet), "Reward Report");
+
+    XLSX.writeFile(wb, `Dealer_Reports_${new Date().toISOString().split("T")[0]}.xlsx`);
+});
+
+
+/* ===============================
    PAGE LOAD
-========================================== */
+================================ */
 
-console.log("Dealer Reports Module Loaded Successfully");
+loadSummary();
+generateAllReports();
 
 </script>
 

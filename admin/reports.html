@@ -343,6 +343,27 @@ font-size:13px;
 
 }
 
+.search-highlight{
+
+animation: highlightFade 3s ease;
+
+}
+
+@keyframes highlightFade {
+
+0% { background-color: #fff3cd; }
+
+100% { background-color: transparent; }
+
+}
+
+.quick-report-active{
+
+box-shadow:0 0 0 3px rgba(11,94,215,.25);
+transform:translateY(-2px);
+
+}
+
 /*=========================
 CHART BOX
 =========================*/
@@ -370,6 +391,42 @@ align-items:center;
 color:#777;
 
 font-weight:600;
+
+}
+
+.chart-box.flex-column{
+
+flex-direction:column;
+
+align-items:stretch;
+
+}
+
+.chart-canvas-wrap{
+
+position:relative;
+
+width:100%;
+
+height:280px;
+
+}
+
+.chart-empty{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+height:100%;
+
+color:#aaa;
+
+font-weight:500;
+
+font-size:14px;
 
 }
 
@@ -929,31 +986,31 @@ border:1px solid #ddd;
 
     <div class="d-flex flex-wrap gap-3">
 
-        <button class="btn btn-outline-primary">
+        <button class="btn btn-outline-primary" id="quickToday">
 
             Today's Report
 
         </button>
 
-        <button class="btn btn-outline-success">
+        <button class="btn btn-outline-success" id="quickWeekly">
 
             Weekly Report
 
         </button>
 
-        <button class="btn btn-outline-warning">
+        <button class="btn btn-outline-warning" id="quickMonthly">
 
             Monthly Report
 
         </button>
 
-        <button class="btn btn-outline-danger">
+        <button class="btn btn-outline-danger" id="quickYearly">
 
             Yearly Report
 
         </button>
 
-        <button class="btn btn-outline-dark">
+        <button class="btn btn-outline-dark" id="quickCustom">
 
             Custom Report
 
@@ -1099,6 +1156,8 @@ border:1px solid #ddd;
 
         Generated Reports
 
+        <span id="quickReportLabel" class="badge bg-primary ms-2 d-none" style="font-size:12px;"></span>
+
     </h4>
 
     <div class="table-responsive">
@@ -1141,9 +1200,13 @@ border:1px solid #ddd;
 
     <div class="col-lg-6">
 
-        <div class="chart-box">
+        <div class="chart-box flex-column">
 
-            📊 Monthly Dispatch Report Chart
+            <h6 class="fw-bold w-100 mb-3">📊 Monthly Dispatch Report Chart</h6>
+
+            <div class="chart-canvas-wrap">
+                <canvas id="chartMonthlyDispatch"></canvas>
+            </div>
 
         </div>
 
@@ -1151,9 +1214,13 @@ border:1px solid #ddd;
 
     <div class="col-lg-6">
 
-        <div class="chart-box">
+        <div class="chart-box flex-column">
 
-            📈 Warranty & Replacement Analysis
+            <h6 class="fw-bold w-100 mb-3">📈 Warranty & Replacement Analysis</h6>
+
+            <div class="chart-canvas-wrap">
+                <canvas id="chartWarrantyReplacement"></canvas>
+            </div>
 
         </div>
 
@@ -1165,9 +1232,13 @@ border:1px solid #ddd;
 
     <div class="col-lg-6">
 
-        <div class="chart-box">
+        <div class="chart-box flex-column">
 
-            🏆 Top Dealers Performance
+            <h6 class="fw-bold w-100 mb-3">🏆 Top Dealers Performance</h6>
+
+            <div class="chart-canvas-wrap">
+                <canvas id="chartTopDealers"></canvas>
+            </div>
 
         </div>
 
@@ -1175,9 +1246,13 @@ border:1px solid #ddd;
 
     <div class="col-lg-6">
 
-        <div class="chart-box">
+        <div class="chart-box flex-column">
 
-            🎁 Reward Wallet Distribution
+            <h6 class="fw-bold w-100 mb-3">🎁 Reward Wallet Distribution</h6>
+
+            <div class="chart-canvas-wrap">
+                <canvas id="chartRewardDistribution"></canvas>
+            </div>
 
         </div>
 
@@ -1340,6 +1415,11 @@ justify-content:center;
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- ================= jsPDF (real PDF export) ================= -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
 <!-- ================= JAVASCRIPT ================= -->
 
 <script>
@@ -1369,6 +1449,7 @@ const authHeaders = {
 };
 
 let lastLoadedReports = [];
+let lastReportsTotal = 0;
 
 
 /* ===============================
@@ -1419,6 +1500,156 @@ async function loadSummary(){
 
 
 /* ===============================
+   ANALYTICS CHARTS (real data from /api/reports/charts)
+================================ */
+
+let chartInstances = {};
+
+function destroyChart(id){
+    if (chartInstances[id]) {
+        chartInstances[id].destroy();
+        delete chartInstances[id];
+    }
+}
+
+// Agar kisi chart ke pass dikhane layak data hi nahi hai (sab zero / empty),
+// to canvas ki jagah ek chhota "No data yet" message dikha do instead of
+// ek khaali/confusing chart.
+function hasData(numbers){
+    return numbers.some(n => Number(n) > 0);
+}
+
+function showEmptyState(canvasId, message){
+    const canvas = document.getElementById(canvasId);
+    const wrap = canvas.parentElement;
+    wrap.innerHTML = `<div class="chart-empty">${message}</div>`;
+}
+
+const CHART_COLORS = ["#0B5ED7", "#20c997", "#ffc107", "#dc3545", "#6610f2", "#fd7e14"];
+
+async function loadCharts(){
+    try {
+        const response = await fetch("/api/reports/charts", { headers: authHeaders });
+        const result = await response.json();
+        if (!result.success) return;
+
+        const d = result.data;
+
+        /* ---- 1. Monthly Dispatch (line chart) ---- */
+        destroyChart("chartMonthlyDispatch");
+        const dispatchCounts = d.monthly_dispatch.map(m => m.count);
+        if (hasData(dispatchCounts)) {
+            chartInstances.chartMonthlyDispatch = new Chart(document.getElementById("chartMonthlyDispatch"), {
+                type: "line",
+                data: {
+                    labels: d.monthly_dispatch.map(m => m.month),
+                    datasets: [{
+                        label: "Dispatches",
+                        data: dispatchCounts,
+                        borderColor: "#0B5ED7",
+                        backgroundColor: "rgba(11,94,215,0.12)",
+                        tension: 0.35,
+                        fill: true,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            });
+        } else {
+            showEmptyState("chartMonthlyDispatch", "Pichle 6 mahino me koi dispatch record nahi mila.");
+        }
+
+        /* ---- 2. Warranty & Replacement Analysis (grouped bar) ---- */
+        destroyChart("chartWarrantyReplacement");
+        const w = d.warranty_breakdown, r = d.replacement_breakdown;
+        const wrValues = [w.pending, w.active, w.expired, w.claimed, r.pending, r.approved, r.completed, r.rejected];
+        if (hasData(wrValues)) {
+            chartInstances.chartWarrantyReplacement = new Chart(document.getElementById("chartWarrantyReplacement"), {
+                type: "bar",
+                data: {
+                    labels: ["Warranty Pending", "Warranty Active", "Warranty Expired", "Warranty Claimed",
+                             "Replace Pending", "Replace Approved", "Replace Completed", "Replace Rejected"],
+                    datasets: [{
+                        label: "Records",
+                        data: wrValues,
+                        backgroundColor: ["#ffc107","#20c997","#6c757d","#0dcaf0","#ffc107","#20c997","#0B5ED7","#dc3545"]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } },
+                        x: { ticks: { autoSkip: false, maxRotation: 40, minRotation: 20, font: { size: 10 } } }
+                    }
+                }
+            });
+        } else {
+            showEmptyState("chartWarrantyReplacement", "Warranty / Replacement ka koi record nahi mila.");
+        }
+
+        /* ---- 3. Top Dealers Performance (bar) ---- */
+        destroyChart("chartTopDealers");
+        const dealerCounts = d.top_dealers.map(x => x.dispatch_count);
+        if (d.top_dealers.length && hasData(dealerCounts)) {
+            chartInstances.chartTopDealers = new Chart(document.getElementById("chartTopDealers"), {
+                type: "bar",
+                data: {
+                    labels: d.top_dealers.map(x => x.dealer_name),
+                    datasets: [{
+                        label: "Dispatches",
+                        data: dealerCounts,
+                        backgroundColor: CHART_COLORS
+                    }]
+                },
+                options: {
+                    indexAxis: "y",
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            });
+        } else {
+            showEmptyState("chartTopDealers", "Abhi tak koi dealer dispatch nahi mila.");
+        }
+
+        /* ---- 4. Reward Wallet Distribution (doughnut) ---- */
+        destroyChart("chartRewardDistribution");
+        const rewardValues = d.reward_distribution.map(x => x.balance);
+        if (d.reward_distribution.length && hasData(rewardValues)) {
+            chartInstances.chartRewardDistribution = new Chart(document.getElementById("chartRewardDistribution"), {
+                type: "doughnut",
+                data: {
+                    labels: d.reward_distribution.map(x => x.dealer_name),
+                    datasets: [{
+                        data: rewardValues,
+                        backgroundColor: CHART_COLORS
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } } }
+                }
+            });
+        } else {
+            showEmptyState("chartRewardDistribution", "Abhi kisi dealer ke reward wallet me balance nahi hai.");
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
+/* ===============================
    BUILD FILTER QUERY STRING
 ================================ */
 
@@ -1455,6 +1686,9 @@ function buildFilterParams(searchOverride){
     const state = document.getElementById("filterState").value.trim();
     if (state) params.set("state", state);
 
+    const district = document.getElementById("filterDistrict").value.trim();
+    if (district) params.set("district", district);
+
     return params;
 }
 
@@ -1487,6 +1721,7 @@ async function loadReports(searchOverride){
 
         const reports = result.data.reports;
         lastLoadedReports = reports;
+        lastReportsTotal = result.data.pagination ? result.data.pagination.total : reports.length;
 
         if (reports.length === 0) {
             tbody.innerHTML = `<tr><td colspan="9" class="text-center">No Records Found.</td></tr>`;
@@ -1494,7 +1729,7 @@ async function loadReports(searchOverride){
         }
 
         tbody.innerHTML = reports.map((r, index) => `
-            <tr>
+            <tr id="report-row-${r.report_id}">
                 <td>${index + 1}</td>
                 <td>${r.report_id}</td>
                 <td>${new Date(r.report_date).toLocaleDateString("en-GB")}</td>
@@ -1524,11 +1759,52 @@ function viewReportRow(r){
 
 /* ===============================
    TOPBAR SEARCH
+   - Enter key OR magnifying-glass click => search + jump straight to
+     the matching row in the table below (scroll + highlight it)
+   - Typing rukne ke 450ms baad => auto-filter table (debounced live search,
+     no scroll/jump -- taaki user ko baar baar page na hile)
+   - Box khaali karne par => sab reports wapas load
 ================================ */
 
-document.getElementById("topSearchBox").addEventListener("keyup", function(e){
-    if (e.key === "Enter") loadReports(this.value.trim());
+const topSearchBox = document.getElementById("topSearchBox");
+const topSearchIcon = document.querySelector(".search-box i.fa-magnifying-glass");
+let searchDebounceTimer = null;
+
+async function searchAndJumpToRow(term){
+    await loadReports(term);
+
+    if (!term) return; // khaali search -> sab reports dikh rahe hain, jump karne ki zaroorat nahi
+
+    const tbody = document.querySelector("table tbody");
+    const firstMatch = tbody.querySelector("tr[id^='report-row-']");
+
+    if (!firstMatch) return; // "No Records Found" -- koi row hi nahi hai jump karne ko
+
+    firstMatch.scrollIntoView({ behavior: "smooth", block: "center" });
+    firstMatch.classList.add("search-highlight");
+    setTimeout(() => firstMatch.classList.remove("search-highlight"), 3000);
+}
+
+topSearchBox.addEventListener("keyup", function(e){
+    if (e.key === "Enter") {
+        clearTimeout(searchDebounceTimer);
+        searchAndJumpToRow(this.value.trim());
+        return;
+    }
+
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+        loadReports(this.value.trim());
+    }, 450);
 });
+
+if (topSearchIcon) {
+    topSearchIcon.style.cursor = "pointer";
+    topSearchIcon.addEventListener("click", function(){
+        clearTimeout(searchDebounceTimer);
+        searchAndJumpToRow(topSearchBox.value.trim());
+    });
+}
 
 
 /* ===============================
@@ -1539,60 +1815,104 @@ const filterForm = document.querySelector(".form-card form");
 
 filterForm.addEventListener("submit", function(e){
     e.preventDefault();
+    setActiveQuickButton(null); // manual filter -> koi bhi "Quick Report" ab active nahi
+    hideQuickReportLabel();
     loadReports();
 });
 
 document.querySelector('.btn-secondary').addEventListener("click", function(e){
     e.preventDefault();
     filterForm.reset();
+    setActiveQuickButton(null);
+    hideQuickReportLabel();
     loadReports("");
 });
 
 
 /* ===============================
-   QUICK REPORTS (Today / Weekly / Monthly / Yearly)
+   QUICK REPORTS (Today / Weekly / Monthly / Yearly / Custom)
+   - Clicked button ko visually "active" dikhate hain
+   - Result count ke sath ek chhota label "Generated Reports" ke paas dikhta hai
+   - Result turant table tak scroll ho jaate hain, dhoondhna nahi padta
 ================================ */
+
+const quickReportButtons = [
+    document.getElementById("quickToday"),
+    document.getElementById("quickWeekly"),
+    document.getElementById("quickMonthly"),
+    document.getElementById("quickYearly")
+];
+const quickReportLabel = document.getElementById("quickReportLabel");
+
+function setActiveQuickButton(activeBtn){
+    quickReportButtons.forEach(btn => {
+        if (btn) btn.classList.remove("quick-report-active");
+    });
+    if (activeBtn) activeBtn.classList.add("quick-report-active");
+}
+
+function hideQuickReportLabel(){
+    quickReportLabel.classList.add("d-none");
+    quickReportLabel.textContent = "";
+}
+
+function scrollToReportsTable(){
+    document.querySelector("table").closest(".form-card").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function runQuickReport(btn, rangeLabel){
+    setActiveQuickButton(btn);
+    await loadReports();
+
+    quickReportLabel.textContent = `${rangeLabel} — ${lastReportsTotal} record${lastReportsTotal === 1 ? "" : "s"}`;
+    quickReportLabel.classList.remove("d-none");
+
+    scrollToReportsTable();
+}
 
 function formatDateInput(date){
     return date.toISOString().split("T")[0];
 }
 
-document.querySelector(".btn-outline-primary").addEventListener("click", function(){
+document.getElementById("quickToday").addEventListener("click", function(){
     const today = formatDateInput(new Date());
     document.getElementById("filterFromDate").value = today;
     document.getElementById("filterToDate").value = today;
-    loadReports();
+    runQuickReport(this, "Today's Report");
 });
 
-document.querySelector(".btn-outline-success").addEventListener("click", function(){
+document.getElementById("quickWeekly").addEventListener("click", function(){
     const to = new Date();
     const from = new Date();
     from.setDate(from.getDate() - 7);
     document.getElementById("filterFromDate").value = formatDateInput(from);
     document.getElementById("filterToDate").value = formatDateInput(to);
-    loadReports();
+    runQuickReport(this, "Weekly Report (Last 7 Days)");
 });
 
-document.querySelector(".btn-outline-warning").addEventListener("click", function(){
+document.getElementById("quickMonthly").addEventListener("click", function(){
     const to = new Date();
     const from = new Date();
     from.setMonth(from.getMonth() - 1);
     document.getElementById("filterFromDate").value = formatDateInput(from);
     document.getElementById("filterToDate").value = formatDateInput(to);
-    loadReports();
+    runQuickReport(this, "Monthly Report (Last 30 Days)");
 });
 
-document.querySelector(".btn-outline-danger").addEventListener("click", function(){
+document.getElementById("quickYearly").addEventListener("click", function(){
     const to = new Date();
     const from = new Date();
     from.setFullYear(from.getFullYear() - 1);
     document.getElementById("filterFromDate").value = formatDateInput(from);
     document.getElementById("filterToDate").value = formatDateInput(to);
-    loadReports();
+    runQuickReport(this, "Yearly Report (Last 12 Months)");
 });
 
-document.querySelector(".btn-outline-dark").addEventListener("click", function(){
+document.getElementById("quickCustom").addEventListener("click", function(){
+    setActiveQuickButton(null);
+    hideQuickReportLabel();
     document.querySelector(".form-card").scrollIntoView({ behavior: "smooth" });
+    document.getElementById("filterFromDate").focus();
 });
 
 
@@ -1625,12 +1945,46 @@ document.querySelectorAll(".btn-success").forEach(btn => {
 
 
 /* ===============================
-   EXPORT PDF / PRINT (browser print dialog -- "Save as PDF" option)
+   EXPORT PDF (real PDF file via jsPDF + autoTable -- pehle yeh sirf
+   window.print() chalata tha jo poora page (sidebar/topbar/forms sahit)
+   print kar deta tha aur "Export" jaisa nahi lagta tha. Ab Export Excel
+   ki tarah hi seedha actual reports data se ek proper PDF banta hai.)
 ================================ */
 
 document.querySelectorAll(".btn-danger").forEach(btn => {
     if (btn.textContent.includes("Export PDF")) {
-        btn.addEventListener("click", function(){ window.print(); });
+        btn.addEventListener("click", function(){
+            if (lastLoadedReports.length === 0) {
+                alert("Koi data nahi hai export karne ke liye. Pehle 'Generate Report' dabao.");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: "landscape" });
+
+            doc.setFontSize(14);
+            doc.text("Battery ERP - Reports & Analytics", 14, 15);
+            doc.setFontSize(10);
+            doc.setTextColor(120);
+            doc.text(`Generated on ${new Date().toLocaleString("en-IN")}`, 14, 21);
+
+            const headers = [["#", "Report ID", "Date", "Dealer", "Category", "Product", "Model", "Serial", "Status"]];
+            const rows = lastLoadedReports.map((r, i) => [
+                i + 1, r.report_id, new Date(r.report_date).toLocaleDateString("en-GB"),
+                r.dealer_name, r.category_name, r.product_name, r.model_name,
+                r.serial_number, r.status
+            ]);
+
+            doc.autoTable({
+                head: headers,
+                body: rows,
+                startY: 27,
+                styles: { fontSize: 8 },
+                headStyles: { fillColor: [11, 94, 215] }
+            });
+
+            doc.save(`battery_erp_report_${Date.now()}.pdf`);
+        });
     }
 });
 
@@ -1651,6 +2005,7 @@ document.querySelectorAll(".btn-warning").forEach(btn => {
             loadDashboardStats();
             loadSummary();
             loadReports();
+            loadCharts();
         });
     }
 });
@@ -1663,6 +2018,7 @@ document.querySelectorAll(".btn-warning").forEach(btn => {
 loadDashboardStats();
 loadSummary();
 loadReports();
+loadCharts();
 
 </script>
 

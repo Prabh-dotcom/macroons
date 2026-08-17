@@ -350,6 +350,59 @@ padding:8px 12px;
 font-size:13px;
 
 }
+
+.search-highlight{
+
+animation: highlightFade 3s ease;
+
+}
+
+@keyframes highlightFade {
+
+0% { background-color: #fff3cd; }
+
+100% { background-color: transparent; }
+
+}
+
+
+/* ================= PRINT STYLES =================
+   Sirf dispatch records table print hoga, sidebar/
+   topbar/form/pagination sab hide ho jayenge. */
+
+@media print {
+
+    .sidebar, .topbar, .no-print, #dispatchRecordsCard > .no-print {
+
+        display: none !important;
+
+    }
+
+    body * {
+
+        visibility: hidden;
+
+    }
+
+    #printableArea, #printableArea * {
+
+        visibility: visible;
+
+    }
+
+    #printableArea {
+
+        position: absolute;
+
+        left: 0;
+
+        top: 0;
+
+        width: 100%;
+
+    }
+
+}
 </style>
 
 </head>
@@ -456,6 +509,7 @@ font-size:13px;
             <i class="fa-solid fa-magnifying-glass"></i>
 
             <input type="text"
+                   id="topSearchBox"
                    placeholder="Search by Serial Number...">
 
         </div>
@@ -502,7 +556,7 @@ font-size:13px;
 
             <div class="d-flex flex-wrap gap-2 mt-3 mt-lg-0">
 
-                <button class="btn btn-success">
+                <button class="btn btn-success" id="topNewDispatchBtn">
 
                     <i class="fa-solid fa-plus me-2"></i>
 
@@ -510,7 +564,7 @@ font-size:13px;
 
                 </button>
 
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" id="topExportExcelBtn">
 
                     <i class="fa-solid fa-file-excel me-2"></i>
 
@@ -518,7 +572,7 @@ font-size:13px;
 
                 </button>
 
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary" id="topPrintBtn">
 
                     <i class="fa-solid fa-print me-2"></i>
 
@@ -526,7 +580,7 @@ font-size:13px;
 
                 </button>
 
-                <button class="btn btn-warning text-white">
+                <button class="btn btn-warning text-white" id="topRefreshBtn">
 
                     <i class="fa-solid fa-rotate-right me-2"></i>
 
@@ -548,7 +602,7 @@ font-size:13px;
 
                     <i class="fa-solid fa-truck-fast fa-2x text-primary"></i>
 
-                    <h3>1,250</h3>
+                    <h3 id="statTotalDispatch">0</h3>
 
                     <p>Total Dispatch</p>
 
@@ -562,7 +616,7 @@ font-size:13px;
 
                     <i class="fa-solid fa-calendar-day fa-2x text-success"></i>
 
-                    <h3>45</h3>
+                    <h3 id="statTodayDispatch">0</h3>
 
                     <p>Today's Dispatch</p>
 
@@ -576,7 +630,7 @@ font-size:13px;
 
                     <i class="fa-solid fa-building fa-2x text-info"></i>
 
-                    <h3>82</h3>
+                    <h3 id="statActiveDealers">0</h3>
 
                     <p>Active Dealers</p>
 
@@ -590,7 +644,7 @@ font-size:13px;
 
                     <i class="fa-solid fa-box-open fa-2x text-danger"></i>
 
-                    <h3>520</h3>
+                    <h3 id="statPendingDispatch">0</h3>
 
                     <p>Pending Dispatch</p>
 
@@ -602,7 +656,7 @@ font-size:13px;
 
         <!-- ================= DISPATCH ENTRY ================= -->
 
-        <div class="form-card">
+        <div class="form-card" id="newDispatchFormCard">
 
             <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -935,15 +989,41 @@ Dispatch Details
 
 <!-- ================= DISPATCH RECORDS ================= -->
 
-<div class="form-card">
+<div class="form-card" id="dispatchRecordsCard">
 
-<h4 class="fw-bold mb-4">
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 no-print">
 
-Dispatch Records
+    <h4 class="fw-bold mb-0">Dispatch Records</h4>
 
-</h4>
+    <div class="d-flex gap-2 flex-wrap">
 
-<div class="table-responsive">
+        <input type="text" id="tableSearchBox" class="form-control form-control-sm" style="width:220px;" placeholder="Search Invoice / Dealer / Serial">
+
+        <select id="statusFilter" class="form-select form-select-sm" style="width:150px;">
+
+            <option value="">All Status</option>
+
+            <option value="pending">Pending</option>
+
+            <option value="dispatched">Dispatched</option>
+
+            <option value="delivered">Delivered</option>
+
+            <option value="cancelled">Cancelled</option>
+
+        </select>
+
+        <button id="exportExcelBtn" class="btn btn-sm btn-success"><i class="fa-solid fa-file-excel me-1"></i>Export Excel</button>
+
+        <button id="printTableBtn" class="btn btn-sm btn-secondary"><i class="fa-solid fa-print me-1"></i>Print</button>
+
+        <button id="refreshTableBtn" class="btn btn-sm btn-warning text-dark"><i class="fa-solid fa-rotate-right me-1"></i>Refresh</button>
+
+    </div>
+
+</div>
+
+<div class="table-responsive" id="printableArea">
 
 <table class="table table-bordered table-hover align-middle">
 
@@ -953,19 +1033,19 @@ Dispatch Records
 
 <th>#</th>
 
-<th>Invoice</th>
+<th class="sortable" data-sort="invoice_number" style="cursor:pointer;">Invoice <i class="fa-solid fa-sort"></i></th>
 
 <th>Company</th>
 
 <th>Serial No.</th>
 
-<th>Dealer</th>
+<th class="sortable" data-sort="dealer_name" style="cursor:pointer;">Dealer <i class="fa-solid fa-sort"></i></th>
 
-<th>Dispatch Date</th>
+<th class="sortable" data-sort="dispatch_date" style="cursor:pointer;">Dispatch Date <i class="fa-solid fa-sort"></i></th>
 
-<th>Status</th>
+<th class="sortable" data-sort="status" style="cursor:pointer;">Status <i class="fa-solid fa-sort"></i></th>
 
-<th>Action</th>
+<th class="no-print">Action</th>
 
 </tr>
 
@@ -976,6 +1056,20 @@ Dispatch Records
 </tbody>
 
 </table>
+
+</div>
+
+<!-- ================= PAGINATION ================= -->
+
+<div class="d-flex justify-content-between align-items-center mt-4 flex-wrap no-print">
+
+    <p class="text-muted mb-2" id="paginationInfo">Showing 0 records</p>
+
+    <nav>
+
+        <ul class="pagination mb-0" id="paginationControls"></ul>
+
+    </nav>
 
 </div>
 
@@ -1108,6 +1202,10 @@ Dispatch Records
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- ================= SHEETJS (Excel export) ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 <!-- ================= DEMO SCRIPT ================= -->
 
 <script>
@@ -1229,15 +1327,58 @@ function badgeClassForStatus(status){
 
 
 /* ===============================
-   LOAD DISPATCH RECORDS
+   TABLE STATE (search / filter / sort / pagination)
+================================ */
+
+let currentPage = 1;
+let currentSortBy = "created_at";
+let currentSortOrder = "DESC";
+let lastLoadedDispatch = [];
+let searchDebounceTimer;
+
+
+/* ===============================
+   STAT CARDS
+================================ */
+
+async function loadDispatchStats(){
+    try {
+        const response = await fetch("/api/dispatch/stats", { headers: authHeaders });
+        const result = await response.json();
+        if (!result.success) return;
+
+        document.getElementById("statTotalDispatch").textContent = result.data.total_dispatch.toLocaleString("en-IN");
+        document.getElementById("statTodayDispatch").textContent = result.data.today_dispatch.toLocaleString("en-IN");
+        document.getElementById("statActiveDealers").textContent = result.data.active_dealers.toLocaleString("en-IN");
+        document.getElementById("statPendingDispatch").textContent = result.data.pending_dispatch.toLocaleString("en-IN");
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
+/* ===============================
+   LOAD DISPATCH RECORDS (search + filter + sort + pagination)
 ================================ */
 
 async function loadDispatch(){
     const tbody = document.querySelector("table tbody");
     tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
+    const search = document.getElementById("tableSearchBox").value.trim();
+    const status = document.getElementById("statusFilter").value;
+
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (status) params.set("status", status);
+    params.set("page", currentPage);
+    params.set("limit", 10);
+    params.set("sortBy", currentSortBy);
+    params.set("sortOrder", currentSortOrder);
+
     try {
-        const response = await fetch("/api/dispatch", { headers: authHeaders });
+        const response = await fetch(`/api/dispatch?${params.toString()}`, { headers: authHeaders });
         const result = await response.json();
 
         if (!result.success) {
@@ -1246,32 +1387,215 @@ async function loadDispatch(){
         }
 
         const records = result.data.dispatch;
+        const pagination = result.data.pagination;
+        lastLoadedDispatch = records;
 
         if (records.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="8" class="text-center">Koi dispatch record nahi mila.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center">No Records Found.</td></tr>`;
+            renderPagination(pagination);
             return;
         }
 
         tbody.innerHTML = records.map((r, index) => `
-            <tr>
-                <td>${index + 1}</td>
+            <tr id="dispatch-row-${r.dispatch_id}" data-invoice="${r.invoice_number}" data-serial="${r.serial_number}" data-dealer="${r.dealer_name}">
+                <td>${(pagination.page - 1) * pagination.limit + index + 1}</td>
                 <td>${r.invoice_number}</td>
+                <td>${r.company_name || "-"}</td>
                 <td>${r.serial_number}</td>
                 <td>${r.dealer_name} (${r.dealer_code})</td>
                 <td>${new Date(r.dispatch_date).toLocaleDateString("en-GB")}</td>
                 <td><span class="badge ${badgeClassForStatus(r.status)}">${r.status}</span></td>
-                <td>
+                <td class="no-print">
                     <button class="btn btn-sm btn-info" onclick="viewDispatch(${r.dispatch_id})"><i class="fa-solid fa-eye"></i></button>
                     <button class="btn btn-sm btn-danger" onclick="deleteDispatch(${r.dispatch_id})"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>
         `).join("");
 
+        renderPagination(pagination);
+
     } catch (err) {
         tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
         console.error(err);
     }
 }
+
+
+/* ===============================
+   PAGINATION RENDERING
+================================ */
+
+function renderPagination(pagination){
+    const { page, totalPages, total, limit } = pagination;
+
+    const infoEl = document.getElementById("paginationInfo");
+    if (total === 0) {
+        infoEl.textContent = "Showing 0 records";
+    } else {
+        const from = (page - 1) * limit + 1;
+        const to = Math.min(page * limit, total);
+        infoEl.textContent = `Showing ${from} to ${to} of ${total.toLocaleString("en-IN")} Records`;
+    }
+
+    const controls = document.getElementById("paginationControls");
+    if (totalPages <= 1) { controls.innerHTML = ""; return; }
+
+    let html = "";
+
+    html += `<li class="page-item ${page === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="1">First</a>
+             </li>`;
+    html += `<li class="page-item ${page === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${page - 1}">Previous</a>
+             </li>`;
+
+    // Show up to 5 page numbers around current page
+    let startPage = Math.max(1, page - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
+    startPage = Math.max(1, endPage - 4);
+
+    for (let p = startPage; p <= endPage; p++) {
+        html += `<li class="page-item ${p === page ? 'active' : ''}">
+                    <a class="page-link" href="#" data-page="${p}">${p}</a>
+                 </li>`;
+    }
+
+    html += `<li class="page-item ${page === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${page + 1}">Next</a>
+             </li>`;
+    html += `<li class="page-item ${page === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${totalPages}">Last</a>
+             </li>`;
+
+    controls.innerHTML = html;
+
+    controls.querySelectorAll(".page-link").forEach(link => {
+        link.addEventListener("click", function(e){
+            e.preventDefault();
+            const targetPage = Number(this.dataset.page);
+            if (targetPage < 1 || targetPage > totalPages || targetPage === currentPage) return;
+            currentPage = targetPage;
+            loadDispatch();
+        });
+    });
+}
+
+
+/* ===============================
+   SORTING (click column header)
+================================ */
+
+document.querySelectorAll("th.sortable").forEach(th => {
+    th.addEventListener("click", function(){
+        const column = this.dataset.sort;
+
+        if (currentSortBy === column) {
+            currentSortOrder = currentSortOrder === "ASC" ? "DESC" : "ASC";
+        } else {
+            currentSortBy = column;
+            currentSortOrder = "ASC";
+        }
+
+        document.querySelectorAll("th.sortable i").forEach(icon => {
+            icon.className = "fa-solid fa-sort";
+        });
+        this.querySelector("i").className = currentSortOrder === "ASC" ? "fa-solid fa-sort-up" : "fa-solid fa-sort-down";
+
+        currentPage = 1;
+        loadDispatch();
+    });
+});
+
+
+/* ===============================
+   SEARCH BOX (debounced) + STATUS FILTER
+================================ */
+
+document.getElementById("tableSearchBox").addEventListener("input", function(){
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+        currentPage = 1;
+        loadDispatch();
+    }, 400);
+});
+
+document.getElementById("statusFilter").addEventListener("change", function(){
+    currentPage = 1;
+    loadDispatch();
+});
+
+
+/* ===============================
+   REFRESH BUTTON
+================================ */
+
+document.getElementById("refreshTableBtn").addEventListener("click", function(){
+    document.getElementById("tableSearchBox").value = "";
+    document.getElementById("statusFilter").value = "";
+    currentPage = 1;
+    loadDispatchStats();
+    loadDispatch();
+});
+
+
+/* ===============================
+   EXPORT EXCEL (real .xlsx via SheetJS)
+================================ */
+
+document.getElementById("exportExcelBtn").addEventListener("click", async function(){
+    // Poore filtered results export karo (sirf current page nahi) --
+    // isliye alag se ek "sab records" wali request bhejte hain
+    const search = document.getElementById("tableSearchBox").value.trim();
+    const status = document.getElementById("statusFilter").value;
+
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (status) params.set("status", status);
+    params.set("page", 1);
+    params.set("limit", 10000); // sab records ek saath
+    params.set("sortBy", currentSortBy);
+    params.set("sortOrder", currentSortOrder);
+
+    try {
+        const response = await fetch(`/api/dispatch?${params.toString()}`, { headers: authHeaders });
+        const result = await response.json();
+
+        if (!result.success || result.data.dispatch.length === 0) {
+            alert("Export karne ke liye koi data nahi hai.");
+            return;
+        }
+
+        const rows = result.data.dispatch.map(r => ({
+            "Invoice": r.invoice_number,
+            "Company": r.company_name || "-",
+            "Serial Number": r.serial_number,
+            "Dealer": r.dealer_name,
+            "Dealer Code": r.dealer_code,
+            "Dispatch Date": new Date(r.dispatch_date).toLocaleDateString("en-GB"),
+            "Transport": r.transport_name || "-",
+            "LR Number": r.lr_number || "-",
+            "Status": r.status
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(rows);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Dispatch Records");
+        XLSX.writeFile(workbook, `dispatch_records_${Date.now()}.xlsx`);
+
+    } catch (err) {
+        alert("Export fail ho gaya. Server se connect nahi ho paya.");
+        console.error(err);
+    }
+});
+
+
+/* ===============================
+   PRINT (sirf table print hoga, sidebar/form nahi)
+================================ */
+
+document.getElementById("printTableBtn").addEventListener("click", function(){
+    window.print();
+});
 
 
 /* ===============================
@@ -1326,6 +1650,8 @@ dispatchForm.addEventListener("submit", async function(e){
         dispatchForm.reset();
         resolvedInventoryId = null;
         resolvedDealerId = null;
+        currentPage = 1;
+        loadDispatchStats();
         loadDispatch();
 
     } catch (err) {
@@ -1350,7 +1676,7 @@ async function viewDispatch(id){
 }
 
 async function deleteDispatch(id){
-    if (!confirm("Delete karne se yeh serial number wapas 'In Stock' ho jayega. Confirm karo?")) return;
+    if (!confirm("Delete karne se yeh serial number wapas \'In Stock\' ho jayega. Confirm karo?")) return;
 
     try {
         const response = await fetch(`/api/dispatch/${id}`, {
@@ -1362,6 +1688,7 @@ async function deleteDispatch(id){
         if (!result.success) { alert(result.message); return; }
 
         alert("Dispatch record Deleted Successfully.");
+        loadDispatchStats();
         loadDispatch();
 
     } catch (err) {
@@ -1372,9 +1699,106 @@ async function deleteDispatch(id){
 
 
 /* ===============================
+   TOPBAR SEARCH -- redirect + highlight matching record
+   (Serial Number, Dealer, Invoice se search karta hai; agar dispatch
+   me nahi milta to inventory/dealers me dhoondh kar wahan bhej deta hai)
+================================ */
+
+const topSearchBox = document.getElementById("topSearchBox");
+
+topSearchBox.addEventListener("keyup", async function(e){
+    if (e.key !== "Enter") return;
+
+    const term = this.value.trim();
+    if (!term) return;
+
+    try {
+        // Pehle isi dispatch page pe dhoondo
+        const response = await fetch(`/api/dispatch?search=${encodeURIComponent(term)}&limit=1`, { headers: authHeaders });
+        const result = await response.json();
+
+        if (result.success && result.data.dispatch.length > 0) {
+            const match = result.data.dispatch[0];
+
+            // Table me wahi record dikhna chahiye -- filter box me bhi wahi term daal do
+            document.getElementById("tableSearchBox").value = term;
+            currentPage = 1;
+            await loadDispatch();
+
+            // Row ko scroll + highlight karo
+            setTimeout(() => {
+                const row = document.getElementById(`dispatch-row-${match.dispatch_id}`);
+                if (row) {
+                    row.scrollIntoView({ behavior: "smooth", block: "center" });
+                    row.classList.add("search-highlight");
+                    setTimeout(() => row.classList.remove("search-highlight"), 3000);
+                }
+            }, 300);
+            return;
+        }
+
+        // Dispatch me nahi mila -- inventory ya dealers me try karo aur wahan redirect karo
+        const invResponse = await fetch(`/api/inventory?search=${encodeURIComponent(term)}&limit=1`, { headers: authHeaders });
+        const invResult = await invResponse.json();
+        if (invResult.success && invResult.data.inventory.length > 0) {
+            alert(`"${term}" dispatch records me nahi mila, lekin Inventory me mila -- wahan le ja rahe hain.`);
+            window.location.href = `inventory.html?highlight=${encodeURIComponent(term)}`;
+            return;
+        }
+
+        const dealerResponse = await fetch(`/api/dealers?search=${encodeURIComponent(term)}&limit=1`, { headers: authHeaders });
+        const dealerResult = await dealerResponse.json();
+        if (dealerResult.success && dealerResult.data.dealers.length > 0) {
+            alert(`"${term}" dispatch records me nahi mila, lekin Dealers me mila -- wahan le ja rahe hain.`);
+            window.location.href = `dealers.html?highlight=${encodeURIComponent(term)}`;
+            return;
+        }
+
+        alert(`"No Records Found" -- "${term}" kahin bhi (Dispatch, Inventory, Dealers) nahi mila.`);
+
+    } catch (err) {
+        alert("Search fail ho gaya. Server se connect nahi ho paya.");
+        console.error(err);
+    }
+});
+
+// Agar koi doosre page se ?highlight=XXX ke saath aaya hai, to yahan bhi highlight karo
+const urlParams = new URLSearchParams(window.location.search);
+const highlightTerm = urlParams.get("highlight");
+if (highlightTerm) {
+    document.getElementById("tableSearchBox").value = highlightTerm;
+}
+
+
+/* ===============================
+   TOP BUTTON GROUP (New Dispatch / Export / Print / Refresh)
+   -- yeh page ke sabse upar wale buttons hain, table ke upar wale
+   chhote toolbar buttons se ALAG hain. Dono ka kaam same hai.
+================================ */
+
+document.getElementById("topNewDispatchBtn").addEventListener("click", function(){
+    document.getElementById("newDispatchFormCard").scrollIntoView({ behavior: "smooth" });
+    document.getElementById("invoiceNumber").focus();
+});
+
+document.getElementById("topExportExcelBtn").addEventListener("click", function(){
+    document.getElementById("exportExcelBtn").click(); // wahi real export logic reuse karo
+});
+
+document.getElementById("topPrintBtn").addEventListener("click", function(){
+    window.print();
+});
+
+document.getElementById("topRefreshBtn").addEventListener("click", function(){
+    document.getElementById("refreshTableBtn").click(); // wahi real refresh logic reuse karo
+});
+
+
+/* ===============================
    PAGE LOAD
 ================================ */
 
+loadDispatchStats();
 loadDispatch();
 
 </script>

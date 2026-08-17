@@ -10,6 +10,7 @@ router.use(verifyToken);
 
 router.get("/stats", reportController.getDashboardStats);
 router.get("/summary", reportController.getSummary);
+router.get("/charts", reportController.getCharts);
 router.get("/", reportController.getReports);
 
 module.exports = router;

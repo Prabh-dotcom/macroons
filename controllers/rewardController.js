@@ -4,6 +4,7 @@
 // actual SQL models/rewardModel.js me.
 
 const RewardModel = require("../models/rewardModel.js");
+const SettingsModel = require("../models/settingsModel");
 const asyncHandler = require("../utils/asyncHandler");
 const apiResponse = require("../utils/apiResponse");
 
@@ -72,6 +73,27 @@ exports.createTransaction = asyncHandler(async (req, res) => {
     }
 
     const status = req.body.status || "approved";
+
+    // Redemption (debit) ke liye Settings > Reward Settings ki Minimum
+    // Redeem Points aur Maximum Redeem Per Month live enforce hoti hain.
+    if (transaction_type === "debit") {
+        const [minRedeem, maxRedeemPerMonth] = await Promise.all([
+            SettingsModel.getByKey("min_redeem_points", "500"),
+            SettingsModel.getByKey("max_redeem_per_month", "5000")
+        ]);
+
+        if (Number(points) < Number(minRedeem)) {
+            return apiResponse.error(res, 400, `Minimum ${minRedeem} points required to redeem.`);
+        }
+
+        const redeemedThisMonth = await RewardModel.getDebitPointsThisMonth(dealer_id);
+        if (redeemedThisMonth + Number(points) > Number(maxRedeemPerMonth)) {
+            return apiResponse.error(
+                res, 400,
+                `Maximum ${maxRedeemPerMonth} points allowed per month. Dealer has already redeemed ${redeemedThisMonth} points this month.`
+            );
+        }
+    }
 
     // Debit that would push an approved balance negative is blocked --
     // pending debits (e.g. a redemption request awaiting approval) are
@@ -166,13 +188,14 @@ exports.getMyTransactions = asyncHandler(async (req, res) => {
         return apiResponse.error(res, 403, "This endpoint is only for dealer accounts.");
     }
 
-    const { search, dateFrom, dateTo, page, limit } = req.query;
+    const { search, dateFrom, dateTo, reference_type, page, limit } = req.query;
 
     const result = await RewardModel.getTransactions({
         dealer_id: req.user.dealer_id,
         search,
         dateFrom,
         dateTo,
+        reference_type,
         page: page ? Number(page) : 1,
         limit: limit ? Number(limit) : 10
     });

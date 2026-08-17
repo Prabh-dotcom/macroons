@@ -520,7 +520,7 @@ gap:15px;
 
             <h6>Available Reward Points</h6>
 
-            <h2>850</h2>
+            <h2 id="cardAvailablePoints">0</h2>
 
             <small class="text-success">
 
@@ -544,7 +544,7 @@ gap:15px;
 
             <h6>Total Earned</h6>
 
-            <h2>1,250</h2>
+            <h2 id="cardTotalEarned">0</h2>
 
             <small class="text-primary">
 
@@ -568,7 +568,7 @@ gap:15px;
 
             <h6>Redeemed Points</h6>
 
-            <h2>400</h2>
+            <h2 id="cardRedeemedPoints">0</h2>
 
             <small class="text-warning">
 
@@ -592,11 +592,11 @@ gap:15px;
 
             <h6>This Month Earned</h6>
 
-            <h2>250</h2>
+            <h2 id="cardThisMonthEarned">0</h2>
 
             <small class="text-danger">
 
-                5 Warranty Activations
+                <span id="cardThisMonthWarrantyCount">0</span> Warranty Activations
 
             </small>
 
@@ -618,9 +618,9 @@ gap:15px;
 
         </h5>
 
-        <span class="badge bg-success fs-6">
+        <span class="badge bg-success fs-6" id="monthlyPerformanceLabel">
 
-            July 2026
+            --
 
         </span>
 
@@ -630,7 +630,7 @@ gap:15px;
 
         <div class="col-md-3">
 
-            <h3 class="text-success">5</h3>
+            <h3 class="text-success" id="monthlyWarrantyActivated">0</h3>
 
             <p class="text-muted">
 
@@ -642,7 +642,7 @@ gap:15px;
 
         <div class="col-md-3">
 
-            <h3 class="text-primary">250</h3>
+            <h3 class="text-primary" id="monthlyRewardEarned">0</h3>
 
             <p class="text-muted">
 
@@ -654,7 +654,7 @@ gap:15px;
 
         <div class="col-md-3">
 
-            <h3 class="text-warning">100</h3>
+            <h3 class="text-warning" id="monthlyRedeemed">0</h3>
 
             <p class="text-muted">
 
@@ -666,7 +666,7 @@ gap:15px;
 
         <div class="col-md-3">
 
-            <h3 class="text-danger">150</h3>
+            <h3 class="text-danger" id="monthlyClosingBalance">0</h3>
 
             <p class="text-muted">
 
@@ -697,14 +697,16 @@ Reward Transaction History
 
 <input
 type="date"
+id="txnDateFilter"
 class="form-control">
 
 <input
 type="text"
+id="txnSearchInput"
 class="form-control"
 placeholder="Search Transaction">
 
-<button class="btn btn-success">
+<button class="btn btn-success" type="button" id="txnSearchBtn">
 
 <i class="fa-solid fa-magnifying-glass"></i>
 
@@ -738,203 +740,7 @@ placeholder="Search Transaction">
 
 </thead>
 
-<tbody>
-
-<tr>
-
-<td>RW1001</td>
-
-<td>21 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240001</td>
-
-<td class="text-success fw-bold">
-
-+50
-
-</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Credited
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>RW1002</td>
-
-<td>19 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240015</td>
-
-<td class="text-success fw-bold">
-
-+50
-
-</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Credited
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>RW1003</td>
-
-<td>17 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240032</td>
-
-<td class="text-success fw-bold">
-
-+50
-
-</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Credited
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>RW1004</td>
-
-<td>15 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240051</td>
-
-<td class="text-success fw-bold">
-
-+50
-
-</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Credited
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>RW1005</td>
-
-<td>12 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240088</td>
-
-<td class="text-success fw-bold">
-
-+50
-
-</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Credited
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>RW1006</td>
-
-<td>09 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240105</td>
-
-<td class="text-success fw-bold">
-
-+50
-
-</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Credited
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>RW1007</td>
-
-<td>06 Jul 2026</td>
-
-<td>Warranty Activation</td>
-
-<td>MPP240127</td>
-
-<td class="text-success fw-bold">
-
-+50
-
-</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Credited
-
-</span>
-
-</td>
-
-</tr>
+<tbody id="txnHistoryBody">
 
 </tbody>
 
@@ -942,65 +748,6 @@ Credited
 
 </div>
 
-<!-- ================= PAGINATION ================= -->
-
-<nav class="mt-4">
-
-<ul class="pagination justify-content-end">
-
-<li class="page-item disabled">
-
-<a class="page-link">
-
-Previous
-
-</a>
-
-</li>
-
-<li class="page-item active">
-
-<a class="page-link">
-
-1
-
-</a>
-
-</li>
-
-<li class="page-item">
-
-<a class="page-link">
-
-2
-
-</a>
-
-</li>
-
-<li class="page-item">
-
-<a class="page-link">
-
-3
-
-</a>
-
-</li>
-
-<li class="page-item">
-
-<a class="page-link">
-
-Next
-
-</a>
-
-</li>
-
-</ul>
-
-</nav>
 
 </div>
 
@@ -1017,7 +764,7 @@ Reward Redemption History
 
 </h5>
 
-<button class="btn btn-success">
+<button class="btn btn-success" type="button" id="downloadStatementBtn">
 
 <i class="fa-solid fa-download me-2"></i>
 
@@ -1049,73 +796,7 @@ Download Statement
 
 </thead>
 
-<tbody>
-
-<tr>
-
-<td>RD1001</td>
-
-<td>10 Jul 2026</td>
-
-<td class="text-danger fw-bold">-100</td>
-
-<td>Gift Voucher</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Completed
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>RD1002</td>
-
-<td>18 Jun 2026</td>
-
-<td class="text-danger fw-bold">-200</td>
-
-<td>Cash Discount</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Completed
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>RD1003</td>
-
-<td>05 Jun 2026</td>
-
-<td class="text-danger fw-bold">-100</td>
-
-<td>Recharge Coupon</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Completed
-
-</span>
-
-</td>
-
-</tr>
+<tbody id="redemptionHistoryBody">
 
 </tbody>
 
@@ -1199,7 +880,7 @@ Wallet Information
 
 <th>Dealer ID</th>
 
-<td>DLR0001</td>
+<td id="wiDealerId">-</td>
 
 </tr>
 
@@ -1207,7 +888,7 @@ Wallet Information
 
 <th>Dealer Name</th>
 
-<td>Sharma Battery House</td>
+<td id="wiDealerName">-</td>
 
 </tr>
 
@@ -1217,7 +898,7 @@ Wallet Information
 
 <td class="text-success fw-bold">
 
-850 Points
+<span id="wiCurrentBalance">0</span> Points
 
 </td>
 
@@ -1229,7 +910,7 @@ Wallet Information
 
 <td>
 
-<span class="badge bg-success">
+<span class="badge bg-success" id="wiWalletStatus">
 
 Active
 
@@ -1243,7 +924,7 @@ Active
 
 <th>Last Updated</th>
 
-<td>21 Jul 2026</td>
+<td id="wiLastUpdated">-</td>
 
 </tr>
 
@@ -1269,11 +950,7 @@ Active
 
 <div class="col-md-3">
 
-<h2 class="text-success">
-
-25
-
-</h2>
+<h2 class="text-success" id="achWarrantyActivations">0</h2>
 
 <p>
 
@@ -1285,11 +962,7 @@ Total Warranty Activations
 
 <div class="col-md-3">
 
-<h2 class="text-primary">
-
-1250
-
-</h2>
+<h2 class="text-primary" id="achTotalEarned">0</h2>
 
 <p>
 
@@ -1301,11 +974,7 @@ Total Reward Earned
 
 <div class="col-md-3">
 
-<h2 class="text-warning">
-
-400
-
-</h2>
+<h2 class="text-warning" id="achRedeemedPoints">0</h2>
 
 <p>
 
@@ -1317,11 +986,7 @@ Redeemed Points
 
 <div class="col-md-3">
 
-<h2 class="text-danger">
-
-850
-
-</h2>
+<h2 class="text-danger" id="achAvailableBalance">0</h2>
 
 <p>
 
@@ -1340,189 +1005,235 @@ Available Balance
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 <script>
+/* ===============================
+   AUTH CHECK
+================================ */
 
-/* ======================================
-   SEARCH TRANSACTION
-====================================== */
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "login.html";
 
-const searchInput=document.querySelector('input[placeholder="Search Transaction"]');
+const authHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+};
 
-searchInput.addEventListener("keyup",function(){
-
-let filter=this.value.toUpperCase();
-
-let rows=document.querySelectorAll("tbody tr");
-
-rows.forEach(row=>{
-
-let text=row.innerText.toUpperCase();
-
-row.style.display=text.includes(filter) ? "" : "none";
-
-});
-
-});
-
-/* ======================================
-   DATE FILTER
-====================================== */
-
-const dateFilter=document.querySelector('input[type="date"]');
-
-dateFilter.addEventListener("change",function(){
-
-alert("Backend will filter transactions according to selected date.");
-
-/*
-
-Backend
-
-SELECT * FROM reward_history
-
-WHERE transaction_date = selected_date
-
-*/
-
-});
-
-/* ======================================
-   DOWNLOAD STATEMENT
-====================================== */
-
-document.querySelector(".btn.btn-success").addEventListener("click",function(){
-
-alert("Reward Statement Download Started.");
-
-/*
-
-Backend
-
-Generate PDF
-
-↓
-
-Dealer Reward Statement
-
-↓
-
-Download
-
-*/
-
-});
-
-/* ======================================
-   SIDEBAR ACTIVE
-====================================== */
-
-document.querySelectorAll(".sidebar a")
-
-.forEach(link=>{
-
-link.addEventListener("click",function(){
-
-document.querySelectorAll(".sidebar a")
-
-.forEach(item=>{
-
-item.classList.remove("active");
-
-});
-
-this.classList.add("active");
-
-});
-
-});
-
-/* ======================================
-   NOTIFICATION ICON
-====================================== */
-
-const bell=document.querySelector(".fa-bell");
-
-if(bell){
-
-setInterval(()=>{
-
-bell.classList.toggle("text-success");
-
-},1000);
-
+function fmt(n){
+    return Number(n || 0).toLocaleString("en-IN");
 }
 
-/* ======================================
-   REWARD WALLET LOGIC
-====================================== */
+function fmtDate(d){
+    if (!d) return "-";
+    return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+}
 
-/*
+function badgeClass(status){
+    const s = (status || "").toLowerCase();
+    if (s === "approved") return "bg-success";
+    if (s === "pending") return "bg-warning text-dark";
+    if (s === "rejected") return "bg-danger";
+    return "bg-secondary";
+}
 
-Dealer Warranty Activated
 
-↓
+/* ===============================
+   WALLET SUMMARY -- 4 cards +
+   Monthly Performance box.
+   /api/reward/my-wallet already
+   force-scopes everything to
+   req.user.dealer_id from the JWT
+   -- whichever dealer is logged in
+   only ever sees their own numbers.
+================================ */
 
-Reward +50
+async function loadWallet(){
+    try {
+        const res = await fetch("/api/reward/my-wallet", { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) { alert(result.message); return; }
 
-↓
+        const w = result.data;
 
-reward_wallet table
+        document.getElementById("cardAvailablePoints").textContent = fmt(w.available_balance);
+        document.getElementById("cardTotalEarned").textContent = fmt(w.lifetime_points);
+        document.getElementById("cardRedeemedPoints").textContent = fmt(w.redeemed_points);
+        document.getElementById("cardThisMonthEarned").textContent = fmt(w.this_month_earned);
+        document.getElementById("cardThisMonthWarrantyCount").textContent = fmt(w.this_month_warranty_count);
 
-available_points += 50
+        document.getElementById("monthlyPerformanceLabel").textContent =
+            new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+        document.getElementById("monthlyWarrantyActivated").textContent = fmt(w.this_month_warranty_count);
+        document.getElementById("monthlyRewardEarned").textContent = fmt(w.this_month_earned);
+        document.getElementById("monthlyRedeemed").textContent = fmt(w.this_month_redeemed);
+        document.getElementById("monthlyClosingBalance").textContent = fmt(w.available_balance);
 
-↓
+        // Wallet Information card -- this specific dealer's own details
+        // (dealer_id in the URL/query never matters here, /my-wallet is
+        // always scoped server-side to whichever dealer is logged in)
+        document.getElementById("wiDealerId").textContent = w.dealer_code;
+        document.getElementById("wiDealerName").textContent = w.dealer_name;
+        document.getElementById("wiCurrentBalance").textContent = fmt(w.available_balance);
+        document.getElementById("wiLastUpdated").textContent = fmtDate(w.last_updated);
 
-reward_history table
+        const statusBadge = document.getElementById("wiWalletStatus");
+        statusBadge.textContent = w.dealer_status.charAt(0).toUpperCase() + w.dealer_status.slice(1);
+        statusBadge.className = "badge " + (w.dealer_status === "active" ? "bg-success" : w.dealer_status === "blocked" ? "bg-danger" : "bg-secondary");
 
-INSERT Transaction
+        // Dealer Reward Achievements -- all-time totals (not just this month)
+        document.getElementById("achWarrantyActivations").textContent = fmt(w.total_warranty_activations);
+        document.getElementById("achTotalEarned").textContent = fmt(w.lifetime_points);
+        document.getElementById("achRedeemedPoints").textContent = fmt(w.redeemed_points);
+        document.getElementById("achAvailableBalance").textContent = fmt(w.available_balance);
+    } catch (err) {
+        console.error(err);
+        alert("Server se connect nahi ho paya.");
+    }
+}
 
-↓
 
-Dealer Dashboard
+/* ===============================
+   TRANSACTION HISTORY -- all
+   credit + debit transactions
+================================ */
 
-↓
+async function loadTransactionHistory(){
+    const tbody = document.getElementById("txnHistoryBody");
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
 
-Admin Dashboard
+    const search = document.getElementById("txnSearchInput").value.trim();
+    const date = document.getElementById("txnDateFilter").value;
 
-*/
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (date) { params.set("dateFrom", date); params.set("dateTo", date); }
+    params.set("limit", 100);
 
-/* ======================================
-   REWARD REDEMPTION LOGIC
-====================================== */
+    try {
+        const res = await fetch(`/api/reward/my-transactions?${params.toString()}`, { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) { tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">${result.message}</td></tr>`; return; }
 
-/*
+        const rows = result.data.transactions;
 
-Dealer Redeem Request
+        if (rows.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center">No Transactions Found.</td></tr>`;
+            return;
+        }
 
-↓
+        tbody.innerHTML = rows.map(r => `
+            <tr>
+                <td>RW${String(r.transaction_id).padStart(4, "0")}</td>
+                <td>${fmtDate(r.transaction_date)}</td>
+                <td>${r.remarks || r.reference_type || "-"}</td>
+                <td>${r.serial_number || "-"}</td>
+                <td class="${r.transaction_type === 'credit' ? 'text-success' : 'text-danger'} fw-bold">
+                    ${r.transaction_type === 'credit' ? '+' : '-'}${r.points}
+                </td>
+                <td><span class="badge ${badgeClass(r.status)}">${r.status === 'approved' ? 'Credited' : r.status}</span></td>
+            </tr>
+        `).join("");
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
 
-Admin Approval
+document.getElementById("txnSearchBtn").addEventListener("click", function(e){
+    e.preventDefault();
+    loadTransactionHistory();
+});
 
-↓
+document.getElementById("txnSearchInput").addEventListener("keydown", function(e){
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    loadTransactionHistory();
+});
 
-Approved ?
+document.getElementById("txnDateFilter").addEventListener("change", function(){
+    loadTransactionHistory();
+});
 
-YES
 
-↓
+/* ===============================
+   REDEMPTION HISTORY -- only
+   debit + reference_type='redemption'
+   transactions (subset of the above)
+================================ */
 
-available_points -= redeemed_points
+let redemptionRows = [];
 
-↓
+async function loadRedemptionHistory(){
+    const tbody = document.getElementById("redemptionHistoryBody");
+    tbody.innerHTML = `<tr><td colspan="5" class="text-center">Loading...</td></tr>`;
 
-redeem_history INSERT
+    try {
+        const res = await fetch(`/api/reward/my-transactions?reference_type=redemption&limit=100`, { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) { tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">${result.message}</td></tr>`; return; }
 
-↓
+        redemptionRows = result.data.transactions;
 
-Wallet Updated
+        if (redemptionRows.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center">Koi Redemption Nahi Mila.</td></tr>`;
+            return;
+        }
 
-*/
+        tbody.innerHTML = redemptionRows.map(r => `
+            <tr>
+                <td>RD${String(r.transaction_id).padStart(4, "0")}</td>
+                <td>${fmtDate(r.transaction_date)}</td>
+                <td class="text-danger fw-bold">-${r.points}</td>
+                <td>${r.remarks || "-"}</td>
+                <td><span class="badge ${badgeClass(r.status)}">${r.status === 'approved' ? 'Completed' : r.status}</span></td>
+            </tr>
+        `).join("");
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
+        console.error(err);
+    }
+}
 
-/* ======================================
-   PAGE LOADED
-====================================== */
 
-console.log("Dealer Reward Wallet Loaded Successfully");
+/* ===============================
+   DOWNLOAD STATEMENT -- genuine
+   .xlsx download of the redemption
+   history currently loaded.
+================================ */
+
+document.getElementById("downloadStatementBtn").addEventListener("click", function(){
+    if (typeof XLSX === "undefined") {
+        alert("Excel library load nahi ho payi -- internet connection check karo.");
+        return;
+    }
+
+    if (redemptionRows.length === 0) {
+        alert("Download karne ke liye koi redemption record nahi hai.");
+        return;
+    }
+
+    const sheetData = redemptionRows.map(r => ({
+        "Redeem ID": `RD${String(r.transaction_id).padStart(4, "0")}`,
+        "Date": fmtDate(r.transaction_date),
+        "Points Used": r.points,
+        "Reward Type": r.remarks || "-",
+        "Status": r.status === "approved" ? "Completed" : r.status
+    }));
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(sheetData), "Redemption Statement");
+    XLSX.writeFile(wb, `Reward_Redemption_Statement_${new Date().toISOString().split("T")[0]}.xlsx`);
+});
+
+
+/* ===============================
+   PAGE LOAD
+================================ */
+
+loadWallet();
+loadTransactionHistory();
+loadRedemptionHistory();
 
 </script>
 

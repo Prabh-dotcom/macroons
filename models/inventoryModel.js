@@ -109,6 +109,31 @@ exports.remove = async (inventoryId) => {
     return result.affectedRows > 0;
 };
 
+// Delete se PEHLE check karo ki yeh serial kahin use to nahi ho chuka --
+// taaki generic "linked to other data" ke bajaye EXACT wajah bata sakein
+// (dispatch hua hai / warranty hai / replacement mein hai), aur dealer
+// ko clear pata chale ki kya karna hai.
+exports.getUsageInfo = async (inventoryId) => {
+    const [[dispatchRow]] = await db.query(
+        "SELECT COUNT(*) AS c FROM dispatch_items WHERE inventory_id = ?",
+        [inventoryId]
+    );
+    const [[warrantyRow]] = await db.query(
+        "SELECT COUNT(*) AS c FROM warranty WHERE inventory_id = ?",
+        [inventoryId]
+    );
+    const [[replacementRow]] = await db.query(
+        "SELECT COUNT(*) AS c FROM replacements WHERE old_inventory_id = ? OR new_inventory_id = ?",
+        [inventoryId, inventoryId]
+    );
+
+    return {
+        isDispatched: dispatchRow.c > 0,
+        hasWarranty: warrantyRow.c > 0,
+        inReplacement: replacementRow.c > 0
+    };
+};
+
 /* =========================================================
    DASHBOARD STATS -- 4 summary cards
 ========================================================= */

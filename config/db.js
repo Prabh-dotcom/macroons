@@ -21,7 +21,13 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,   // ek time pe max 10 parallel DB connections
-    queueLimit: 0
+    queueLimit: 0,
+    // IMPORTANT: DATE/DATETIME columns ko plain string ("2026-08-15") ke
+    // roop me rakho, JS Date object mat banao. Warna Node timezone (IST)
+    // aur JSON serialization (UTC) ke beech conversion se date 1 din
+    // aage-peeche ho jaati hai (jaise dispatch_date 15 Aug frontend pe
+    // 14 Aug dikhne lagta hai) -- yeh poore app ki saari dates fix karta hai.
+    dateStrings: true
 });
 
 const promisePool = pool.promise();

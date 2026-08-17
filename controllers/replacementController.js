@@ -12,6 +12,13 @@ exports.lookupOldSerial = asyncHandler(async (req, res) => {
     if (!result) return apiResponse.error(res, 404, "Serial number not found in inventory.");
     if (!result.warranty_id) return apiResponse.error(res, 409, "This serial has no warranty record -- cannot process replacement.");
 
+    // Dealer login se search kiya gaya ho to sirf apni khud ki dealership
+    // wali battery hi dikhni chahiye -- kisi doosre dealer ke customer ka
+    // naam/phone/address dealer ko nahi dikhna chahiye.
+    if (req.user.role === "dealer" && result.dealer_id !== req.user.dealer_id) {
+        return apiResponse.error(res, 403, "This battery does not belong to your dealership.");
+    }
+
     return apiResponse.success(res, 200, "Serial found.", result);
 });
 
@@ -56,10 +63,10 @@ exports.getReplacementById = asyncHandler(async (req, res) => {
 });
 
 exports.createReplacement = asyncHandler(async (req, res) => {
-    const { old_inventory_id, dealer_id, customer_name, customer_phone } = req.body;
+    const { old_inventory_id, new_inventory_id, dealer_id, customer_name, customer_phone } = req.body;
 
-    if (!old_inventory_id || !dealer_id || !customer_name || !customer_phone) {
-        return apiResponse.error(res, 400, "Old serial (resolved), customer name and mobile are required.");
+    if (!old_inventory_id || !new_inventory_id || !dealer_id || !customer_name || !customer_phone) {
+        return apiResponse.error(res, 400, "Old serial, New serial (both resolved), customer name and mobile are required.");
     }
 
     const replacementId = await ReplacementModel.create(req.body);
@@ -77,6 +84,24 @@ exports.updateReplacementStatus = asyncHandler(async (req, res) => {
     if (!existing) return apiResponse.error(res, 404, "Replacement record not found.");
 
     await ReplacementModel.updateStatus(req.params.id, status);
+
+    // Dealer ko bhi pata chalna chahiye ki uski request ka kya hua --
+    // uske dealer portal bell icon me yeh notification dikhegi.
+    const NotificationModel = require("../models/notificationModel");
+    const displayId = `REP${String(existing.replacement_id).padStart(4, "0")}`;
+    const statusLabelMap = {
+        approved: "approve",
+        rejected: "reject",
+        completed: "complete",
+        pending: "pending"
+    };
+    await NotificationModel.create({
+        audience: "dealer",
+        dealer_id: existing.dealer_id,
+        title: `Replacement Request ${status.charAt(0).toUpperCase() + status.slice(1)}`,
+        message: `Aapki replacement request ${displayId} ko admin ne ${statusLabelMap[status] || status} kar diya hai.`,
+        link: "/dealer/dealer-replacement.html"
+    });
 
     return apiResponse.success(res, 200, `Replacement ${status} successfully.`);
 });

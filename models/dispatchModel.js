@@ -9,8 +9,19 @@
 
 const db = require("../config/db");
 
-exports.getAll = async ({ search, status, page = 1, limit = 10 }) => {
+exports.getAll = async ({ search, status, page = 1, limit = 10, sortBy = "created_at", sortOrder = "DESC" }) => {
     const offset = (Math.max(1, page) - 1) * limit;
+
+    // Whitelist sortable columns -- raw req.query kabhi ORDER BY me
+    // seedha nahi daalte, warna SQL injection ka risk hota hai.
+    const allowedSortColumns = {
+        invoice_number: "dp.invoice_number",
+        dealer_name: "dl.dealer_name",
+        dispatch_date: "dp.dispatch_date",
+        status: "dp.status"
+    };
+    const safeSortBy = allowedSortColumns[sortBy] || "dp.created_at";
+    const safeSortOrder = sortOrder === "ASC" ? "ASC" : "DESC";
 
     let whereClauses = [];
     let params = [];
@@ -43,7 +54,7 @@ exports.getAll = async ({ search, status, page = 1, limit = 10 }) => {
         JOIN products p ON inv.product_id = p.product_id
         JOIN product_categories c ON p.category_id = c.category_id
         ${whereSql}
-        ORDER BY dp.created_at DESC
+        ORDER BY ${safeSortBy} ${safeSortOrder}
         LIMIT ? OFFSET ?
     `;
 
@@ -67,6 +78,22 @@ exports.getAll = async ({ search, status, page = 1, limit = 10 }) => {
             limit: Number(limit),
             totalPages: Math.ceil(countResult[0].total / limit)
         }
+    };
+};
+
+exports.getStats = async () => {
+    const [[total]] = await db.query("SELECT COUNT(*) AS c FROM dispatch");
+    const [[today]] = await db.query("SELECT COUNT(*) AS c FROM dispatch WHERE dispatch_date = CURDATE()");
+    const [[activeDealers]] = await db.query(
+        "SELECT COUNT(DISTINCT dealer_id) AS c FROM dispatch WHERE status IN ('dispatched','delivered')"
+    );
+    const [[pending]] = await db.query("SELECT COUNT(*) AS c FROM dispatch WHERE status = 'pending'");
+
+    return {
+        total_dispatch: total.c,
+        today_dispatch: today.c,
+        active_dealers: activeDealers.c,
+        pending_dispatch: pending.c
     };
 };
 

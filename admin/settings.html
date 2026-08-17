@@ -4,40 +4,32 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Settings | Battery ERP</title>
 
 <!-- Bootstrap -->
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Font Awesome -->
-
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 <!-- Google Font -->
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
 *{
-
 margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:'Poppins',sans-serif;
-
 }
 
 body{
-
 background:#f5f7fb;
 overflow-x:hidden;
-
 }
 
 /*=========================
@@ -348,7 +340,7 @@ font-weight:600;
 }
 
 /*=========================
-SETTINGS TAB
+SETTINGS TITLE
 =========================*/
 
 .settings-title{
@@ -368,9 +360,11 @@ border-bottom:2px solid #e9ecef;
 }
 
 </style>
+
 </head>
 
 <body>
+
 
 <!-- ================= SIDEBAR ================= -->
 
@@ -390,78 +384,135 @@ border-bottom:2px solid #e9ecef;
 
     </div>
 
+
     <ul>
 
         <li>
+
             <a href="admin-dashboard.html">
+
                 <i class="fa-solid fa-house"></i>
+
                 Dashboard
+
             </a>
+
         </li>
 
+
         <li>
+
             <a href="inventory.html">
+
                 <i class="fa-solid fa-boxes-stacked"></i>
+
                 Inventory
+
             </a>
+
         </li>
 
+
         <li>
+
             <a href="dispatch.html">
+
                 <i class="fa-solid fa-truck-fast"></i>
+
                 Dispatch
+
             </a>
+
         </li>
 
+
         <li>
+
             <a href="dealers.html">
+
                 <i class="fa-solid fa-users"></i>
+
                 Dealers
+
             </a>
+
         </li>
 
+
         <li>
+
             <a href="warranty.html">
+
                 <i class="fa-solid fa-shield-halved"></i>
+
                 Warranty
+
             </a>
+
         </li>
 
+
         <li>
+
             <a href="replacement.html">
+
                 <i class="fa-solid fa-repeat"></i>
+
                 Replacement
+
             </a>
+
         </li>
 
+
         <li>
+
             <a href="reward-wallet.html">
+
                 <i class="fa-solid fa-wallet"></i>
+
                 Reward Wallet
+
             </a>
+
         </li>
 
+
         <li>
+
             <a href="reports.html">
+
                 <i class="fa-solid fa-chart-column"></i>
+
                 Reports
+
             </a>
+
         </li>
 
+
         <li>
+
             <a href="settings.html" class="active">
+
                 <i class="fa-solid fa-gear"></i>
+
                 Settings
+
             </a>
+
         </li>
 
     </ul>
 
 </div>
 
+
+
 <!-- ================= MAIN CONTENT ================= -->
 
 <div class="main-content">
+
 
     <!-- ================= TOPBAR ================= -->
 
@@ -471,10 +522,13 @@ border-bottom:2px solid #e9ecef;
 
             <i class="fa-solid fa-magnifying-glass"></i>
 
-            <input type="text"
-                   placeholder="Search Settings">
+            <input
+                type="text"
+                placeholder="Search Settings"
+            >
 
         </div>
+
 
         <div class="profile">
 
@@ -483,6 +537,7 @@ border-bottom:2px solid #e9ecef;
                 <i class="fa-solid fa-bell"></i>
 
             </button>
+
 
             <button>
 
@@ -494,9 +549,12 @@ border-bottom:2px solid #e9ecef;
 
     </div>
 
+
+
     <!-- ================= PAGE CONTENT ================= -->
 
     <div class="page-content">
+
 
         <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
 
@@ -516,47 +574,20 @@ border-bottom:2px solid #e9ecef;
 
             </div>
 
-            <div class="d-flex gap-2 flex-wrap mt-3 mt-lg-0">
 
-                <button class="btn btn-success">
-
-                    <i class="fa-solid fa-floppy-disk me-2"></i>
-
-                    Save Settings
-
-                </button>
-
-                <button class="btn btn-secondary">
-
-                    <i class="fa-solid fa-rotate-left me-2"></i>
-
-                    Reset
-
-                </button>
-
-            </div>
 
         </div>
+
+
 
         <!-- ================= DASHBOARD CARDS ================= -->
 
         <div class="row g-4">
 
-            <div class="col-lg-3 col-md-6">
 
-                <div class="dashboard-card">
+            <!-- USER CARD -->
 
-                    <i class="fa-solid fa-building fa-2x text-primary"></i>
-
-                    <h3>Company</h3>
-
-                    <p>Business Profile</p>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
 
                 <div class="dashboard-card">
 
@@ -570,7 +601,10 @@ border-bottom:2px solid #e9ecef;
 
             </div>
 
-            <div class="col-lg-3 col-md-6">
+
+            <!-- WARRANTY CARD -->
+
+            <div class="col-lg-4 col-md-6">
 
                 <div class="dashboard-card">
 
@@ -584,7 +618,10 @@ border-bottom:2px solid #e9ecef;
 
             </div>
 
-            <div class="col-lg-3 col-md-6">
+
+            <!-- SECURITY CARD -->
+
+            <div class="col-lg-4 col-md-6">
 
                 <div class="dashboard-card">
 
@@ -600,183 +637,7 @@ border-bottom:2px solid #e9ecef;
 
         </div>
 
-        <!-- ================= COMPANY INFORMATION ================= -->
 
-        <div class="form-card">
-
-            <h4 class="settings-title">
-
-                Company Information
-
-            </h4>
-
-            <form>
-
-                <div class="row">
-
-                    <div class="col-lg-6 mb-3">
-
-                        <label class="form-label">
-
-                            Company Name *
-
-                        </label>
-
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Enter Company Name">
-
-                    </div>
-
-                    <div class="col-lg-6 mb-3">
-
-                        <label class="form-label">
-
-                            Company Email
-
-                        </label>
-
-                        <input type="email"
-                               class="form-control"
-                               placeholder="Enter Company Email">
-
-                    </div>
-
-                    <div class="col-lg-4 mb-3">
-
-                        <label class="form-label">
-
-                            Mobile Number
-
-                        </label>
-
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Mobile Number">
-
-                    </div>
-
-                    <div class="col-lg-4 mb-3">
-
-                        <label class="form-label">
-
-                            GST Number
-
-                        </label>
-
-                        <input type="text"
-                               class="form-control"
-                               placeholder="GST Number">
-
-                    </div>
-
-                    <div class="col-lg-4 mb-3">
-
-                        <label class="form-label">
-
-                            Website
-
-                        </label>
-
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Website URL">
-
-                    </div>
-
-                    <div class="col-12 mb-3">
-
-                        <label class="form-label">
-
-                            Company Address
-
-                        </label>
-
-                        <textarea class="form-control"
-                                  placeholder="Enter Complete Address"></textarea>
-
-                    </div>
-
-                    <div class="col-lg-4 mb-3">
-
-                        <label class="form-label">
-
-                            State
-
-                        </label>
-
-                        <input type="text"
-                               class="form-control"
-                               placeholder="State">
-
-                    </div>
-
-                    <div class="col-lg-4 mb-3">
-
-                        <label class="form-label">
-
-                            District
-
-                        </label>
-
-                        <input type="text"
-                               class="form-control"
-                               placeholder="District">
-
-                    </div>
-
-                    <div class="col-lg-4 mb-3">
-
-                        <label class="form-label">
-
-                            Pincode
-
-                        </label>
-
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Pincode">
-
-                    </div>
-
-                    <div class="col-lg-6 mb-3">
-
-                        <label class="form-label">
-
-                            Company Logo
-
-                        </label>
-
-                        <input type="file"
-                               class="form-control">
-
-                    </div>
-
-                    <div class="col-lg-6 d-flex align-items-end mb-3">
-
-                        <div class="d-flex gap-2">
-
-                            <button class="btn btn-success">
-
-                                Save Company
-
-                            </button>
-
-                            <button class="btn btn-outline-secondary">
-
-                                Clear
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </form>
-
-        </div>
 
         <!-- ================= USER MANAGEMENT START ================= -->
 
@@ -788,750 +649,429 @@ border-bottom:2px solid #e9ecef;
 
             </h4>
 
-            <form>
+
+            <div id="userFormAlert"></div>
+
+            <form id="userForm">
+                <input type="hidden" id="editingUserId" value="">
 
                 <div class="row">
-                    <!-- ================= USER INFORMATION ================= -->
 
-<div class="col-lg-6 mb-3">
+                    <!-- USER INFORMATION -->
 
-    <label class="form-label">
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" class="form-control" id="userFullName" placeholder="Enter Full Name">
+                    </div>
 
-        Full Name *
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" class="form-control" id="userEmail" placeholder="Enter Email">
+                    </div>
 
-    </label>
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Mobile Number</label>
+                        <input type="text" class="form-control" id="userMobile" placeholder="Mobile Number">
+                    </div>
 
-    <input type="text"
-           class="form-control"
-           id="userFullName"
-           placeholder="Enter Full Name">
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">User Role</label>
+                        <!-- NOTE: "Manager"/"Dealer" removed -- DB role column only allows
+                             super_admin/admin/staff (dealers have their own separate login,
+                             they never appear in this users table). -->
+                        <select class="form-select" id="userRole">
+                            <option value="">Select Role</option>
+                            <option value="super_admin">Super Admin</option>
+                            <option value="admin">Admin</option>
+                            <option value="staff">Staff</option>
+                        </select>
+                    </div>
 
-</div>
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" id="userStatus">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
 
-<div class="col-lg-6 mb-3">
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">Password <small class="text-muted">(Update ke waqt khaali chhodo agar badalna nahi hai)</small></label>
+                        <input type="password" class="form-control" id="userPassword" placeholder="Password">
+                    </div>
 
-    <label class="form-label">
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="userConfirmPassword" placeholder="Confirm Password">
+                    </div>
 
-        Email Address *
+                    <div class="col-12 mt-2">
+                        <div class="d-flex flex-wrap gap-2">
 
-    </label>
+                            <button type="button" id="addUserBtn" class="btn btn-success">
+                                <i class="fa-solid fa-user-plus me-2"></i>
+                                Add User
+                            </button>
 
-    <input type="email"
-           class="form-control"
-           id="userEmail"
-           placeholder="Enter Email">
+                            <button type="button" id="updateUserBtn" class="btn btn-primary" disabled>
+                                <i class="fa-solid fa-pen me-2"></i>
+                                Update User
+                            </button>
 
-</div>
+                            <button type="button" id="deleteUserBtn" class="btn btn-danger" disabled>
+                                <i class="fa-solid fa-trash me-2"></i>
+                                Delete User
+                            </button>
 
-<div class="col-lg-4 mb-3">
+                            <button type="button" id="resetUserFormBtn" class="btn btn-secondary">
+                                <i class="fa-solid fa-rotate-right me-2"></i>
+                                Reset
+                            </button>
 
-    <label class="form-label">
+                        </div>
+                    </div>
 
-        Mobile Number
+                </div>
 
-    </label>
+            </form>
 
-    <input type="text"
-           class="form-control"
-           id="userMobile"
-           placeholder="Mobile Number">
+        </div>
 
-</div>
 
-<div class="col-lg-4 mb-3">
 
-    <label class="form-label">
+        <!-- ================= USER LIST ================= -->
 
-        User Role
+        <div class="form-card">
 
-    </label>
+            <h4 class="settings-title">
 
-    <select class="form-select"
-           id="userRole">
+                System Users
 
-        <option value="" selected disabled>Select Role</option>
+            </h4>
 
-        <option value="super_admin">Super Admin</option>
 
-        <option value="admin">Admin</option>
+            <div class="table-responsive">
 
-        <option value="staff">Staff / Manager</option>
+                <table class="table table-bordered table-hover align-middle">
 
-    </select>
+                    <thead class="table-primary">
 
-</div>
+                        <tr>
 
-<div class="col-lg-4 mb-3">
+                            <th>#</th>
 
-    <label class="form-label">
+                            <th>Name</th>
 
-        Status
+                            <th>Email</th>
 
-    </label>
+                            <th>Mobile</th>
 
-    <select class="form-select"
-           id="userStatus">
+                            <th>Role</th>
 
-        <option value="active">Active</option>
+                            <th>Status</th>
 
-        <option value="inactive">Inactive</option>
+                            <th>Last Login</th>
 
-    </select>
+                            <th>Action</th>
 
-</div>
+                        </tr>
 
-<div class="col-lg-6 mb-3">
+                    </thead>
 
-    <label class="form-label">
 
-        Password
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="8" class="text-center text-muted">Loading...</td></tr>
+                    </tbody>
 
-    </label>
-
-    <input type="password"
-           class="form-control"
-           id="userPassword"
-           placeholder="Password">
-
-</div>
-
-<div class="col-lg-6 mb-3">
-
-    <label class="form-label">
-
-        Confirm Password
-
-    </label>
-
-    <input type="password"
-           class="form-control"
-           id="userConfirmPassword"
-           placeholder="Confirm Password">
-
-</div>
-
-<div class="col-12 mt-2">
-
-    <div class="d-flex flex-wrap gap-2">
-
-        <button class="btn btn-success">
-
-            <i class="fa-solid fa-user-plus me-2"></i>
-
-            Add User
-
-        </button>
-
-        <button class="btn btn-primary">
-
-            <i class="fa-solid fa-pen me-2"></i>
-
-            Update User
-
-        </button>
-
-        <button class="btn btn-danger">
-
-            <i class="fa-solid fa-trash me-2"></i>
-
-            Delete User
-
-        </button>
-
-        <button class="btn btn-secondary">
-
-            <i class="fa-solid fa-rotate-right me-2"></i>
-
-            Reset
-
-        </button>
-
-    </div>
-
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-<!-- ================= USER LIST ================= -->
-
-<div class="form-card">
-
-    <h4 class="settings-title">
-
-        System Users
-
-    </h4>
-
-    <div class="table-responsive">
-
-        <table class="table table-bordered table-hover align-middle">
-
-            <thead class="table-primary">
-
-                <tr>
-
-                    <th>#</th>
-
-                    <th>Name</th>
-
-                    <th>Email</th>
-
-                    <th>Mobile</th>
-
-                    <th>Role</th>
-
-                    <th>Status</th>
-
-                    <th>Last Login</th>
-
-                    <th>Action</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-<!-- Users will be loaded here from the database -->
-</tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-<!-- ================= WARRANTY SETTINGS START ================= -->
-
-<div class="form-card">
-
-    <h4 class="settings-title">
-
-        Warranty Settings
-
-    </h4>
-
-    <form>
-
-        <div class="row">
-            <!-- ================= WARRANTY SETTINGS ================= -->
-
-<div class="col-lg-4 mb-3">
-
-    <label class="form-label">
-        Default Warranty (Months)
-    </label>
-
-    <select class="form-select">
-
-        <option>12 Months</option>
-        <option>24 Months</option>
-        <option>36 Months</option>
-        <option>48 Months</option>
-        <option>60 Months</option>
-
-    </select>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-    <label class="form-label">
-        Warranty Start From
-    </label>
-
-    <select class="form-select">
-
-        <option>Dispatch Date</option>
-        <option>Invoice Date</option>
-        <option>Warranty Activation Date</option>
-
-    </select>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-    <label class="form-label">
-        Grace Period (Days)
-    </label>
-
-    <input type="number"
-           class="form-control"
-           value="90">
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-    <label class="form-label">
-        Replacement Allowed
-    </label>
-
-    <select class="form-select">
-
-        <option>Yes</option>
-        <option>No</option>
-
-    </select>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-    <label class="form-label">
-        Auto Warranty Expiry Alert
-    </label>
-
-    <select class="form-select">
-
-        <option>Enabled</option>
-        <option>Disabled</option>
-
-    </select>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-    <label class="form-label">
-        Reminder Before Expiry (Days)
-    </label>
-
-    <input type="number"
-           class="form-control"
-           value="30">
-
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-<!-- ================= REWARD SETTINGS ================= -->
-
-<div class="form-card">
-
-<h4 class="settings-title">
-
-Reward Settings
-
-</h4>
-
-<form>
-
-<div class="row">
-
-<div class="col-lg-4 mb-3">
-
-<label class="form-label">
-
-Warranty Reward Points
-
-</label>
-
-<input type="number"
-class="form-control"
-value="50">
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<label class="form-label">
-
-Dispatch Reward Points
-
-</label>
-
-<input type="number"
-class="form-control"
-value="10">
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<label class="form-label">
-
-Replacement Reward Points
-
-</label>
-
-<input type="number"
-class="form-control"
-value="0">
-
-</div>
-
-<div class="col-lg-6 mb-3">
-
-<label class="form-label">
-
-Minimum Redeem Points
-
-</label>
-
-<input type="number"
-class="form-control"
-value="500">
-
-</div>
-
-<div class="col-lg-6 mb-3">
-
-<label class="form-label">
-
-Maximum Redeem Per Month
-
-</label>
-
-<input type="number"
-class="form-control"
-value="5000">
-
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-<!-- ================= NOTIFICATION SETTINGS ================= -->
-
-<div class="form-card">
-
-<h4 class="settings-title">
-
-Notification Settings
-
-</h4>
-
-<form>
-
-<div class="row">
-
-<div class="col-lg-4 mb-3">
-
-<div class="form-check form-switch">
-
-<input class="form-check-input"
-type="checkbox"
-checked>
-
-<label class="form-check-label">
-
-Email Notifications
-
-</label>
-
-</div>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<div class="form-check form-switch">
-
-<input class="form-check-input"
-type="checkbox"
-checked>
-
-<label class="form-check-label">
-
-SMS Notifications
-
-</label>
-
-</div>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<div class="form-check form-switch">
-
-<input class="form-check-input"
-type="checkbox"
-checked>
-
-<label class="form-check-label">
-
-WhatsApp Notifications
-
-</label>
-
-</div>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<div class="form-check form-switch">
-
-<input class="form-check-input"
-type="checkbox"
-checked>
-
-<label class="form-check-label">
-
-Low Stock Alert
-
-</label>
-
-</div>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<div class="form-check form-switch">
-
-<input class="form-check-input"
-type="checkbox"
-checked>
-
-<label class="form-check-label">
-
-Warranty Expiry Alert
-
-</label>
-
-</div>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<div class="form-check form-switch">
-
-<input class="form-check-input"
-type="checkbox">
-
-<label class="form-check-label">
-
-Replacement Alert
-
-</label>
-
-</div>
-
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-<!-- ================= SECURITY SETTINGS ================= -->
-
-<div class="form-card">
-
-<h4 class="settings-title">
-
-Security Settings
-
-</h4>
-
-<form>
-
-<div class="row">
-
-<div class="col-lg-4 mb-3">
-
-<label class="form-label">
-
-Current Password
-
-</label>
-
-<input type="password"
-class="form-control">
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<label class="form-label">
-
-New Password
-
-</label>
-
-<input type="password"
-class="form-control">
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<label class="form-label">
-
-Confirm Password
-
-</label>
-
-<input type="password"
-class="form-control">
-
-</div>
-
-<div class="col-lg-6 mb-3">
-
-<label class="form-label">
-
-Session Timeout (Minutes)
-
-</label>
-
-<input type="number"
-class="form-control"
-value="30">
-
-</div>
-
-<div class="col-lg-6 mb-3">
-
-<div class="form-check form-switch mt-4">
-
-<input class="form-check-input"
-type="checkbox">
-
-<label class="form-check-label">
-
-Enable Two-Factor Authentication
-
-</label>
-
-</div>
-
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-<!-- ================= BACKUP & RESTORE ================= -->
-
-<div class="form-card">
-
-<h4 class="settings-title">
-
-Backup & Restore
-
-</h4>
-
-<div class="row">
-
-<div class="col-lg-4 mb-3">
-
-<button class="btn btn-primary w-100">
-
-<i class="fa-solid fa-download me-2"></i>
-
-Backup Database
-
-</button>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<button class="btn btn-success w-100">
-
-<i class="fa-solid fa-upload me-2"></i>
-
-Restore Database
-
-</button>
-
-</div>
-
-<div class="col-lg-4 mb-3">
-
-<button class="btn btn-warning w-100 text-white">
-
-<i class="fa-solid fa-clock-rotate-left me-2"></i>
-
-Auto Backup
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ================= FOOTER START ================= -->
- <!-- ================= FOOTER ================= -->
-
-<footer class="mt-4">
-
-    <div class="dashboard-card">
-
-        <div class="row align-items-center">
-
-            <div class="col-lg-6">
-
-                <h6 class="fw-bold mb-1">
-
-                    Battery ERP Management System
-
-                </h6>
-
-                <small class="text-muted">
-
-                    Settings Module | Version 1.0
-
-                </small>
-
-            </div>
-
-            <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
-
-                <button class="btn btn-outline-primary btn-sm">
-
-                    Help
-
-                </button>
-
-                <button class="btn btn-outline-success btn-sm">
-
-                    Support
-
-                </button>
+                </table>
 
             </div>
 
         </div>
 
+
+
+        <!-- ================= WARRANTY SETTINGS ================= -->
+
+        <div class="form-card">
+
+            <h4 class="settings-title">
+
+                Warranty Settings
+
+            </h4>
+
+
+            <div id="warrantySettingsAlert"></div>
+
+            <form id="warrantySettingsForm">
+                <div class="row">
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Default Warranty (Months)</label>
+                        <select class="form-select" id="warrantyDefaultMonths">
+                            <option value="12">12 Months</option>
+                            <option value="24">24 Months</option>
+                            <option value="36">36 Months</option>
+                            <option value="48">48 Months</option>
+                            <option value="60">60 Months</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Warranty Start From</label>
+                        <select class="form-select" id="warrantyStartFrom">
+                            <option value="dispatch_date">Dispatch Date</option>
+                            <option value="invoice_date">Invoice Date</option>
+                            <option value="activation_date">Warranty Activation Date</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">
+                            Grace Period (Days)
+                            <small class="text-muted">(dealer khud is window ke andar hi warranty activate kar sakta hai)</small>
+                        </label>
+                        <input type="number" class="form-control" id="gracePeriodDays" min="0">
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Replacement Allowed</label>
+                        <select class="form-select" id="replacementAllowed">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Auto Warranty Expiry Alert</label>
+                        <select class="form-select" id="warrantyExpiryAlert">
+                            <option value="enabled">Enabled</option>
+                            <option value="disabled">Disabled</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Reminder Before Expiry (Days)</label>
+                        <input type="number" class="form-control" id="reminderBeforeExpiryDays" min="0">
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa-solid fa-floppy-disk me-2"></i>
+                            Save Warranty Settings
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+
+
+        <!-- ================= REWARD SETTINGS ================= -->
+
+        <div class="form-card">
+
+            <h4 class="settings-title">
+
+                Reward Settings
+
+            </h4>
+
+
+            <div id="rewardSettingsAlert"></div>
+
+            <form id="rewardSettingsForm">
+                <div class="row">
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Warranty Reward Points</label>
+                        <input type="number" class="form-control" id="warrantyRewardPoints" min="0">
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">
+                            Dispatch Reward Points
+                            <small class="text-muted">(abhi record ke liye hai -- dispatch par auto-reward feature aage add hoga)</small>
+                        </label>
+                        <input type="number" class="form-control" id="dispatchRewardPoints" min="0">
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Replacement Reward Points</label>
+                        <input type="number" class="form-control" id="replacementRewardPoints" min="0">
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">Minimum Redeem Points</label>
+                        <input type="number" class="form-control" id="minRedeemPoints" min="0">
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">Maximum Redeem Per Month</label>
+                        <input type="number" class="form-control" id="maxRedeemPerMonth" min="0">
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa-solid fa-floppy-disk me-2"></i>
+                            Save Reward Settings
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+
+
+        <!-- ================= SECURITY SETTINGS ================= -->
+
+        <div class="form-card">
+
+            <h4 class="settings-title">
+                Security Settings
+            </h4>
+
+            <!-- ===== CHANGE PASSWORD (apna khud ka -- /api/users/change-password) ===== -->
+            <h6 class="fw-bold mb-3">Change Password</h6>
+
+            <div id="passwordChangeAlert"></div>
+
+            <form id="passwordChangeForm">
+                <div class="row">
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Current Password</label>
+                        <input type="password" class="form-control" id="currentPassword" autocomplete="current-password">
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" autocomplete="new-password">
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmNewPassword" autocomplete="new-password">
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa-solid fa-key me-2"></i>
+                            Change Password
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+            <hr class="my-4">
+
+            <!-- ===== SECURITY PREFERENCES (session timeout / 2FA) ===== -->
+            <h6 class="fw-bold mb-3">Security Preferences</h6>
+
+            <div id="securitySettingsAlert"></div>
+
+            <form id="securitySettingsForm">
+                <div class="row">
+
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">Session Timeout (Minutes)</label>
+                        <input type="number" class="form-control" id="sessionTimeoutMinutes" min="5">
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <div class="form-check form-switch mt-4">
+                            <input class="form-check-input" type="checkbox" id="twoFactorEnabled">
+                            <label class="form-check-label" for="twoFactorEnabled">Enable Two-Factor Authentication</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa-solid fa-floppy-disk me-2"></i>
+                            Save Security Preferences
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer class="mt-4">
+
+            <div class="dashboard-card">
+
+                <div class="row align-items-center">
+
+
+                    <div class="col-lg-6">
+
+                        <h6 class="fw-bold mb-1">
+
+                            Battery ERP Management System
+
+                        </h6>
+
+                        <small class="text-muted">
+
+                            Settings Module | Version 1.0
+
+                        </small>
+
+                    </div>
+
+
+                    <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
+
+                        <button class="btn btn-outline-primary btn-sm">
+
+                            Help
+
+                        </button>
+
+
+                        <button class="btn btn-outline-success btn-sm">
+
+                            Support
+
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </footer>
+
+
     </div>
 
-</footer>
-
 </div>
 
-</div>
+
 
 <!-- ================= RESPONSIVE CSS ================= -->
 
 <style>
 
-@media (max-width:992px){
+@media(max-width:992px){
 
 .sidebar{
 
 left:-260px;
+
 transition:.3s;
 
 }
@@ -1556,7 +1096,8 @@ width:100%;
 
 }
 
-@media (max-width:768px){
+
+@media(max-width:768px){
 
 .topbar{
 
@@ -1611,28 +1152,20 @@ font-size:14px;
 
 </style>
 
+
+
 <!-- ================= BOOTSTRAP JS ================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
 
 <!-- ================= JAVASCRIPT ================= -->
 
 <script>
 
-/* ================= MOBILE SIDEBAR ================= */
-
-const sidebar = document.querySelector(".sidebar");
-const menuBtn = document.createElement("button");
-menuBtn.className = "btn btn-primary";
-menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-document.querySelector(".profile").prepend(menuBtn);
-menuBtn.onclick = function(){
-    sidebar.classList.toggle("active");
-};
-
-
 /* ===============================
-   AUTH CHECK
+   AUTH
 ================================ */
 
 const token = localStorage.getItem("token");
@@ -1643,233 +1176,393 @@ const authHeaders = {
     "Authorization": "Bearer " + token
 };
 
-let editingUserId = null;
+
+/* ===============================
+   MOBILE SIDEBAR
+================================ */
+
+const sidebar = document.querySelector(".sidebar");
+const menuBtn = document.createElement("button");
+menuBtn.className = "btn btn-primary";
+menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+document.querySelector(".profile").prepend(menuBtn);
+
+menuBtn.onclick = function(){
+    sidebar.classList.toggle("active");
+};
 
 
 /* ===============================
-   LOAD USERS TABLE
+   SMALL HELPERS
 ================================ */
 
-function badgeClassForRole(role){
-    if (role === "super_admin") return "bg-danger";
-    if (role === "admin") return "bg-primary";
-    return "bg-secondary";
+function showAlert(containerId, type, message){
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = `<div class="alert alert-${type} py-2 px-3">${message}</div>`;
+    if (type === "success") setTimeout(() => { el.innerHTML = ""; }, 3000);
 }
 
-function formatRoleLabel(role){
+function monthsLabel(v){ return `${v} Months`; }
+
+async function apiGet(url){
+    const res = await fetch(url, { headers: authHeaders });
+    return res.json();
+}
+async function apiPut(url, body){
+    const res = await fetch(url, { method: "PUT", headers: authHeaders, body: JSON.stringify(body) });
+    return res.json();
+}
+async function apiPost(url, body){
+    const res = await fetch(url, { method: "POST", headers: authHeaders, body: JSON.stringify(body) });
+    return res.json();
+}
+async function apiDelete(url){
+    const res = await fetch(url, { method: "DELETE", headers: authHeaders });
+    return res.json();
+}
+
+
+/* ===============================
+   LOAD SYSTEM SETTINGS (Warranty / Reward / Security)
+================================ */
+
+async function loadSettings(){
+    const result = await apiGet("/api/settings");
+    if (!result.success) return;
+
+    const s = result.data;
+
+    // Warranty Settings
+    document.getElementById("warrantyDefaultMonths").value = s.warranty_default_months;
+    document.getElementById("warrantyStartFrom").value = s.warranty_start_from;
+    document.getElementById("gracePeriodDays").value = s.grace_period_days;
+    document.getElementById("replacementAllowed").value = s.replacement_allowed;
+    document.getElementById("warrantyExpiryAlert").value = s.warranty_expiry_alert;
+    document.getElementById("reminderBeforeExpiryDays").value = s.reminder_before_expiry_days;
+
+    // Reward Settings
+    document.getElementById("warrantyRewardPoints").value = s.warranty_reward_points;
+    document.getElementById("dispatchRewardPoints").value = s.dispatch_reward_points;
+    document.getElementById("replacementRewardPoints").value = s.replacement_reward_points;
+    document.getElementById("minRedeemPoints").value = s.min_redeem_points;
+    document.getElementById("maxRedeemPerMonth").value = s.max_redeem_per_month;
+
+    // Security Preferences
+    document.getElementById("sessionTimeoutMinutes").value = s.session_timeout_minutes;
+    document.getElementById("twoFactorEnabled").checked = (s.two_factor_enabled === "yes");
+}
+
+
+/* ===============================
+   WARRANTY SETTINGS -- SAVE
+================================ */
+
+document.getElementById("warrantySettingsForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const payload = {
+        warranty_default_months: document.getElementById("warrantyDefaultMonths").value,
+        warranty_start_from: document.getElementById("warrantyStartFrom").value,
+        grace_period_days: document.getElementById("gracePeriodDays").value,
+        replacement_allowed: document.getElementById("replacementAllowed").value,
+        warranty_expiry_alert: document.getElementById("warrantyExpiryAlert").value,
+        reminder_before_expiry_days: document.getElementById("reminderBeforeExpiryDays").value
+    };
+
+    const result = await apiPut("/api/settings/warranty", payload);
+
+    if (!result.success) {
+        showAlert("warrantySettingsAlert", "danger", (result.errors || [result.message]).join("<br>"));
+        return;
+    }
+    showAlert("warrantySettingsAlert", "success", "Warranty settings save ho gayi.");
+});
+
+
+/* ===============================
+   REWARD SETTINGS -- SAVE
+================================ */
+
+document.getElementById("rewardSettingsForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const payload = {
+        warranty_reward_points: document.getElementById("warrantyRewardPoints").value,
+        dispatch_reward_points: document.getElementById("dispatchRewardPoints").value,
+        replacement_reward_points: document.getElementById("replacementRewardPoints").value,
+        min_redeem_points: document.getElementById("minRedeemPoints").value,
+        max_redeem_per_month: document.getElementById("maxRedeemPerMonth").value
+    };
+
+    const result = await apiPut("/api/settings/reward", payload);
+
+    if (!result.success) {
+        showAlert("rewardSettingsAlert", "danger", (result.errors || [result.message]).join("<br>"));
+        return;
+    }
+    showAlert("rewardSettingsAlert", "success", "Reward settings save ho gayi.");
+});
+
+
+/* ===============================
+   SECURITY PREFERENCES -- SAVE
+================================ */
+
+document.getElementById("securitySettingsForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const payload = {
+        session_timeout_minutes: document.getElementById("sessionTimeoutMinutes").value,
+        two_factor_enabled: document.getElementById("twoFactorEnabled").checked ? "yes" : "no"
+    };
+
+    const result = await apiPut("/api/settings/security", payload);
+
+    if (!result.success) {
+        showAlert("securitySettingsAlert", "danger", (result.errors || [result.message]).join("<br>"));
+        return;
+    }
+    showAlert("securitySettingsAlert", "success", "Security preferences save ho gayi.");
+});
+
+
+/* ===============================
+   CHANGE PASSWORD (apna khud ka -- /api/users/change-password)
+================================ */
+
+document.getElementById("passwordChangeForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const current_password = document.getElementById("currentPassword").value;
+    const new_password = document.getElementById("newPassword").value;
+    const confirm_password = document.getElementById("confirmNewPassword").value;
+
+    if (!current_password || !new_password || !confirm_password) {
+        showAlert("passwordChangeAlert", "danger", "Sabhi fields bharo.");
+        return;
+    }
+    if (new_password.length < 6) {
+        showAlert("passwordChangeAlert", "danger", "New password kam se kam 6 characters ka hona chahiye.");
+        return;
+    }
+    if (new_password !== confirm_password) {
+        showAlert("passwordChangeAlert", "danger", "New Password aur Confirm Password match nahi kar rahe.");
+        return;
+    }
+
+    const result = await apiPut("/api/users/change-password", { current_password, new_password });
+
+    if (!result.success) {
+        showAlert("passwordChangeAlert", "danger", result.message || "Password change nahi ho paaya.");
+        return;
+    }
+
+    showAlert("passwordChangeAlert", "success", "Password successfully change ho gaya.");
+    document.getElementById("passwordChangeForm").reset();
+});
+
+
+/* ===============================
+   USER MANAGEMENT -- LIST
+================================ */
+
+function roleBadgeClass(role){
+    if (role === "super_admin") return "bg-danger";
+    if (role === "admin") return "bg-primary";
+    return "bg-secondary"; // staff
+}
+function roleLabel(role){
     if (role === "super_admin") return "Super Admin";
     if (role === "admin") return "Admin";
     return "Staff";
 }
 
 async function loadUsers(){
-    const tbody = document.querySelector("table tbody");
-    tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
+    const tbody = document.getElementById("usersTableBody");
+    const result = await apiGet("/api/users");
 
-    try {
-        const response = await fetch("/api/users", { headers: authHeaders });
-        const result = await response.json();
-
-        if (!result.success) {
-            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">${result.message}</td></tr>`;
-            return;
-        }
-
-        const users = result.data.users;
-
-        if (users.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="8" class="text-center">Koi user nahi mila.</td></tr>`;
-            return;
-        }
-
-        tbody.innerHTML = users.map((u, index) => `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${u.full_name}</td>
-                <td>${u.email}</td>
-                <td>${u.mobile}</td>
-                <td><span class="badge ${badgeClassForRole(u.role)}">${formatRoleLabel(u.role)}</span></td>
-                <td><span class="badge ${u.status === 'active' ? 'bg-success' : 'bg-secondary'}">${u.status}</span></td>
-                <td>${u.last_login_at ? new Date(u.last_login_at).toLocaleString("en-IN") : "Never"}</td>
-                <td>
-                    <button class="btn btn-sm btn-info" onclick="viewUser(${u.user_id})"><i class="fa-solid fa-eye"></i></button>
-                    <button class="btn btn-sm btn-warning" onclick="editUser(${u.user_id})"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteUser(${u.user_id})"><i class="fa-solid fa-trash"></i></button>
-                </td>
-            </tr>
-        `).join("");
-
-    } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
-        console.error(err);
+    if (!result.success) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">${result.message}</td></tr>`;
+        return;
     }
+
+    const users = result.data.users;
+
+    if (users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center">No users found.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = users.map((u, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${u.full_name}</td>
+            <td>${u.email}</td>
+            <td>${u.mobile || "-"}</td>
+            <td><span class="badge ${roleBadgeClass(u.role)}">${roleLabel(u.role)}</span></td>
+            <td><span class="badge ${u.status === "active" ? "bg-success" : "bg-secondary"}">${u.status}</span></td>
+            <td>${u.last_login_at ? new Date(u.last_login_at).toLocaleString("en-IN") : "Never"}</td>
+            <td>
+                <button class="btn btn-sm btn-info" onclick="viewUser(${u.user_id})"><i class="fa-solid fa-eye"></i></button>
+                <button class="btn btn-sm btn-warning" onclick="editUser(${u.user_id})"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteUserRow(${u.user_id})"><i class="fa-solid fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join("");
 }
 
-
-/* ===============================
-   ADD / UPDATE USER
-================================ */
-
-const userForm = document.getElementById("userFullName").closest("form");
-
-async function saveUser(){
-    const password = document.getElementById("userPassword").value;
-    const confirmPassword = document.getElementById("userConfirmPassword").value;
-
-    if (password && password !== confirmPassword) {
-        alert("Password and Confirm Password do not match.");
-        return;
-    }
-    if (!editingUserId && !password) {
-        alert("Password is required for a new user.");
-        return;
-    }
-
-    const payload = {
-        full_name: document.getElementById("userFullName").value.trim(),
-        email: document.getElementById("userEmail").value.trim(),
-        mobile: document.getElementById("userMobile").value.trim(),
-        role: document.getElementById("userRole").value,
-        status: document.getElementById("userStatus").value
-    };
-    if (password) payload.password = password;
-
-    if (!payload.full_name || !payload.email || !payload.role) {
-        alert("Please fill all required (*) fields.");
-        return;
-    }
-
-    const url = editingUserId ? `/api/users/${editingUserId}` : "/api/users";
-    const method = editingUserId ? "PUT" : "POST";
-
-    try {
-        const response = await fetch(url, {
-            method,
-            headers: authHeaders,
-            body: JSON.stringify(payload)
-        });
-        const result = await response.json();
-
-        if (!result.success) {
-            alert(result.message || "Something went wrong.");
-            return;
-        }
-
-        alert(editingUserId ? "User Updated Successfully." : "User Added Successfully.");
-        userForm.reset();
-        editingUserId = null;
-        loadUsers();
-
-    } catch (err) {
-        alert("Server se connect nahi ho paya.");
-        console.error(err);
-    }
-}
-
-
-/* ===============================
-   VIEW / EDIT / DELETE
-================================ */
-
-async function viewUser(id){
-    const response = await fetch(`/api/users/${id}`, { headers: authHeaders });
-    const result = await response.json();
-    if (!result.success) { alert(result.message); return; }
-    const u = result.data;
-    alert(
-        `Name: ${u.full_name}\nEmail: ${u.email}\nMobile: ${u.mobile}\nRole: ${formatRoleLabel(u.role)}\nStatus: ${u.status}\nLast Login: ${u.last_login_at ? new Date(u.last_login_at).toLocaleString("en-IN") : "Never"}`
-    );
+function viewUser(id){
+    apiGet(`/api/users/${id}`).then(result => {
+        if (!result.success) { alert(result.message); return; }
+        const u = result.data;
+        alert(
+            `Name: ${u.full_name}\nEmail: ${u.email}\nMobile: ${u.mobile || "-"}\nRole: ${roleLabel(u.role)}\nStatus: ${u.status}\nLast Login: ${u.last_login_at ? new Date(u.last_login_at).toLocaleString("en-IN") : "Never"}`
+        );
+    });
 }
 
 async function editUser(id){
-    const response = await fetch(`/api/users/${id}`, { headers: authHeaders });
-    const result = await response.json();
+    const result = await apiGet(`/api/users/${id}`);
     if (!result.success) { alert(result.message); return; }
 
     const u = result.data;
-    editingUserId = id;
-
+    document.getElementById("editingUserId").value = u.user_id;
     document.getElementById("userFullName").value = u.full_name;
     document.getElementById("userEmail").value = u.email;
-    document.getElementById("userEmail").setAttribute("readonly", "readonly"); // email change allowed nahi (unique identifier)
-    document.getElementById("userMobile").value = u.mobile;
+    document.getElementById("userMobile").value = u.mobile || "";
     document.getElementById("userRole").value = u.role;
     document.getElementById("userStatus").value = u.status;
     document.getElementById("userPassword").value = "";
     document.getElementById("userConfirmPassword").value = "";
-    document.getElementById("userPassword").placeholder = "Leave blank to keep same password";
 
-    userForm.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("addUserBtn").disabled = true;
+    document.getElementById("updateUserBtn").disabled = false;
+    document.getElementById("deleteUserBtn").disabled = false;
+
+    document.getElementById("userForm").scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-async function deleteUser(id){
-    if (!confirm("Kya tum sach me is user ko delete karna chahte ho?")) return;
+async function deleteUserRow(id){
+    if (!confirm("Is user ko delete karna hai? Yeh action wapas nahi ho sakta.")) return;
 
-    try {
-        const response = await fetch(`/api/users/${id}`, {
-            method: "DELETE",
-            headers: authHeaders
-        });
-        const result = await response.json();
+    const result = await apiDelete(`/api/users/${id}`);
+    if (!result.success) { alert(result.message); return; }
 
-        if (!result.success) { alert(result.message); return; }
-
-        alert("User Deleted Successfully.");
-        loadUsers();
-
-    } catch (err) {
-        alert("Server se connect nahi ho paya.");
-        console.error(err);
-    }
+    if (document.getElementById("editingUserId").value == id) resetUserForm();
+    loadUsers();
 }
+
+function resetUserForm(){
+    document.getElementById("userForm").reset();
+    document.getElementById("editingUserId").value = "";
+    document.getElementById("addUserBtn").disabled = false;
+    document.getElementById("updateUserBtn").disabled = true;
+    document.getElementById("deleteUserBtn").disabled = true;
+    document.getElementById("userFormAlert").innerHTML = "";
+}
+
+document.getElementById("resetUserFormBtn").addEventListener("click", resetUserForm);
 
 
 /* ===============================
-   USERS TAB BUTTONS (Add / Update / Delete / Reset)
+   USER MANAGEMENT -- ADD
 ================================ */
 
-const usersTabButtons = userForm.querySelectorAll(".btn-success, .btn-primary, .btn-danger, .btn-secondary");
+document.getElementById("addUserBtn").addEventListener("click", async function(){
+    const full_name = document.getElementById("userFullName").value.trim();
+    const email = document.getElementById("userEmail").value.trim();
+    const mobile = document.getElementById("userMobile").value.trim();
+    const role = document.getElementById("userRole").value;
+    const status = document.getElementById("userStatus").value;
+    const password = document.getElementById("userPassword").value;
+    const confirmPassword = document.getElementById("userConfirmPassword").value;
 
-usersTabButtons.forEach(btn => {
-    if (btn.textContent.includes("Add User") || btn.textContent.includes("Update User")) {
-        btn.addEventListener("click", function(e){
-            e.preventDefault();
-            saveUser();
-        });
-    } else if (btn.textContent.includes("Delete User")) {
-        btn.addEventListener("click", function(e){
-            e.preventDefault();
-            if (!editingUserId) { alert("Pehle table se ek user select karo (Edit icon dabao)."); return; }
-            deleteUser(editingUserId);
-        });
-    } else if (btn.textContent.includes("Reset")) {
-        btn.addEventListener("click", function(e){
-            e.preventDefault();
-            userForm.reset();
-            editingUserId = null;
-            document.getElementById("userEmail").removeAttribute("readonly");
-            document.getElementById("userPassword").placeholder = "Password";
-        });
+    if (!full_name || !email || !password) {
+        showAlert("userFormAlert", "danger", "Full Name, Email aur Password zaroori hain.");
+        return;
     }
+    if (!role) {
+        showAlert("userFormAlert", "danger", "User Role select karo.");
+        return;
+    }
+    if (password !== confirmPassword) {
+        showAlert("userFormAlert", "danger", "Password aur Confirm Password match nahi kar rahe.");
+        return;
+    }
+
+    const result = await apiPost("/api/users", { full_name, email, mobile, role, status, password });
+
+    if (!result.success) {
+        showAlert("userFormAlert", "danger", result.message || "User add nahi ho paaya.");
+        return;
+    }
+
+    showAlert("userFormAlert", "success", "User successfully add ho gaya.");
+    resetUserForm();
+    loadUsers();
 });
 
 
 /* ===============================
-   OTHER TABS (Company / Warranty / Security)
-   -- NOTE: yeh abhi database se connect nahi hain, sirf UI hai.
-   Save button dabate hi yeh message dikhega taaki confusion na ho.
+   USER MANAGEMENT -- UPDATE
 ================================ */
 
-document.querySelectorAll(".btn-success, .btn-secondary").forEach(button => {
-    if (userForm.contains(button)) return; // Users tab already handled upar
+document.getElementById("updateUserBtn").addEventListener("click", async function(){
+    const id = document.getElementById("editingUserId").value;
+    if (!id) return;
 
-    button.addEventListener("click", function(e){
-        e.preventDefault();
-        if (button.textContent.includes("Reset") || button.textContent.includes("Cancel")) {
-            if (confirm("Reset all unsaved changes?")) location.reload();
-            return;
-        }
-        alert("Yeh section (Company/Warranty/Security) abhi database se connect nahi hai -- agle phase me banega.");
+    const full_name = document.getElementById("userFullName").value.trim();
+    const mobile = document.getElementById("userMobile").value.trim();
+    const role = document.getElementById("userRole").value;
+    const status = document.getElementById("userStatus").value;
+    const password = document.getElementById("userPassword").value;
+    const confirmPassword = document.getElementById("userConfirmPassword").value;
+
+    if (!full_name || !role || !status) {
+        showAlert("userFormAlert", "danger", "Full Name, Role aur Status zaroori hain.");
+        return;
+    }
+    if (password && password !== confirmPassword) {
+        showAlert("userFormAlert", "danger", "Password aur Confirm Password match nahi kar rahe.");
+        return;
+    }
+
+    const payload = { full_name, mobile, role, status };
+    if (password) payload.password = password;
+
+    const result = await apiPut(`/api/users/${id}`, payload);
+
+    if (!result.success) {
+        showAlert("userFormAlert", "danger", result.message || "User update nahi ho paaya.");
+        return;
+    }
+
+    showAlert("userFormAlert", "success", "User successfully update ho gaya.");
+    resetUserForm();
+    loadUsers();
+});
+
+
+/* ===============================
+   USER MANAGEMENT -- DELETE (form button, jab user select hai)
+================================ */
+
+document.getElementById("deleteUserBtn").addEventListener("click", async function(){
+    const id = document.getElementById("editingUserId").value;
+    if (!id) return;
+    await deleteUserRow(id);
+});
+
+
+/* ===============================
+   SIDEBAR ACTIVE
+================================ */
+
+document.querySelectorAll(".sidebar a").forEach(link=>{
+    link.addEventListener("click",function(){
+        document.querySelectorAll(".sidebar a").forEach(item=>{ item.classList.remove("active"); });
+        this.classList.add("active");
     });
 });
 
@@ -1878,9 +1571,13 @@ document.querySelectorAll(".btn-success, .btn-secondary").forEach(button => {
    PAGE LOAD
 ================================ */
 
+loadSettings();
 loadUsers();
 
+console.log("Settings Module Loaded Successfully");
+
 </script>
+
 
 </body>
 

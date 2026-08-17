@@ -37,7 +37,7 @@ exports.getGlobalStats = async () => {
 exports.getDealerWallet = async (dealerId) => {
     const [[dealer]] = await db.query(
         `SELECT dealer_id, dealer_code, dealer_name, phone, email, city, state,
-                dealer_status, reward_eligible
+                dealer_status, reward_eligible, updated_at AS dealer_updated_at
          FROM dealers WHERE dealer_id = ?`,
         [dealerId]
     );
@@ -48,7 +48,9 @@ exports.getDealerWallet = async (dealerId) => {
         `SELECT
             COALESCE(SUM(CASE WHEN transaction_type = 'credit' AND status = 'approved' THEN points ELSE 0 END), 0) AS lifetime_points,
             COALESCE(SUM(CASE WHEN transaction_type = 'debit' AND status = 'approved' THEN points ELSE 0 END), 0) AS lifetime_debited,
-            COALESCE(SUM(CASE WHEN transaction_type = 'debit' AND reference_type = 'redemption' AND status = 'approved' THEN points ELSE 0 END), 0) AS redeemed_points
+            COALESCE(SUM(CASE WHEN transaction_type = 'debit' AND reference_type = 'redemption' AND status = 'approved' THEN points ELSE 0 END), 0) AS redeemed_points,
+            COALESCE(SUM(CASE WHEN reference_type = 'warranty' AND transaction_type = 'credit' THEN 1 ELSE 0 END), 0) AS total_warranty_activations,
+            MAX(created_at) AS last_transaction_at
          FROM reward_transactions WHERE dealer_id = ?`,
         [dealerId]
     );
@@ -61,7 +63,11 @@ exports.getDealerWallet = async (dealerId) => {
         current_points,
         lifetime_points,
         redeemed_points: Number(summary.redeemed_points),
-        available_balance: current_points
+        available_balance: current_points,
+        total_warranty_activations: Number(summary.total_warranty_activations),
+        // Wallet "last updated" = most recent transaction, falling back to
+        // the dealer record's own updated_at if there's no transaction yet.
+        last_updated: summary.last_transaction_at || dealer.dealer_updated_at
     };
 };
 
@@ -82,7 +88,7 @@ exports.searchDealers = async (search) => {
 /* =========================================================
    TRANSACTIONS -- list with running balance, search, filter, pagination
 ========================================================= */
-exports.getTransactions = async ({ dealer_id, search, status, dateFrom, dateTo, page = 1, limit = 10 }) => {
+exports.getTransactions = async ({ dealer_id, search, status, reference_type, dateFrom, dateTo, page = 1, limit = 10 }) => {
     let whereClauses = [];
     let params = [];
 
@@ -94,6 +100,11 @@ exports.getTransactions = async ({ dealer_id, search, status, dateFrom, dateTo, 
     if (status) {
         whereClauses.push("rt.status = ?");
         params.push(status);
+    }
+
+    if (reference_type) {
+        whereClauses.push("rt.reference_type = ?");
+        params.push(reference_type);
     }
 
     if (dateFrom) {
@@ -122,7 +133,7 @@ exports.getTransactions = async ({ dealer_id, search, status, dateFrom, dateTo, 
         SELECT
             rt.transaction_id, rt.dealer_id, rt.transaction_date, rt.transaction_type,
             rt.reference_type, rt.reference_id, rt.points, rt.remarks, rt.status,
-            rt.created_at, d.dealer_name, d.dealer_code,
+            rt.created_at, d.dealer_name, d.dealer_code, inv.serial_number,
             SUM(CASE WHEN rt.status = 'approved' THEN
                     (CASE WHEN rt.transaction_type = 'credit' THEN rt.points ELSE -rt.points END)
                 ELSE 0 END)
@@ -130,6 +141,8 @@ exports.getTransactions = async ({ dealer_id, search, status, dateFrom, dateTo, 
                       ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_balance
         FROM reward_transactions rt
         JOIN dealers d ON d.dealer_id = rt.dealer_id
+        LEFT JOIN warranty w ON rt.reference_type = 'warranty' AND rt.reference_id = w.warranty_id
+        LEFT JOIN inventory inv ON w.inventory_id = inv.inventory_id
         ${whereSql}
         ORDER BY rt.transaction_date DESC, rt.transaction_id DESC
         LIMIT ? OFFSET ?
@@ -180,6 +193,21 @@ exports.getCurrentBalance = async (dealerId) => {
         [dealerId]
     );
     return Number(rows[0].balance);
+};
+
+// Is calendar month mein ab tak kitne points redeem (debit) ho chuke hain --
+// Settings > Reward Settings ki "Maximum Redeem Per Month" enforce karne
+// ke liye. Sirf approved + pending debits ginte hain (rejected nahi,
+// woh count hi nahi hote).
+exports.getDebitPointsThisMonth = async (dealerId) => {
+    const [rows] = await db.query(
+        `SELECT COALESCE(SUM(points), 0) AS total
+         FROM reward_transactions
+         WHERE dealer_id = ? AND transaction_type = 'debit' AND status IN ('approved', 'pending')
+           AND YEAR(transaction_date) = YEAR(CURDATE()) AND MONTH(transaction_date) = MONTH(CURDATE())`,
+        [dealerId]
+    );
+    return Number(rows[0].total);
 };
 
 exports.createTransaction = async (txn) => {

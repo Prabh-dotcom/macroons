@@ -533,13 +533,6 @@ justify-content:center;
             </a>
         </li>
 
-        <li class="mt-4">
-            <a href="index.html">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
-            </a>
-        </li>
-
     </ul>
 
 </div>
@@ -557,13 +550,14 @@ justify-content:center;
         <i class="fa-solid fa-magnifying-glass"></i>
 
         <input type="text"
-               placeholder="Search Warranty ID / Serial No...">
+               id="topSearchBox"
+               placeholder="Search Replacement ID / Serial No...">
 
     </div>
 
     <div class="top-icons">
 
-        <button>
+        <button id="notifBellBtn">
             <i class="fa-solid fa-bell"></i>
         </button>
 
@@ -571,7 +565,7 @@ justify-content:center;
             <i class="fa-solid fa-envelope"></i>
         </button>
 
-        <button>
+        <button id="topbarUserBtn">
             <i class="fa-solid fa-user"></i>
         </button>
 
@@ -591,7 +585,7 @@ justify-content:center;
 
         <h3>
 
-            Welcome, Sharma Battery House 👋
+            Welcome, <span id="dealerNameDisplay">Dealer</span> 👋
 
         </h3>
 
@@ -652,7 +646,7 @@ justify-content:center;
 
             </div>
 
-            <h3>325</h3>
+            <h3 id="statAvailableStock">0</h3>
 
             <p>Available Stock</p>
 
@@ -678,13 +672,13 @@ justify-content:center;
 
             </div>
 
-            <h3>286</h3>
+            <h3 id="statActiveWarranty">0</h3>
 
             <p>Active Warranty</p>
 
             <small>
 
-                +15 This Month
+                <span id="statActiveWarrantyThisMonth">+0</span> This Month
 
             </small>
 
@@ -704,7 +698,7 @@ justify-content:center;
 
             </div>
 
-            <h3>₹12,850</h3>
+            <h3 id="statRewardWallet">₹0</h3>
 
             <p>Reward Wallet</p>
 
@@ -730,7 +724,7 @@ justify-content:center;
 
             </div>
 
-            <h3>6</h3>
+            <h3 id="statPendingReplacement">0</h3>
 
             <p>Pending Replacement</p>
 
@@ -771,7 +765,7 @@ Warranty & Replacement Alerts
 
             <div>
 
-                <h3>18</h3>
+                <h3 id="statWarrantyExpiring">0</h3>
 
                 <p class="mb-1">Warranty Expiring Soon</p>
 
@@ -805,7 +799,7 @@ Warranty & Replacement Alerts
 
             <div>
 
-                <h3>5</h3>
+                <h3 id="statWarrantyExpired">0</h3>
 
                 <p class="mb-1">Warranty Expired</p>
 
@@ -855,89 +849,7 @@ Recent Warranty Activations
 
 </thead>
 
-<tbody>
-
-<tr>
-
-<td>Rahul Sharma</td>
-
-<td>MPP240101</td>
-
-<td>20 Jul 2026</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Active
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>Amit Kumar</td>
-
-<td>MPP240102</td>
-
-<td>19 Jul 2026</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Active
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>Rohit Singh</td>
-
-<td>MPP240103</td>
-
-<td>19 Jul 2026</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Active
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>Vikas Verma</td>
-
-<td>MPP240104</td>
-
-<td>18 Jul 2026</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Active
-
-</span>
-
-</td>
-
-</tr>
-
-</tbody>
+<tbody id="recentWarrantyBody"></tbody>
 
 </table>
 
@@ -975,69 +887,7 @@ Recent Replacement Requests
 
 </thead>
 
-<tbody>
-
-<tr>
-
-<td>REP-1001</td>
-
-<td>MPP240021</td>
-
-<td>20 Jul 2026</td>
-
-<td>
-
-<span class="badge bg-warning text-dark">
-
-Pending
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>REP-1002</td>
-
-<td>MPP240018</td>
-
-<td>18 Jul 2026</td>
-
-<td>
-
-<span class="badge bg-success">
-
-Approved
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>REP-1003</td>
-
-<td>MPP240011</td>
-
-<td>17 Jul 2026</td>
-
-<td>
-
-<span class="badge bg-danger">
-
-Rejected
-
-</span>
-
-</td>
-
-</tr>
-
-</tbody>
+<tbody id="recentReplacementBody"></tbody>
 
 </table>
 
@@ -1068,36 +918,17 @@ Notifications & Quick Actions
 
 </h5>
 
-<span class="badge bg-success">
+<span id="notifCountBadge" class="badge bg-success">
 
-4 New
+0 New
 
 </span>
 
 </div>
 
-<div class="alert alert-success">
+<div id="notificationsList">
 
-🛡 Warranty activated successfully for
-<strong>MPP240105</strong>
-
-</div>
-
-<div class="alert alert-warning">
-
-⚠ 18 warranties will expire within next 30 days.
-
-</div>
-
-<div class="alert alert-info">
-
-🎁 ₹1,250 reward credited to your wallet.
-
-</div>
-
-<div class="alert alert-danger">
-
-🔄 2 replacement requests are awaiting admin approval.
+<div class="text-center text-muted py-3">Loading...</div>
 
 </div>
 
@@ -1186,7 +1017,7 @@ Profile
 
 <div class="col-md-4">
 
-<a href="index.html"
+<a href="#" id="quickLogoutBtn"
 class="btn btn-danger w-100 py-3">
 
 <i class="fa-solid fa-right-from-bracket d-block fs-3 mb-2"></i>
@@ -1215,103 +1046,9 @@ Recent Activity
 
 <div class="table-card">
 
-<div class="timeline">
+<div class="timeline" id="recentActivityList">
 
-<div class="d-flex justify-content-between border-bottom py-3">
-
-<div>
-
-<strong>🛡 Warranty Activated</strong>
-
-<br>
-
-<small class="text-muted">
-
-Serial No. MPP240105
-
-</small>
-
-</div>
-
-<small class="text-muted">
-
-10 min ago
-
-</small>
-
-</div>
-
-<div class="d-flex justify-content-between border-bottom py-3">
-
-<div>
-
-<strong>🎁 Reward Credited</strong>
-
-<br>
-
-<small class="text-muted">
-
-₹1,250 Added
-
-</small>
-
-</div>
-
-<small class="text-muted">
-
-45 min ago
-
-</small>
-
-</div>
-
-<div class="d-flex justify-content-between border-bottom py-3">
-
-<div>
-
-<strong>🔄 Replacement Request Submitted</strong>
-
-<br>
-
-<small class="text-muted">
-
-Request ID : REP1005
-
-</small>
-
-</div>
-
-<small class="text-muted">
-
-Yesterday
-
-</small>
-
-</div>
-
-<div class="d-flex justify-content-between py-3">
-
-<div>
-
-<strong>📦 New Stock Received</strong>
-
-<br>
-
-<small class="text-muted">
-
-40 Batteries Added
-
-</small>
-
-</div>
-
-<small class="text-muted">
-
-2 Days Ago
-
-</small>
-
-</div>
+<div class="text-center text-muted py-3">Loading...</div>
 
 </div>
 
@@ -1344,143 +1081,279 @@ Version 1.0
 
 <script>
 
+/* ===============================
+   AUTH CHECK -- sirf dealer role token yahan chalega
+================================ */
+
+const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
+
+if (!token || role !== "dealer") {
+    window.location.href = "/admin/login.html";
+}
+
+const authHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+};
+
+
 /* ================= SIDEBAR ACTIVE ================= */
 
 const menuItems=document.querySelectorAll(".sidebar a");
-
 menuItems.forEach(item=>{
-
 item.addEventListener("click",function(){
-
 menuItems.forEach(link=>link.classList.remove("active"));
-
 this.classList.add("active");
-
 });
-
 });
-
-/* ================= NOTIFICATION BELL ================= */
-
-const bell=document.querySelector(".fa-bell");
-
-if(bell){
-
-setInterval(()=>{
-
-bell.classList.toggle("text-danger");
-
-},1000);
-
-}
 
 /* ================= CARD HOVER ANIMATION ================= */
 
 const cards=document.querySelectorAll(".stat-card,.table-card");
-
 cards.forEach((card,index)=>{
-
 card.style.opacity="0";
-
 card.style.transform="translateY(20px)";
-
 setTimeout(()=>{
-
 card.style.transition=".5s";
-
 card.style.opacity="1";
-
 card.style.transform="translateY(0)";
-
 },index*120);
-
 });
 
-/* ================= SEARCH ================= */
 
-const search=document.querySelector(".search-box input");
+/* ===============================
+   BADGE HELPER
+================================ */
 
-if(search){
-
-search.addEventListener("keyup",function(){
-
-console.log("Searching : "+this.value);
-
-});
-
+function badgeClassForStatus(status){
+    const s = (status || "").toLowerCase();
+    if (["active","approved","completed"].includes(s)) return "bg-success";
+    if (["pending"].includes(s)) return "bg-warning text-dark";
+    if (["rejected","expired"].includes(s)) return "bg-danger";
+    return "bg-secondary";
 }
 
-/* ================= CONSOLE ================= */
+function timeAgo(dateStr){
+    const diffMs = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diffMs / 60000);
+    if (mins < 1) return "Just now";
+    if (mins < 60) return mins + " min ago";
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return hrs + " hr ago";
+    const days = Math.floor(hrs / 24);
+    if (days === 1) return "Yesterday";
+    if (days < 7) return days + " Days Ago";
+    return new Date(dateStr).toLocaleDateString("en-GB");
+}
 
-console.log("Dealer Dashboard Loaded Successfully");
 
-/*
+/* ===============================
+   LOAD DASHBOARD (real API call)
+================================ */
 
-=====================================
+async function loadDealerDashboard(){
+    try {
+        const response = await fetch("/api/dealer-portal/dashboard", { headers: authHeaders });
+        const result = await response.json();
 
-BATTERY ERP
+        if (!result.success) {
+            alert(result.message || "Dashboard load nahi ho paaya.");
+            return;
+        }
 
-DEALER DASHBOARD
+        const { dealer, stats, recentWarranty, recentReplacement } = result.data;
 
-=====================================
+        document.getElementById("dealerNameDisplay").textContent = dealer.dealer_name;
 
-Dealer Modules
+        document.getElementById("statAvailableStock").textContent = stats.available_stock.toLocaleString("en-IN");
+        document.getElementById("statActiveWarranty").textContent = stats.active_warranty.toLocaleString("en-IN");
+        document.getElementById("statActiveWarrantyThisMonth").textContent = "+" + Number(stats.active_warranty_this_month).toLocaleString("en-IN");
+        document.getElementById("statRewardWallet").textContent = "\u20b9" + Number(stats.reward_wallet).toLocaleString("en-IN");
+        document.getElementById("statPendingReplacement").textContent = stats.pending_replacement.toLocaleString("en-IN");
+        document.getElementById("statWarrantyExpiring").textContent = stats.warranty_expiring.toLocaleString("en-IN");
+        document.getElementById("statWarrantyExpired").textContent = stats.warranty_expired.toLocaleString("en-IN");
 
-✔ Dashboard
+        const warrantyBody = document.getElementById("recentWarrantyBody");
+        warrantyBody.innerHTML = recentWarranty.length === 0
+            ? `<tr><td colspan="4" class="text-center text-muted">Koi warranty record nahi hai.</td></tr>`
+            : recentWarranty.map(w => `
+                <tr>
+                    <td>${w.customer_name}</td>
+                    <td>${w.serial_number}</td>
+                    <td>${new Date(w.activation_date).toLocaleDateString("en-GB")}</td>
+                    <td><span class="badge ${badgeClassForStatus(w.status)}">${w.status}</span></td>
+                </tr>
+            `).join("");
 
-✔ Warranty
+        const replacementBody = document.getElementById("recentReplacementBody");
+        replacementBody.innerHTML = recentReplacement.length === 0
+            ? `<tr><td colspan="4" class="text-center text-muted">Koi replacement request nahi hai.</td></tr>`
+            : recentReplacement.map(r => `
+                <tr>
+                    <td>REP${String(r.replacement_id).padStart(4,"0")}</td>
+                    <td>${r.serial_number}</td>
+                    <td>${new Date(r.created_at).toLocaleDateString("en-GB")}</td>
+                    <td><span class="badge ${badgeClassForStatus(r.status)}">${r.status}</span></td>
+                </tr>
+            `).join("");
 
-✔ Replacement
+    } catch (err) {
+        alert("Server se connect nahi ho paya.");
+        console.error(err);
+    }
+}
 
-✔ Reward Wallet
 
-✔ Reports
+/* ===============================
+   TOPBAR SEARCH (live dropdown -- admin/admin-dashboard.html jaisa hi,
+   bas yahan sirf isi dealer ke apne records me search hota hai)
+================================ */
 
-✔ Profile
+const searchBox = document.getElementById("topSearchBox");
+const searchResultsBox = document.createElement("div");
+searchResultsBox.style.cssText = "position:absolute; background:#fff; border:1px solid #ddd; border-radius:8px; width:320px; max-height:300px; overflow-y:auto; z-index:1000; box-shadow:0 4px 12px rgba(0,0,0,0.1); display:none;";
+searchBox.parentElement.style.position = "relative";
+searchBox.parentElement.appendChild(searchResultsBox);
 
-=====================================
+let searchDebounce;
+searchBox.addEventListener("input", function(){
+    clearTimeout(searchDebounce);
+    const term = this.value.trim();
+    if (term.length < 2) { searchResultsBox.style.display = "none"; return; }
 
-Dashboard Widgets
+    searchDebounce = setTimeout(async () => {
+        try {
+            const response = await fetch(`/api/dealer-portal/search?term=${encodeURIComponent(term)}`, { headers: authHeaders });
+            const result = await response.json();
 
-✔ Available Stock
+            if (!result.success || result.data.length === 0) {
+                searchResultsBox.innerHTML = `<div class="p-2 text-muted">No matches found.</div>`;
+                searchResultsBox.style.display = "block";
+                return;
+            }
 
-✔ Active Warranty
+            const linkFor = (type) => type === "replacement" ? "dealer-replacement.html" : "dealer-warranty.html";
+            const iconFor = (type) => type === "inventory" ? "📦" : type === "replacement" ? "🔄" : "🛡";
 
-✔ Reward Wallet
+            searchResultsBox.innerHTML = result.data.map(r => `
+                <a href="${linkFor(r.type)}" class="d-block p-2 text-decoration-none text-dark border-bottom">
+                    ${iconFor(r.type)} ${r.label} <small class="text-muted">(${r.type})</small>
+                </a>
+            `).join("");
+            searchResultsBox.style.display = "block";
 
-✔ Pending Replacement
+        } catch (err) {
+            console.error(err);
+        }
+    }, 300);
+});
 
-✔ Warranty Expiring
+document.addEventListener("click", function(e){
+    if (!searchBox.parentElement.contains(e.target)) {
+        searchResultsBox.style.display = "none";
+    }
+});
 
-✔ Warranty Expired
 
-✔ Recent Warranty
+/* ===============================
+   NOTIFICATIONS (real data)
+================================ */
 
-✔ Recent Replacement
+async function loadNotifications(){
+    const listEl = document.getElementById("notificationsList");
+    const badgeEl = document.getElementById("notifCountBadge");
+    try {
+        const response = await fetch("/api/notifications", { headers: authHeaders });
+        const result = await response.json();
 
-✔ Notifications
+        if (!result.success) {
+            listEl.innerHTML = `<div class="text-center text-danger py-3">Notifications load nahi ho payi.</div>`;
+            return;
+        }
 
-✔ Recent Activity
+        const items = result.data;
+        badgeEl.textContent = items.filter(n => !n.is_read).length + " New";
 
-✔ Quick Actions
+        listEl.innerHTML = items.length === 0
+            ? `<div class="text-center text-muted py-3">Koi notification nahi hai.</div>`
+            : items.slice(0, 6).map(n => `
+                <div class="alert alert-${n.is_read ? "secondary" : "info"} mb-2">
+                    ${n.title}${n.message ? " - " + n.message : ""}
+                    <br><small class="text-muted">${timeAgo(n.created_at)}</small>
+                </div>
+            `).join("");
 
-=====================================
+    } catch (err) {
+        console.error(err);
+        listEl.innerHTML = `<div class="text-center text-danger py-3">Server se connect nahi ho paya.</div>`;
+    }
+}
 
-Connected Modules
 
-dealer-warranty.html
+/* ===============================
+   RECENT ACTIVITY (real data)
+================================ */
 
-dealer-replacement.html
+async function loadRecentActivity(){
+    const listEl = document.getElementById("recentActivityList");
+    try {
+        const response = await fetch("/api/dealer-portal/activity", { headers: authHeaders });
+        const result = await response.json();
 
-dealer-reward-wallet.html
+        if (!result.success) {
+            listEl.innerHTML = `<div class="text-center text-danger py-3">Activity load nahi ho payi.</div>`;
+            return;
+        }
 
-dealer-reports.html
+        const items = result.data;
+        listEl.innerHTML = items.length === 0
+            ? `<div class="text-center text-muted py-3">Koi recent activity nahi hai.</div>`
+            : items.map((a, idx) => `
+                <div class="d-flex justify-content-between ${idx === items.length - 1 ? "" : "border-bottom"} py-3">
+                    <div>
+                        <strong>${a.icon} ${a.title}</strong>
+                        <br>
+                        <small class="text-muted">${a.subtitle}</small>
+                    </div>
+                    <small class="text-muted">${timeAgo(a.event_date)}</small>
+                </div>
+            `).join("");
 
-dealer-profile.html
+    } catch (err) {
+        console.error(err);
+        listEl.innerHTML = `<div class="text-center text-danger py-3">Server se connect nahi ho paya.</div>`;
+    }
+}
 
-=====================================
 
-*/
+/* ================= LOGOUT (sidebar link + Quick Actions button + topbar user icon) ================= */
+
+function doLogout(){
+    if (confirm("Logout karna hai?")) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        window.location.href = "/admin/login.html";
+    }
+}
+
+const sidebarLogoutLink = document.getElementById("sidebarLogoutLink");
+if (sidebarLogoutLink) sidebarLogoutLink.addEventListener("click", function(e){ e.preventDefault(); doLogout(); });
+
+const quickLogoutBtn = document.getElementById("quickLogoutBtn");
+if (quickLogoutBtn) quickLogoutBtn.addEventListener("click", function(e){ e.preventDefault(); doLogout(); });
+
+const topbarUserBtn = document.getElementById("topbarUserBtn");
+if (topbarUserBtn) topbarUserBtn.addEventListener("click", doLogout);
+
+
+/* ===============================
+   PAGE LOAD
+================================ */
+
+loadDealerDashboard();
+loadNotifications();
+loadRecentActivity();
 
 </script>
 

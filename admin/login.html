@@ -919,6 +919,7 @@ document.querySelector("form").addEventListener("submit",function(e){
 
         localStorage.setItem("token", result.data.token);
         localStorage.setItem("role", loginMode);
+        if (result.data.user) localStorage.setItem("fullName", result.data.user.full_name);
 
         window.location.href = loginMode === "dealer"
             ? "../dealer/dealer-dashboard.html"

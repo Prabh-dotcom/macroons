@@ -7,7 +7,13 @@ const userController = require("../controllers/userController");
 const { verifyToken, allowRoles } = require("../middlewares/authMiddleware");
 
 router.use(verifyToken);
-router.use(allowRoles("admin", "super_admin")); // sirf admin hi staff users manage kar sakta hai
+
+// Change password apna khud ka -- koi bhi logged-in user (staff/admin/super_admin)
+// kar sakta hai, isliye yeh role-restriction se pehle aur ":id" route se pehle hai
+// (warna Express "change-password" ko ":id" ke roop me match kar leta).
+router.put("/change-password", userController.changeOwnPassword);
+
+router.use(allowRoles("admin", "super_admin")); // aage sab sirf admin ke liye
 
 router.get("/", userController.getAllUsers);
 router.get("/:id", userController.getUserById);

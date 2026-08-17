@@ -311,6 +311,12 @@ height:48px;
 
 border-radius:10px;
 
+cursor:text;
+
+pointer-events:auto;
+
+user-select:text;
+
 }
 
 textarea.form-control{
@@ -325,6 +331,7 @@ resize:none;
 
 background:#f8f9fa;
 font-weight:600;
+cursor:not-allowed;
 
 }
 
@@ -1440,7 +1447,7 @@ margin-right:8px;
 
     <div class="d-flex flex-wrap gap-3">
 
-        <button class="btn btn-success">
+        <button type="button" class="btn btn-success" id="btnApproveReplacement">
 
             <i class="fa-solid fa-circle-check me-2"></i>
 
@@ -1448,7 +1455,7 @@ margin-right:8px;
 
         </button>
 
-        <button class="btn btn-danger">
+        <button type="button" class="btn btn-danger" id="btnRejectReplacement">
 
             <i class="fa-solid fa-circle-xmark me-2"></i>
 
@@ -1456,7 +1463,7 @@ margin-right:8px;
 
         </button>
 
-        <button class="btn btn-primary">
+        <button type="submit" class="btn btn-primary">
 
             <i class="fa-solid fa-floppy-disk me-2"></i>
 
@@ -1464,7 +1471,7 @@ margin-right:8px;
 
         </button>
 
-        <button class="btn btn-warning text-white">
+        <button type="button" class="btn btn-warning text-white" id="btnResetReplacement">
 
             <i class="fa-solid fa-rotate me-2"></i>
 
@@ -1855,7 +1862,7 @@ async function loadReplacements(searchTerm){
         }
 
         tbody.innerHTML = records.map((r, index) => `
-            <tr>
+            <tr id="rep-row-${r.replacement_id}">
                 <td>${index + 1}</td>
                 <td>RPL${String(r.replacement_id).padStart(4,"0")}</td>
                 <td>${r.old_serial_number}</td>
@@ -1882,15 +1889,30 @@ async function loadReplacements(searchTerm){
    TOPBAR SEARCH + "Search" BUTTON
 ================================ */
 
+async function searchAndJumpToReplacements(term){
+    if (!term) return;
+
+    await loadReplacements(term);
+
+    document.querySelector(".form-card:last-of-type").scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // highlight every row currently on screen (they all matched the search)
+    document.querySelectorAll("[id^='rep-row-']").forEach(row => {
+        row.style.transition = "background-color 0.3s";
+        row.style.backgroundColor = "#fff3cd";
+        setTimeout(() => { row.style.backgroundColor = ""; }, 2500);
+    });
+}
+
 document.getElementById("topSearchBox").addEventListener("keyup", function(e){
-    if (e.key === "Enter") loadReplacements(this.value.trim());
+    if (e.key === "Enter") searchAndJumpToReplacements(this.value.trim());
 });
 
 document.querySelectorAll(".btn-primary").forEach(btn => {
     if (btn.textContent.includes("Search") && !btn.closest(".input-group")) {
         btn.addEventListener("click", function(e){
             e.preventDefault();
-            loadReplacements(document.getElementById("topSearchBox").value.trim());
+            searchAndJumpToReplacements(document.getElementById("topSearchBox").value.trim());
         });
     }
 });
@@ -1903,10 +1925,7 @@ document.querySelectorAll(".btn-primary").forEach(btn => {
 document.querySelectorAll(".btn-success").forEach(btn => {
     if (btn.textContent.includes("New Replacement")) {
         btn.addEventListener("click", function(){
-            document.querySelector("form").reset();
-            resolvedOldInventoryId = null;
-            resolvedNewInventoryId = null;
-            resolvedDealerId = null;
+            resetReplacementForm();
             document.querySelector(".form-card").scrollIntoView({ behavior: "smooth" });
         });
     }
@@ -1934,11 +1953,15 @@ document.querySelectorAll(".btn-warning").forEach(btn => {
 
 const replacementForm = document.querySelector("form");
 
-replacementForm.addEventListener("submit", async function(e){
-    e.preventDefault();
+async function saveReplacement(forcedStatus){
 
     if (!resolvedOldInventoryId || !resolvedDealerId) {
         alert("Pehle ek valid Old Serial Number search karo.");
+        return;
+    }
+
+    if (!resolvedNewInventoryId) {
+        alert("Pehle ek valid New Serial Number search karo (New Battery Details section).");
         return;
     }
 
@@ -1956,7 +1979,9 @@ replacementForm.addEventListener("submit", async function(e){
         inspection_status: document.getElementById("inspectionStatus").value.trim(),
         inspection_remarks: document.getElementById("inspectionRemarks").value.trim(),
         replacement_date: document.getElementById("replacementDate").value || null,
-        status: document.getElementById("replacementStatus").value
+        // "Approve Replacement" / "Reject" buttons force the status directly;
+        // plain "Save" uses whatever is picked in the Status dropdown.
+        status: forcedStatus || document.getElementById("replacementStatus").value
     };
 
     if (!payload.customer_name || !payload.customer_phone) {
@@ -1979,10 +2004,7 @@ replacementForm.addEventListener("submit", async function(e){
         }
 
         alert("Replacement request saved successfully.");
-        replacementForm.reset();
-        resolvedOldInventoryId = null;
-        resolvedNewInventoryId = null;
-        resolvedDealerId = null;
+        resetReplacementForm();
         loadStats();
         loadReplacements();
 
@@ -1990,6 +2012,30 @@ replacementForm.addEventListener("submit", async function(e){
         alert("Server se connect nahi ho paya.");
         console.error(err);
     }
+}
+
+function resetReplacementForm(){
+    replacementForm.reset();
+    resolvedOldInventoryId = null;
+    resolvedNewInventoryId = null;
+    resolvedDealerId = null;
+}
+
+replacementForm.addEventListener("submit", async function(e){
+    e.preventDefault();
+    await saveReplacement(null);
+});
+
+document.getElementById("btnApproveReplacement").addEventListener("click", async function(){
+    await saveReplacement("approved");
+});
+
+document.getElementById("btnRejectReplacement").addEventListener("click", async function(){
+    await saveReplacement("rejected");
+});
+
+document.getElementById("btnResetReplacement").addEventListener("click", function(){
+    resetReplacementForm();
 });
 
 
@@ -2030,17 +2076,8 @@ async function setReplacementStatus(id, status){
     }
 }
 
-document.querySelectorAll('button[class*="btn-warning"]').forEach(btn => {
-    if (btn.textContent.includes("Reset")) {
-        btn.addEventListener("click", function(){
-            setTimeout(function(){
-                resolvedOldInventoryId = null;
-                resolvedNewInventoryId = null;
-                resolvedDealerId = null;
-            }, 100);
-        });
-    }
-});
+
+
 
 
 /* ===============================

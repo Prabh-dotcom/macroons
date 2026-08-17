@@ -25,7 +25,7 @@ exports.lookupOldSerial = async (serialNumber) => {
 // New serial search: must be in_stock
 exports.lookupNewSerial = async (serialNumber) => {
     const [rows] = await db.query(
-        `SELECT inv.inventory_id, inv.serial_number, inv.batch_number, inv.status,
+        `SELECT inv.inventory_id, inv.serial_number, inv.batch_number, inv.status, inv.mfg_date,
                 p.product_name, p.model_name, c.category_name
          FROM inventory inv
          JOIN products p ON inv.product_id = p.product_id
@@ -55,9 +55,12 @@ exports.getAll = async ({ search, status, page = 1, limit = 10 }) => {
     let params = [];
 
     if (search) {
-        whereClauses.push("(r.replacement_id LIKE ? OR oldInv.serial_number LIKE ? OR r.customer_name LIKE ?)");
+        // r.replacement_id is stored as a plain number (1,2,3...) but the UI shows
+        // it formatted as "RPL0001" -- match against BOTH forms so searching the
+        // exact ID shown on screen actually works.
+        whereClauses.push("(CONCAT('RPL', LPAD(r.replacement_id,4,'0')) LIKE ? OR r.replacement_id LIKE ? OR oldInv.serial_number LIKE ? OR r.customer_name LIKE ?)");
         const likeSearch = `%${search}%`;
-        params.push(likeSearch, likeSearch, likeSearch);
+        params.push(likeSearch, likeSearch, likeSearch, likeSearch);
     }
 
     if (status) {
@@ -131,14 +134,19 @@ exports.create = async (data) => {
             `INSERT INTO replacements
                 (old_inventory_id, new_inventory_id, dealer_id, company_name,
                  customer_name, customer_phone, customer_city, customer_address,
-                 reason, complaint_type, inspection_status, inspection_remarks,
+                 reason, complaint_type, invoice_number, battery_condition,
+                 problem_description, battery_images, invoice_file,
+                 inspection_status, inspection_remarks,
                  replacement_date, status)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 data.old_inventory_id, data.new_inventory_id || null, data.dealer_id,
                 data.company_name || null, data.customer_name, data.customer_phone,
                 data.customer_city || null, data.customer_address || null,
                 data.reason || null, data.complaint_type || null,
+                data.invoice_number || null, data.battery_condition || null,
+                data.problem_description || null, data.battery_images || null,
+                data.invoice_file || null,
                 data.inspection_status || null, data.inspection_remarks || null,
                 data.replacement_date || null, data.status || "pending"
             ]

@@ -327,6 +327,18 @@ height:48px;
 
 border-radius:10px;
 
+cursor:text;
+
+pointer-events:auto;
+
+user-select:text;
+
+}
+
+select.form-select{
+
+cursor:pointer;
+
 }
 
 textarea.form-control{
@@ -342,6 +354,8 @@ resize:none;
 background:#f8f9fa;
 
 font-weight:600;
+
+cursor:not-allowed;
 
 }
 
@@ -769,6 +783,7 @@ opacity:.9;
     <h5 class="fw-bold text-primary">
 
         Dealer Details
+        <span class="badge bg-secondary fw-normal" style="font-size:11px;">Auto-filled &middot; Read Only</span>
 
     </h5>
 
@@ -877,6 +892,7 @@ opacity:.9;
     <h5 class="fw-bold text-success">
 
         Wallet Summary
+        <span class="badge bg-secondary fw-normal" style="font-size:11px;">Auto-filled &middot; Read Only</span>
 
     </h5>
 
@@ -953,6 +969,8 @@ opacity:.9;
     <h5 class="fw-bold text-warning">
 
         Reward Transaction
+
+        <span class="badge bg-success fw-normal" style="font-size:11px;">Fill In Below &middot; Editable</span>
 
     </h5>
 
@@ -1129,7 +1147,7 @@ opacity:.9;
 
 <!-- ================= TRANSACTION HISTORY START ================= -->
 
-<div class="form-card">
+<div class="form-card" id="txnHistoryCard" style="scroll-margin-top:20px;">
 
     <h4 class="fw-bold mb-4">
 
@@ -1596,6 +1614,48 @@ justify-content:center;
 
 <script>
 
+document.addEventListener("DOMContentLoaded", function () {
+
+/* =========================================================
+   SMALL HELPERS -- so one missing/renamed element can never
+   throw and break every listener registered AFTER it. Every
+   getElementById + addEventListener in this file now goes
+   through these two.
+========================================================= */
+
+function el(id){ return document.getElementById(id); }
+
+function on(id, evt, handler){
+    const node = el(id);
+    if (!node) { console.warn(`reward-wallet: #${id} not found, skipping listener.`); return; }
+    node.addEventListener(evt, handler);
+}
+
+/* =========================================================
+   EDITABLE FIELDS SAFETY NET -- these MUST always be typeable.
+   Forcing this on load (and again every time a dealer is
+   selected) guards against a stray disabled/readonly attribute
+   ever sneaking back onto them from anywhere.
+========================================================= */
+
+const EDITABLE_FIELD_IDS = [
+    "txnTypeSelect", "txnReferenceId", "txnPoints",
+    "txnDate", "txnStatusSelect", "txnRemarks"
+];
+
+function ensureFieldsAreEditable(){
+    EDITABLE_FIELD_IDS.forEach(id => {
+        const node = el(id);
+        if (!node) return;
+        node.disabled = false;
+        node.readOnly = false;
+        node.removeAttribute("disabled");
+        node.removeAttribute("readonly");
+    });
+}
+
+ensureFieldsAreEditable();
+
 /* ================= SIDEBAR TOGGLE ================= */
 
 const sidebar = document.querySelector(".sidebar");
@@ -1606,12 +1666,11 @@ menuBtn.className = "btn btn-primary";
 
 menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
 
-document.querySelector(".profile").prepend(menuBtn);
+const profileEl = document.querySelector(".profile");
+if (profileEl) profileEl.prepend(menuBtn);
 
 menuBtn.onclick = function(){
-
-    sidebar.classList.toggle("active");
-
+    if (sidebar) sidebar.classList.toggle("active");
 };
 
 /* =========================================================
@@ -1623,12 +1682,19 @@ const token = localStorage.getItem("token");
 
 if (!token) {
     window.location.href = "login.html";
+    return;
 }
 
 const authHeaders = {
     "Content-Type": "application/json",
     "Authorization": "Bearer " + token
 };
+
+// "Approved By" hamesha login admin ka naam dikhaata hai (readonly
+// isliye rakha hai -- yeh ek audit field hai, isse manually editable
+// banane ka matlab hoga koi bhi kisi ka bhi naam likh sake, jo approval
+// trail ko galat/bekaar bana dega).
+if (el("txnApprovedBy")) el("txnApprovedBy").value = localStorage.getItem("fullName") || "";
 
 /* =========================================================
    STATE
@@ -1659,10 +1725,10 @@ async function loadStats(){
         if (!result.success) return;
 
         const s = result.data;
-        document.getElementById("cardTotalPoints").textContent = fmt(s.total_reward_points);
-        document.getElementById("cardAvailablePoints").textContent = fmt(s.available_points);
-        document.getElementById("cardRedeemedPoints").textContent = fmt(s.redeemed_points);
-        document.getElementById("cardPendingRequests").textContent = fmt(s.pending_requests);
+        if (el("cardTotalPoints")) el("cardTotalPoints").textContent = fmt(s.total_reward_points);
+        if (el("cardAvailablePoints")) el("cardAvailablePoints").textContent = fmt(s.available_points);
+        if (el("cardRedeemedPoints")) el("cardRedeemedPoints").textContent = fmt(s.redeemed_points);
+        if (el("cardPendingRequests")) el("cardPendingRequests").textContent = fmt(s.pending_requests);
     } catch (err) {
         console.error(err);
     }
@@ -1672,32 +1738,35 @@ async function loadStats(){
    DEALER SEARCH -- "Dealer Reward Search" form + topbar search box
 ========================================================= */
 
-const dealerSearchForm = document.getElementById("dealerSearchForm");
-const resultsWrap = document.getElementById("dealerSearchResults");
-const resultsList = document.getElementById("dealerSearchResultsList");
+const dealerSearchForm = el("dealerSearchForm");
+const resultsWrap = el("dealerSearchResults");
+const resultsList = el("dealerSearchResultsList");
 
-dealerSearchForm.addEventListener("submit", async function(e){
-    e.preventDefault();
-    const code = document.getElementById("searchDealerCode").value.trim();
-    const name = document.getElementById("searchDealerName").value.trim();
-    const term = code || name;
+if (dealerSearchForm) {
+    dealerSearchForm.addEventListener("submit", async function(e){
+        e.preventDefault();
+        const code = el("searchDealerCode") ? el("searchDealerCode").value.trim() : "";
+        const name = el("searchDealerName") ? el("searchDealerName").value.trim() : "";
+        const term = code || name;
 
-    if (!term) {
-        alert("Enter a Dealer Code or Dealer Name to search.");
-        return;
-    }
+        if (!term) {
+            alert("Enter a Dealer Code or Dealer Name to search.");
+            return;
+        }
 
-    await runDealerSearch(term);
-});
+        await runDealerSearch(term);
+    });
+}
 
 async function runDealerSearch(term){
+    if (!resultsList || !resultsWrap) return [];
     try {
         const res = await fetch(`/api/reward/dealers?search=${encodeURIComponent(term)}`, { headers: authHeaders });
         const result = await res.json();
 
         if (!result.success) {
             alert(result.message);
-            return;
+            return [];
         }
 
         const dealers = result.data;
@@ -1705,7 +1774,7 @@ async function runDealerSearch(term){
         if (!dealers.length) {
             resultsList.innerHTML = `<div class="list-group-item text-muted">No Results Found.</div>`;
             resultsWrap.style.display = "block";
-            return;
+            return [];
         }
 
         resultsList.innerHTML = dealers.map(d => `
@@ -1715,30 +1784,45 @@ async function runDealerSearch(term){
             </button>
         `).join("");
         resultsWrap.style.display = "block";
+        return dealers;
     } catch (err) {
         console.error(err);
         alert("Server se connect nahi ho paya.");
+        return [];
     }
 }
 
-// Topbar search box -- placeholder says "Search Dealer Code / Dealer Name",
-// so it drives the same dealer search as the form below.
-document.getElementById("topbarDealerSearch").addEventListener("keydown", async function(e){
+// Topbar search box: poora Dealer Code / Dealer Name / Mobile likh kar
+// Enter dabao. Agar EK hi dealer match kare, seedha uska wallet + reward
+// transaction table khul jaata hai (jaise Dealers page pe row tak jaate
+// hain) -- ek extra click nahi karna padta. Agar ek se zyada match hon,
+// to neeche list dikhti hai jisme se sahi dealer chuna ja sakta hai.
+on("topbarDealerSearch", "keydown", async function(e){
     if (e.key !== "Enter") return;
     e.preventDefault();
     const term = this.value.trim();
     if (!term) return;
-    await runDealerSearch(term);
-    resultsWrap.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    const dealers = await runDealerSearch(term);
+
+    if (dealers.length === 1) {
+        if (resultsWrap) resultsWrap.style.display = "none";
+        await selectDealer(dealers[0].dealer_id);
+    }
+    // agar 1 se zyada match hon, results list wahin dikh jaati hai
+    // (runDealerSearch already resultsWrap.style.display = "block" karta
+    // hai) -- koi extra scroll/redirect nahi karte.
 });
 
 /* =========================================================
    SELECT A DEALER -> LOAD THEIR WALLET (Dealer Details +
    Wallet Summary + wallet balance box), then reload their
-   transaction history.
+   transaction history. Also re-runs the "editable fields"
+   safety net and puts the cursor straight into Reward Points,
+   so you can start typing immediately.
 ========================================================= */
 
-async function selectDealer(dealerId){
+window.selectDealer = async function selectDealer(dealerId){
     try {
         const res = await fetch(`/api/reward/wallet/${dealerId}`, { headers: authHeaders });
         const result = await res.json();
@@ -1750,52 +1834,63 @@ async function selectDealer(dealerId){
 
         const w = result.data;
         selectedDealer = w;
-        document.getElementById("selectedDealerId").value = w.dealer_id;
+        if (el("selectedDealerId")) el("selectedDealerId").value = w.dealer_id;
 
-        document.getElementById("txnDealerName").value = w.dealer_name;
-        document.getElementById("txnDealerCode").value = w.dealer_code;
-        document.getElementById("txnDealerMobile").value = w.phone || "-";
-        document.getElementById("txnDealerState").value = w.state || "-";
+        if (el("txnDealerName")) el("txnDealerName").value = w.dealer_name;
+        if (el("txnDealerCode")) el("txnDealerCode").value = w.dealer_code;
+        if (el("txnDealerMobile")) el("txnDealerMobile").value = w.phone || "-";
+        if (el("txnDealerState")) el("txnDealerState").value = w.state || "-";
         // schema has no separate "district" column -- city is the closest available field
-        document.getElementById("txnDealerDistrict").value = w.city || "-";
-        document.getElementById("txnDealerStatus").value = w.dealer_status;
+        if (el("txnDealerDistrict")) el("txnDealerDistrict").value = w.city || "-";
+        if (el("txnDealerStatus")) el("txnDealerStatus").value = w.dealer_status;
 
-        document.getElementById("txnCurrentPoints").value = fmt(w.current_points);
-        document.getElementById("txnLifetimePoints").value = fmt(w.lifetime_points);
-        document.getElementById("txnRedeemedPoints").value = fmt(w.redeemed_points);
-        document.getElementById("txnAvailableBalance").value = fmt(w.available_balance);
+        if (el("txnCurrentPoints")) el("txnCurrentPoints").value = fmt(w.current_points);
+        if (el("txnLifetimePoints")) el("txnLifetimePoints").value = fmt(w.lifetime_points);
+        if (el("txnRedeemedPoints")) el("txnRedeemedPoints").value = fmt(w.redeemed_points);
+        if (el("txnAvailableBalance")) el("txnAvailableBalance").value = fmt(w.available_balance);
 
-        document.getElementById("walletBoxBalance").textContent = fmt(w.available_balance) + " Points";
+        if (el("walletBoxBalance")) el("walletBoxBalance").textContent = fmt(w.available_balance) + " Points";
 
-        document.getElementById("searchDealerCode").value = w.dealer_code;
-        document.getElementById("searchDealerName").value = w.dealer_name;
-        resultsWrap.style.display = "none";
+        if (el("searchDealerCode")) el("searchDealerCode").value = w.dealer_code;
+        if (el("searchDealerName")) el("searchDealerName").value = w.dealer_name;
+        if (resultsWrap) resultsWrap.style.display = "none";
+
+        // Belt-and-suspenders: guarantee the transaction fields are
+        // editable right after we finish populating the read-only
+        // dealer/wallet summary fields above.
+        ensureFieldsAreEditable();
 
         await loadTransactions();
 
-        document.querySelector(".wallet-box").scrollIntoView({ behavior: "smooth", block: "center" });
+        // Cursor Reward Points field mein daal do (taaki turant type kar
+        // sako). Page ko kahin scroll/redirect NAHI karte -- dealer select
+        // karne ke baad user jahan hai wahi rehta hai, bas fields fill ho
+        // jaati hain.
+        if (el("txnPoints")) el("txnPoints").focus({ preventScroll: true });
     } catch (err) {
         console.error(err);
         alert("Server se connect nahi ho paya.");
     }
-}
+};
 
 /* =========================================================
    REWARD TRANSACTION FORM -- Save / Credit / Debit / Update
 ========================================================= */
 
-const txnForm = document.getElementById("rewardTxnForm");
-const txnTypeSelect = document.getElementById("txnTypeSelect");
+const txnForm = el("rewardTxnForm");
+const txnTypeSelect = el("txnTypeSelect");
 
-document.getElementById("txnDate").value = todayStr();
+if (el("txnDate")) el("txnDate").value = todayStr();
 
 function resetTxnFormExtras(){
-    document.getElementById("editingTransactionId").value = "";
-    document.getElementById("txnDate").value = todayStr();
-    document.getElementById("saveTxnBtn").innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Save Transaction';
+    if (el("editingTransactionId")) el("editingTransactionId").value = "";
+    if (el("txnDate")) el("txnDate").value = todayStr();
+    if (el("txnApprovedBy")) el("txnApprovedBy").value = localStorage.getItem("fullName") || "";
+    if (el("saveTxnBtn")) el("saveTxnBtn").innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Save Transaction';
+    ensureFieldsAreEditable();
 }
 
-document.getElementById("resetTxnBtn").addEventListener("click", function(){
+on("resetTxnBtn", "click", function(){
     // native form reset() runs first, then clear our extra hidden/derived fields
     setTimeout(resetTxnFormExtras, 0);
 });
@@ -1805,6 +1900,8 @@ async function submitTransaction(forcedType){
         alert("Please search and select a dealer first.");
         return;
     }
+
+    if (!txnTypeSelect) return;
 
     const typeVal = txnTypeSelect.value;
     if (!typeVal && !forcedType) {
@@ -1821,24 +1918,25 @@ async function submitTransaction(forcedType){
         if (!forcedType) transaction_type = txnType;
     }
 
-    const points = Number(document.getElementById("txnPoints").value);
+    const points = Number(el("txnPoints") ? el("txnPoints").value : 0);
     if (!points || points <= 0) {
         alert("Enter a valid number of Reward Points.");
+        if (el("txnPoints")) el("txnPoints").focus();
         return;
     }
 
     const payload = {
-        dealer_id: Number(document.getElementById("selectedDealerId").value),
-        transaction_date: document.getElementById("txnDate").value || todayStr(),
+        dealer_id: Number(el("selectedDealerId") ? el("selectedDealerId").value : 0),
+        transaction_date: (el("txnDate") ? el("txnDate").value : "") || todayStr(),
         transaction_type,
         reference_type,
-        reference_id: document.getElementById("txnReferenceId").value.trim() || null,
+        reference_id: el("txnReferenceId") ? el("txnReferenceId").value.trim() || null : null,
         points,
-        remarks: document.getElementById("txnRemarks").value.trim() || null,
-        status: document.getElementById("txnStatusSelect").value
+        remarks: el("txnRemarks") ? el("txnRemarks").value.trim() || null : null,
+        status: el("txnStatusSelect") ? el("txnStatusSelect").value : "approved"
     };
 
-    const editId = document.getElementById("editingTransactionId").value;
+    const editId = el("editingTransactionId") ? el("editingTransactionId").value : "";
     const url = editId ? `/api/reward/transactions/${editId}` : "/api/reward/transactions";
     const method = editId ? "PUT" : "POST";
 
@@ -1853,7 +1951,7 @@ async function submitTransaction(forcedType){
         }
 
         alert(editId ? "Transaction updated successfully." : "Reward transaction saved successfully.");
-        txnForm.reset();
+        if (txnForm) txnForm.reset();
         resetTxnFormExtras();
 
         await selectDealer(payload.dealer_id); // refreshes wallet summary + balance + table
@@ -1864,32 +1962,36 @@ async function submitTransaction(forcedType){
     }
 }
 
-txnForm.addEventListener("submit", function(e){
-    e.preventDefault();
-    submitTransaction(null);
-});
+if (txnForm) {
+    txnForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        submitTransaction(null);
+    });
+}
 
-document.getElementById("formCreditBtn").addEventListener("click", function(){ submitTransaction("credit"); });
-document.getElementById("formDebitBtn").addEventListener("click", function(){ submitTransaction("debit"); });
+on("formCreditBtn", "click", function(){ submitTransaction("credit"); });
+on("formDebitBtn", "click", function(){ submitTransaction("debit"); });
 
 // Top header quick-action buttons: jump to the form with the type pre-set
-document.getElementById("topCreditBtn").addEventListener("click", function(){
+on("topCreditBtn", "click", function(){
     if (!selectedDealer) { alert("Please search and select a dealer first."); return; }
-    txnTypeSelect.value = "manual:credit";
-    txnForm.scrollIntoView({ behavior: "smooth" });
+    if (txnTypeSelect) txnTypeSelect.value = "manual:credit";
+    if (txnForm) txnForm.scrollIntoView({ behavior: "smooth" });
+    if (el("txnPoints")) el("txnPoints").focus();
 });
 
-document.getElementById("topDebitBtn").addEventListener("click", function(){
+on("topDebitBtn", "click", function(){
     if (!selectedDealer) { alert("Please search and select a dealer first."); return; }
-    txnTypeSelect.value = "manual:debit";
-    txnForm.scrollIntoView({ behavior: "smooth" });
+    if (txnTypeSelect) txnTypeSelect.value = "manual:debit";
+    if (txnForm) txnForm.scrollIntoView({ behavior: "smooth" });
+    if (el("txnPoints")) el("txnPoints").focus();
 });
 
 /* =========================================================
    TRANSACTION HISTORY -- load, search, filter, paginate
 ========================================================= */
 
-const txnTableBody = document.getElementById("txnTableBody");
+const txnTableBody = el("txnTableBody");
 
 function statusBadge(status){
     const map = {
@@ -1913,21 +2015,22 @@ function txnTypeLabel(t){
 }
 
 async function loadTransactions(){
+    if (!txnTableBody) return;
     txnTableBody.innerHTML = `<tr><td colspan="9" class="text-center">Loading...</td></tr>`;
 
     const params = new URLSearchParams();
     if (selectedDealer) params.set("dealer_id", selectedDealer.dealer_id);
 
-    const search = document.getElementById("txnSearchInput").value.trim();
+    const search = el("txnSearchInput") ? el("txnSearchInput").value.trim() : "";
     if (search) params.set("search", search);
 
-    const status = document.getElementById("txnFilterStatus").value;
+    const status = el("txnFilterStatus") ? el("txnFilterStatus").value : "";
     if (status) params.set("status", status);
 
-    const dateFrom = document.getElementById("txnFilterDateFrom").value;
+    const dateFrom = el("txnFilterDateFrom") ? el("txnFilterDateFrom").value : "";
     if (dateFrom) params.set("dateFrom", dateFrom);
 
-    const dateTo = document.getElementById("txnFilterDateTo").value;
+    const dateTo = el("txnFilterDateTo") ? el("txnFilterDateTo").value : "";
     if (dateTo) params.set("dateTo", dateTo);
 
     // No pagination -- just pull a generous flat list matching the filters
@@ -1945,8 +2048,10 @@ async function loadTransactions(){
 
         const { transactions, pagination } = result.data;
         renderTransactionRows(transactions);
-        document.getElementById("txnPaginationSummary").textContent =
-            `Showing ${transactions.length} of ${pagination.total} Transactions`;
+        if (el("txnPaginationSummary")) {
+            el("txnPaginationSummary").textContent =
+                `Showing ${transactions.length} of ${pagination.total} Transactions`;
+        }
     } catch (err) {
         console.error(err);
         txnTableBody.innerHTML = `<tr><td colspan="9" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
@@ -1954,6 +2059,7 @@ async function loadTransactions(){
 }
 
 function renderTransactionRows(rows){
+    if (!txnTableBody) return;
     if (!rows.length) {
         txnTableBody.innerHTML = `<tr><td colspan="9" class="text-center">No Results Found.</td></tr>`;
         return;
@@ -1986,17 +2092,17 @@ function renderTransactionRows(rows){
     `).join("");
 }
 
-document.getElementById("txnFilterBtn").addEventListener("click", function(){
+on("txnFilterBtn", "click", function(){
     loadTransactions();
 });
 
-document.getElementById("txnSearchInput").addEventListener("keydown", function(e){
+on("txnSearchInput", "keydown", function(e){
     if (e.key !== "Enter") return;
     e.preventDefault();
     loadTransactions();
 });
 
-document.getElementById("txnFilterStatus").addEventListener("change", function(){
+on("txnFilterStatus", "change", function(){
     loadTransactions();
 });
 
@@ -2004,7 +2110,7 @@ document.getElementById("txnFilterStatus").addEventListener("change", function()
    ROW ACTIONS -- View / Print / Edit
 ========================================================= */
 
-async function viewTransaction(id){
+window.viewTransaction = async function viewTransaction(id){
     try {
         const res = await fetch(`/api/reward/transactions/${id}`, { headers: authHeaders });
         const result = await res.json();
@@ -2026,9 +2132,9 @@ async function viewTransaction(id){
         console.error(err);
         alert("Server se connect nahi ho paya.");
     }
-}
+};
 
-async function editTransaction(id){
+window.editTransaction = async function editTransaction(id){
     try {
         const res = await fetch(`/api/reward/transactions/${id}`, { headers: authHeaders });
         const result = await res.json();
@@ -2041,23 +2147,25 @@ async function editTransaction(id){
             await selectDealer(t.dealer_id);
         }
 
-        document.getElementById("editingTransactionId").value = t.transaction_id;
-        txnTypeSelect.value = `${t.reference_type || "manual"}:${t.transaction_type}`;
-        document.getElementById("txnReferenceId").value = t.reference_id || "";
-        document.getElementById("txnPoints").value = t.points;
-        document.getElementById("txnDate").value = toDateInputValue(t.transaction_date);
-        document.getElementById("txnStatusSelect").value = t.status;
-        document.getElementById("txnRemarks").value = t.remarks || "";
-        document.getElementById("saveTxnBtn").innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Update Transaction';
+        if (el("editingTransactionId")) el("editingTransactionId").value = t.transaction_id;
+        if (txnTypeSelect) txnTypeSelect.value = `${t.reference_type || "manual"}:${t.transaction_type}`;
+        if (el("txnReferenceId")) el("txnReferenceId").value = t.reference_id || "";
+        if (el("txnPoints")) el("txnPoints").value = t.points;
+        if (el("txnDate")) el("txnDate").value = toDateInputValue(t.transaction_date);
+        if (el("txnStatusSelect")) el("txnStatusSelect").value = t.status;
+        if (el("txnRemarks")) el("txnRemarks").value = t.remarks || "";
+        if (el("saveTxnBtn")) el("saveTxnBtn").innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Update Transaction';
 
-        txnForm.scrollIntoView({ behavior: "smooth", block: "center" });
+        ensureFieldsAreEditable();
+
+        if (txnForm) txnForm.scrollIntoView({ behavior: "smooth", block: "center" });
     } catch (err) {
         console.error(err);
         alert("Server se connect nahi ho paya.");
     }
-}
+};
 
-function printTransaction(id){
+window.printTransaction = function printTransaction(id){
     fetch(`/api/reward/transactions/${id}`, { headers: authHeaders })
         .then(r => r.json())
         .then(result => {
@@ -2085,14 +2193,14 @@ function printTransaction(id){
             console.error(err);
             alert("Server se connect nahi ho paya.");
         });
-}
+};
 
 /* =========================================================
    PRINT STATEMENT (top header button) -- full statement for
    the currently selected dealer
 ========================================================= */
 
-document.getElementById("printStatementBtn").addEventListener("click", function(){
+on("printStatementBtn", "click", function(){
     if (!selectedDealer) {
         alert("Please search and select a dealer first to print their statement.");
         return;
@@ -2147,7 +2255,7 @@ async function printDealerStatement(dealerId){
    from SQL: stats, current dealer's wallet, transaction table
 ========================================================= */
 
-document.getElementById("refreshWalletBtn").addEventListener("click", async function(){
+on("refreshWalletBtn", "click", async function(){
     await loadStats();
     if (selectedDealer) {
         await selectDealer(selectedDealer.dealer_id); // also reloads the table
@@ -2163,7 +2271,10 @@ document.getElementById("refreshWalletBtn").addEventListener("click", async func
 loadStats();
 loadTransactions();
 
+}); // DOMContentLoaded
+
 </script>
+
 
 </body>
 

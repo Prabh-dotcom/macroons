@@ -240,6 +240,122 @@ font-size:17px;
 
 }
 
+.notif-dropdown{
+
+position:absolute;
+
+top:55px;
+
+right:0;
+
+width:340px;
+
+max-height:420px;
+
+background:#fff;
+
+border-radius:14px;
+
+box-shadow:0 10px 35px rgba(0,0,0,.15);
+
+overflow:hidden;
+
+z-index:1000;
+
+}
+
+.notif-dropdown-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:14px 16px;
+
+border-bottom:1px solid #eee;
+
+font-weight:700;
+
+}
+
+.notif-dropdown-header a{
+
+font-size:12px;
+
+font-weight:600;
+
+text-decoration:none;
+
+color:#0B5ED7;
+
+}
+
+.notif-dropdown-body{
+
+max-height:360px;
+
+overflow-y:auto;
+
+}
+
+.notif-item{
+
+display:block;
+
+padding:12px 16px;
+
+border-bottom:1px solid #f3f3f3;
+
+text-decoration:none;
+
+color:#333;
+
+cursor:pointer;
+
+}
+
+.notif-item:hover{
+
+background:#f7f9fc;
+
+}
+
+.notif-item.unread{
+
+background:#eef5ff;
+
+}
+
+.notif-item .notif-title{
+
+font-weight:600;
+
+font-size:13.5px;
+
+margin-bottom:3px;
+
+}
+
+.notif-item .notif-msg{
+
+font-size:12.5px;
+
+color:#666;
+
+}
+
+.notif-item .notif-time{
+
+font-size:11px;
+
+color:#aaa;
+
+margin-top:4px;
+
+}
+
 /*=========================
 CONTENT
 =========================*/
@@ -504,11 +620,33 @@ placeholder="Search Serial No., Dealer, Customer...">
 
 <div class="right-icons">
 
-<button class="icon-btn">
+<div class="position-relative">
+
+<button class="icon-btn" id="notifBellBtn">
 
 <i class="fa-solid fa-bell"></i>
 
 </button>
+
+<div id="notifDropdown" class="notif-dropdown d-none">
+
+<div class="notif-dropdown-header">
+
+<span>Notifications</span>
+
+<a href="#" id="notifMarkAllRead">Mark all read</a>
+
+</div>
+
+<div id="notifDropdownBody" class="notif-dropdown-body">
+
+<div class="text-center text-muted p-3">Loading...</div>
+
+</div>
+
+</div>
+
+</div>
 
 <button class="icon-btn">
 
@@ -598,9 +736,9 @@ Warranty
 
 <p>Total Inventory</p>
 
-<span class="up">
+<span class="up" id="statTotalInventoryCaption">
 
-+145 This Month
++0 This Month
 
 </span>
 
@@ -622,9 +760,9 @@ Warranty
 
 <p>Monthly Dispatch</p>
 
-<span class="up">
+<span class="up" id="statMonthlyDispatchCaption">
 
-+18% Growth
++0% Growth
 
 </span>
 
@@ -646,9 +784,9 @@ Warranty
 
 <p>Active Warranty</p>
 
-<span class="up">
+<span class="up" id="statActiveWarrantyCaption">
 
-96% Active
+0% Active
 
 </span>
 
@@ -670,9 +808,9 @@ Warranty
 
 <p>Registered Dealers</p>
 
-<span class="up">
+<span class="up" id="statRegisteredDealersCaption">
 
-12 New Dealers
+0 New Dealers
 
 </span>
 
@@ -1259,6 +1397,16 @@ async function loadKPIs(){
         document.getElementById("statActiveWarranty").textContent = d.active_warranty.toLocaleString("en-IN");
         document.getElementById("statRegisteredDealers").textContent = d.registered_dealers.toLocaleString("en-IN");
 
+        document.getElementById("statTotalInventoryCaption").textContent =
+            "+" + Number(d.new_inventory_this_month).toLocaleString("en-IN") + " This Month";
+        const growthSign = d.dispatch_growth_percent >= 0 ? "+" : "";
+        document.getElementById("statMonthlyDispatchCaption").textContent =
+            growthSign + d.dispatch_growth_percent + "% Growth";
+        document.getElementById("statActiveWarrantyCaption").textContent =
+            d.active_warranty_percent + "% Active";
+        document.getElementById("statRegisteredDealersCaption").textContent =
+            Number(d.new_dealers_this_month).toLocaleString("en-IN") + " New Dealers";
+
     } catch (err) {
         console.error(err);
     }
@@ -1538,6 +1686,84 @@ document.querySelector(".fa-user").closest("button").addEventListener("click", f
         localStorage.removeItem("role");
         window.location.href = "login.html";
     }
+});
+
+
+/* ===============================
+   NOTIFICATION BELL (real notifications -- e.g. dealer replacement requests)
+================================ */
+
+const notifBellBtn = document.getElementById("notifBellBtn");
+const notifDropdown = document.getElementById("notifDropdown");
+const notifDropdownBody = document.getElementById("notifDropdownBody");
+
+function timeAgo(dateStr){
+    const diffMs = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diffMs / 60000);
+    if (mins < 1) return "Just now";
+    if (mins < 60) return `${mins} min ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs} hour${hrs === 1 ? "" : "s"} ago`;
+    const days = Math.floor(hrs / 24);
+    return `${days} day${days === 1 ? "" : "s"} ago`;
+}
+
+async function loadNotificationDropdown(){
+    try {
+        const response = await fetch("/api/notifications", { headers: authHeaders });
+        const result = await response.json();
+        if (!result.success) return;
+
+        const items = result.data;
+
+        if (items.length === 0) {
+            notifDropdownBody.innerHTML = `<div class="text-center text-muted p-3">No notifications yet.</div>`;
+            return;
+        }
+
+        notifDropdownBody.innerHTML = items.map(n => `
+            <a class="notif-item ${n.is_read ? "" : "unread"}" data-id="${n.notification_id}" data-link="${n.link || ""}">
+                <div class="notif-title">${n.title}</div>
+                <div class="notif-msg">${n.message || ""}</div>
+                <div class="notif-time">${timeAgo(n.created_at)}</div>
+            </a>
+        `).join("");
+
+        notifDropdownBody.querySelectorAll(".notif-item").forEach(item => {
+            item.addEventListener("click", async function(){
+                const id = this.dataset.id;
+                const link = this.dataset.link;
+                try {
+                    await fetch(`/api/notifications/${id}/read`, { method: "PUT", headers: authHeaders });
+                } catch (err) { console.error(err); }
+                if (link) window.location.href = link;
+            });
+        });
+
+    } catch (err) {
+        console.error(err);
+        notifDropdownBody.innerHTML = `<div class="text-center text-danger p-3">Could not load notifications.</div>`;
+    }
+}
+
+notifBellBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    notifDropdown.classList.toggle("d-none");
+    if (!notifDropdown.classList.contains("d-none")) loadNotificationDropdown();
+});
+
+document.addEventListener("click", function(e){
+    if (!notifDropdown.contains(e.target) && e.target !== notifBellBtn) {
+        notifDropdown.classList.add("d-none");
+    }
+});
+
+document.getElementById("notifMarkAllRead").addEventListener("click", async function(e){
+    e.preventDefault();
+    try {
+        await fetch("/api/notifications/mark-all-read", { method: "PUT", headers: authHeaders });
+        loadNotificationDropdown();
+    } catch (err) { console.error(err); }
 });
 
 

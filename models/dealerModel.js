@@ -37,7 +37,7 @@ exports.getAll = async ({ search, status, page = 1, limit = 10, sortBy = "create
 
     const dataQuery = `
         SELECT dealer_id, dealer_code, login_id, dealer_name, contact_person,
-               phone, email, city, state, dealer_status, reward_eligible, created_at
+               phone, email, city, district, state, dealer_status, reward_eligible, created_at
         FROM dealers
         ${whereSql}
         ORDER BY ${safeSortBy} ${safeSortOrder}
@@ -63,7 +63,7 @@ exports.getAll = async ({ search, status, page = 1, limit = 10, sortBy = "create
 exports.getById = async (dealerId) => {
     const [rows] = await db.query(
         `SELECT dealer_id, dealer_code, login_id, dealer_name, contact_person,
-                phone, email, address_line, city, state, pincode, gst_number,
+                phone, email, address_line, city, district, state, pincode, gst_number,
                 dealer_status, reward_eligible, created_at, updated_at
          FROM dealers WHERE dealer_id = ?`,
         [dealerId]
@@ -80,13 +80,13 @@ exports.create = async (dealer) => {
     const [result] = await db.query(
         `INSERT INTO dealers
             (dealer_code, login_id, password_hash, dealer_name, contact_person,
-             phone, email, address_line, city, state, pincode, gst_number,
+             phone, email, address_line, city, district, state, pincode, gst_number,
              dealer_status, reward_eligible)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             dealer.dealer_code, dealer.login_id, dealer.password_hash, dealer.dealer_name,
             dealer.contact_person || null, dealer.phone, dealer.email || null,
-            dealer.address_line || null, dealer.city || null, dealer.state || null,
+            dealer.address_line || null, dealer.city || null, dealer.district || null, dealer.state || null,
             dealer.pincode || null, dealer.gst_number || null,
             dealer.dealer_status || "active", dealer.reward_eligible ?? 1
         ]
@@ -98,13 +98,13 @@ exports.update = async (dealerId, dealer) => {
     const [result] = await db.query(
         `UPDATE dealers SET
             dealer_name = ?, contact_person = ?, phone = ?, email = ?,
-            address_line = ?, city = ?, state = ?, pincode = ?, gst_number = ?,
+            address_line = ?, city = ?, district = ?, state = ?, pincode = ?, gst_number = ?,
             dealer_status = ?, reward_eligible = ?
          WHERE dealer_id = ?`,
         [
             dealer.dealer_name, dealer.contact_person || null, dealer.phone,
             dealer.email || null, dealer.address_line || null, dealer.city || null,
-            dealer.state || null, dealer.pincode || null, dealer.gst_number || null,
+            dealer.district || null, dealer.state || null, dealer.pincode || null, dealer.gst_number || null,
             dealer.dealer_status, dealer.reward_eligible, dealerId
         ]
     );

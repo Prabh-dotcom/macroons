@@ -340,7 +340,8 @@ Settings
 
 <input
 type="text"
-placeholder="Search Dealer ID / Dealer Name / Mobile">
+id="topbarDealerSearch"
+placeholder="Search Dealer ID / Name / Mobile, phir Enter dabao">
 
 </div>
 
@@ -381,7 +382,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
     <div class="d-flex flex-wrap gap-2 mt-3 mt-lg-0">
 
-        <button class="btn btn-success">
+        <button class="btn btn-success" type="button" id="addDealerBtn">
 
             <i class="fa-solid fa-user-plus me-2"></i>
 
@@ -389,11 +390,19 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
         </button>
 
-        <button class="btn btn-warning text-white">
+        <button class="btn btn-warning text-white" type="button" id="refreshDealersBtn">
 
             <i class="fa-solid fa-rotate-right me-2"></i>
 
             Refresh
+
+        </button>
+
+        <button class="btn btn-info text-white" type="button" id="printDealersBtn">
+
+            <i class="fa-solid fa-print me-2"></i>
+
+            Print
 
         </button>
 
@@ -465,7 +474,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
 <!-- ================= DEALER FORM ================= -->
 
-<div class="form-card">
+<div class="form-card" id="dealerFormCard" style="scroll-margin-top:20px;">
 
     <h4 class="fw-bold mb-4">
 
@@ -696,15 +705,15 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
     <label class="form-label">
 
-        State <span class="text-danger">*</span>
+        City <span class="text-danger">*</span>
 
     </label>
 
-    <select class="form-select">
-
-        <option selected disabled>Select State</option>
-
-    </select>
+    <input
+        type="text"
+        class="form-control"
+        id="city"
+        placeholder="Enter City">
 
 </div>
 
@@ -716,11 +725,11 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
     </label>
 
-    <select class="form-select">
-
-        <option selected disabled>Select District</option>
-
-    </select>
+    <input
+        type="text"
+        class="form-control"
+        id="district"
+        placeholder="Enter District">
 
 </div>
 
@@ -728,15 +737,15 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
     <label class="form-label">
 
-        City <span class="text-danger">*</span>
+        State <span class="text-danger">*</span>
 
     </label>
 
     <input
         type="text"
         class="form-control"
-        id="city"
-        placeholder="Enter City">
+        id="state"
+        placeholder="Enter State">
 
 </div>
 
@@ -976,6 +985,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
         <button
             type="button"
+            id="saveNewBtn"
             class="btn btn-primary">
 
             <i class="fa-solid fa-plus me-2"></i>
@@ -986,6 +996,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
         <button
             type="button"
+            id="updateDealerBtn"
             class="btn btn-warning text-white">
 
             <i class="fa-solid fa-pen-to-square me-2"></i>
@@ -996,6 +1007,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
         <button
             type="reset"
+            id="resetFormBtn"
             class="btn btn-secondary">
 
             <i class="fa-solid fa-rotate-left me-2"></i>
@@ -1016,7 +1028,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
 <!-- ================= DEALER LIST ================= -->
 
-<div class="form-card mt-4">
+<div class="form-card mt-4" id="dealerListCard" style="scroll-margin-top:20px;">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -1025,6 +1037,8 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
             Dealer List
 
         </h4>
+
+        <span class="badge bg-primary" id="dealerListCount" style="font-size:12px;"></span>
 
     </div>
 
@@ -1049,7 +1063,7 @@ placeholder="Search Dealer ID / Dealer Name / Mobile">
 
             </thead>
 
-            <tbody>
+            <tbody id="dealerTableBody">
 
                 <!-- Dealer records will come from database -->
 
@@ -1088,19 +1102,62 @@ function generateDealerID(){
 }
 
 let editingDealerId = null; // null = naya dealer add ho raha hai, warna edit mode
+let allDealers = [];        // last-loaded full dealer list (search isi pe filter karta hai)
+
+
+/* ===============================
+   RENDER TABLE ROWS -- loadDealers() aur search filter, dono
+   isi function ko reuse karte hain, taaki row markup ek hi
+   jagah maintain ho.
+================================ */
+
+function renderDealerRows(dealers, highlightIds){
+    const tbody = document.getElementById("dealerTableBody");
+    const countBadge = document.getElementById("dealerListCount");
+    highlightIds = highlightIds || [];
+
+    if (countBadge) {
+        countBadge.textContent = `${dealers.length} Dealer${dealers.length === 1 ? "" : "s"}`;
+    }
+
+    if (dealers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center">Koi dealer nahi mila.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = dealers.map(d => `
+        <tr id="dealerRow-${d.dealer_id}" class="${highlightIds.includes(d.dealer_id) ? 'table-warning' : ''}">
+            <td>${d.dealer_code}</td>
+            <td>${d.dealer_name}</td>
+            <td>${d.login_id}</td>
+            <td>${d.phone}</td>
+            <td>${d.city || "-"}</td>
+            <td>${d.reward_eligible ? "Yes" : "No"}</td>
+            <td><span class="badge ${d.dealer_status === 'active' ? 'bg-success' : 'bg-secondary'}">${d.dealer_status}</span></td>
+            <td>
+                <button class="btn btn-sm btn-info text-white" onclick="viewDealer(${d.dealer_id})"><i class="fa-solid fa-eye"></i></button>
+                <button class="btn btn-sm btn-warning text-white" onclick="editDealer(${d.dealer_id})"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteDealer(${d.dealer_id})"><i class="fa-solid fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join("");
+}
 
 
 /* ===============================
    LOAD DEALERS FROM DATABASE
+   (limit=1000 -- is page pe koi pagination UI nahi hai, isliye
+   sab dealers ek sath la ke client-side rakhte hain taaki search
+   turant, bina baar-baar server call kiye, kaam kare)
 ================================ */
 
 async function loadDealers(){
 
-    const tbody = document.querySelector("table tbody");
+    const tbody = document.getElementById("dealerTableBody");
     tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
     try {
-        const response = await fetch("/api/dealers", { headers: authHeaders });
+        const response = await fetch("/api/dealers?limit=1000", { headers: authHeaders });
         const result = await response.json();
 
         if (!result.success) {
@@ -1108,34 +1165,89 @@ async function loadDealers(){
             return;
         }
 
-        const dealers = result.data.dealers;
+        allDealers = result.data.dealers;
 
-        if (dealers.length === 0) {
+        if (allDealers.length === 0) {
             tbody.innerHTML = `<tr><td colspan="8" class="text-center">Koi dealer nahi mila. Upar form se add karo.</td></tr>`;
+            const countBadge = document.getElementById("dealerListCount");
+            if (countBadge) countBadge.textContent = "0 Dealers";
             return;
         }
 
-        tbody.innerHTML = dealers.map(d => `
-            <tr>
-                <td>${d.dealer_code}</td>
-                <td>${d.dealer_name}</td>
-                <td>${d.login_id}</td>
-                <td>${d.phone}</td>
-                <td>${d.city || "-"}</td>
-                <td>${d.reward_eligible ? "Yes" : "No"}</td>
-                <td><span class="badge ${d.dealer_status === 'active' ? 'bg-success' : 'bg-secondary'}">${d.dealer_status}</span></td>
-                <td>
-                    <button class="btn btn-sm btn-info text-white" onclick="viewDealer(${d.dealer_id})"><i class="fa-solid fa-eye"></i></button>
-                    <button class="btn btn-sm btn-warning text-white" onclick="editDealer(${d.dealer_id})"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteDealer(${d.dealer_id})"><i class="fa-solid fa-trash"></i></button>
-                </td>
-            </tr>
-        `).join("");
+        renderDealerRows(allDealers);
 
     } catch (err) {
         tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Server se connect nahi ho paya.</td></tr>`;
         console.error(err);
     }
+}
+
+
+/* ===============================
+   TOPBAR SEARCH -- poora naam/ID/mobile likh kar Enter dabao,
+   table poori dikhti rahegi (kuch hide nahi hota), bas jo dealer
+   match kare uski row tak seedha scroll ho jaata hai aur wo row
+   thodi der ke liye peeli (highlight) ho jaati hai.
+================================ */
+
+const topbarSearch = document.getElementById("topbarDealerSearch");
+const dealerListCard = document.getElementById("dealerListCard");
+
+function runDealerSearch(term){
+    term = (term || "").trim().toLowerCase();
+
+    if (!term) {
+        renderDealerRows(allDealers);
+        return;
+    }
+
+    const matches = allDealers.filter(d =>
+        (d.dealer_code || "").toLowerCase().includes(term) ||
+        (d.dealer_name || "").toLowerCase().includes(term) ||
+        (d.login_id || "").toLowerCase().includes(term) ||
+        (d.phone || "").toLowerCase().includes(term) ||
+        (d.city || "").toLowerCase().includes(term)
+    );
+
+    if (matches.length === 0) {
+        alert(`"${term}" se koi dealer nahi mila.`);
+        return;
+    }
+
+    const matchIds = matches.map(d => d.dealer_id);
+
+    // Poori list dikhti rahe, sirf match hui row(s) highlight ho jaayein.
+    renderDealerRows(allDealers, matchIds);
+
+    const firstRow = document.getElementById(`dealerRow-${matchIds[0]}`);
+    if (firstRow) {
+        firstRow.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else if (dealerListCard) {
+        dealerListCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // Highlight thodi der baad apne aap hata do
+    setTimeout(() => {
+        matchIds.forEach(id => {
+            const row = document.getElementById(`dealerRow-${id}`);
+            if (row) row.classList.remove("table-warning");
+        });
+    }, 4000);
+}
+
+if (topbarSearch) {
+    topbarSearch.addEventListener("keydown", function(e){
+        if (e.key !== "Enter") return;
+        e.preventDefault();
+        runDealerSearch(this.value);
+    });
+
+    // Search box khali karke clear karo to poori list wapas dikh jaaye
+    topbarSearch.addEventListener("input", function(){
+        if (this.value.trim() === "") {
+            renderDealerRows(allDealers);
+        }
+    });
 }
 
 
@@ -1165,6 +1277,8 @@ form.addEventListener("submit", async function(e){
         email: document.getElementById("email").value.trim(),
         gst_number: document.getElementById("gstNumber").value.trim(),
         city: document.getElementById("city").value.trim(),
+        district: document.getElementById("district").value.trim(),
+        state: document.getElementById("state").value.trim(),
         pincode: document.getElementById("pincode").value.trim(),
         address_line: document.getElementById("address").value.trim(),
         dealer_status: document.getElementById("dealerStatus").value,
@@ -1212,7 +1326,7 @@ async function viewDealer(id){
     if (!result.success) { alert(result.message); return; }
     const d = result.data;
     alert(
-        `Dealer: ${d.dealer_name}\nCode: ${d.dealer_code}\nLogin ID: ${d.login_id}\nPhone: ${d.phone}\nEmail: ${d.email || "-"}\nCity: ${d.city || "-"}\nStatus: ${d.dealer_status}`
+        `Dealer: ${d.dealer_name}\nCode: ${d.dealer_code}\nLogin ID: ${d.login_id}\nPhone: ${d.phone}\nEmail: ${d.email || "-"}\nCity: ${d.city || "-"}\nDistrict: ${d.district || "-"}\nState: ${d.state || "-"}\nStatus: ${d.dealer_status}`
     );
 }
 
@@ -1236,6 +1350,8 @@ async function editDealer(id){
     document.getElementById("email").value = d.email || "";
     document.getElementById("gstNumber").value = d.gst_number || "";
     document.getElementById("city").value = d.city || "";
+    document.getElementById("district").value = d.district || "";
+    document.getElementById("state").value = d.state || "";
     document.getElementById("pincode").value = d.pincode || "";
     document.getElementById("address").value = d.address_line || "";
     document.getElementById("dealerStatus").value = d.dealer_status;
@@ -1244,7 +1360,9 @@ async function editDealer(id){
     // Edit mode me password required nahi hai
     document.getElementById("dealerPassword").removeAttribute("required");
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const formCard = document.getElementById("dealerFormCard");
+    if (formCard) formCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    else window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 
@@ -1278,27 +1396,91 @@ async function deleteDealer(id){
 
 
 /* ===============================
-   SAVE & NEW / RESET BUTTONS
+   FORM ACTION BUTTONS -- ab unique IDs se wire kiye hain
+   (pehle .btn-primary / .btn-warning / .btn-secondary class se
+   dhoonde ja rahe the, jo header ke "Refresh" aur "Save & New"
+   button se TAKRA rahe the -- Refresh button galti se is form ka
+   handler pakad raha tha, isliye kaam nahi kar raha tha).
 ================================ */
 
-document.querySelector(".btn-primary").addEventListener("click", function(){
+document.getElementById("saveNewBtn").addEventListener("click", function(){
     form.reset();
     editingDealerId = null;
     generateDealerID();
+    document.getElementById("dealerPassword").setAttribute("required", "required");
 });
 
-document.querySelector(".btn-secondary").addEventListener("click", function(){
-    form.reset();
+document.getElementById("resetFormBtn").addEventListener("click", function(){
     editingDealerId = null;
     generateDealerID();
+    document.getElementById("dealerPassword").setAttribute("required", "required");
 });
 
-// "Update Dealer" button ab form ke normal submit se hi handle ho raha hai
-// (editingDealerId set hoga to PUT chalega), isliye alag se click handler
-// nahi chahiye -- purana wala hata diya taaki double-submit na ho.
-document.querySelector(".btn-warning").addEventListener("click", function(e){
+document.getElementById("updateDealerBtn").addEventListener("click", function(e){
     e.preventDefault();
+    if (!editingDealerId) {
+        alert("Pehle Dealer List se ek dealer 'Edit' karo, tabhi Update Dealer kaam karega.");
+        return;
+    }
     form.requestSubmit();
+});
+
+
+/* ===============================
+   HEADER BUTTONS -- Add Dealer / Refresh / Print
+================================ */
+
+document.getElementById("addDealerBtn").addEventListener("click", function(){
+    form.reset();
+    editingDealerId = null;
+    generateDealerID();
+    document.getElementById("dealerPassword").setAttribute("required", "required");
+
+    const formCard = document.getElementById("dealerFormCard");
+    if (formCard) formCard.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+document.getElementById("refreshDealersBtn").addEventListener("click", function(){
+    if (topbarSearch) topbarSearch.value = "";
+    loadDealers();
+});
+
+document.getElementById("printDealersBtn").addEventListener("click", function(){
+    const rowsHtml = allDealers.map(d => `
+        <tr>
+            <td>${d.dealer_code}</td>
+            <td>${d.dealer_name}</td>
+            <td>${d.login_id}</td>
+            <td>${d.phone}</td>
+            <td>${d.city || "-"}</td>
+            <td>${d.reward_eligible ? "Yes" : "No"}</td>
+            <td>${d.dealer_status}</td>
+        </tr>
+    `).join("");
+
+    const printWindow = window.open("", "_blank");
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Dealer List</title>
+            </head>
+            <body style="font-family:sans-serif;padding:24px;">
+                <h3>Battery ERP &mdash; Dealer List</h3>
+                <p>Total Dealers: ${allDealers.length}</p>
+                <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;font-size:13px;">
+                    <thead>
+                        <tr>
+                            <th>Dealer ID</th><th>Dealer Name</th><th>Login ID</th>
+                            <th>Mobile</th><th>City</th><th>Reward</th><th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
 });
 
 
@@ -1312,6 +1494,7 @@ window.onload = function(){
 };
 
 </script>
+
 
 </body>
 

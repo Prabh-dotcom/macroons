@@ -229,6 +229,14 @@ padding:8px 12px;
 font-size:13px;
 }
 
+/* Print: only the "Warranty Records" table section should print --
+   sidebar, topbar, activation form, cards, buttons all hidden. This
+   only affects the printed page, not the normal browser view. */
+@media print {
+    body * { visibility: hidden; }
+    #warrantyTableSection, #warrantyTableSection * { visibility: visible; }
+    #warrantyTableSection { position: absolute; top: 0; left: 0; width: 100%; }
+}
 </style>
 
 </head>
@@ -375,10 +383,11 @@ Settings
 
 <div class="search-box">
 
-<i class="fa-solid fa-magnifying-glass"></i>
+<i class="fa-solid fa-magnifying-glass" id="topbarWarrantySearchIcon" style="cursor:pointer;"></i>
 
 <input
 type="text"
+id="topbarWarrantySearch"
 placeholder="Search Warranty ID / Serial Number / Customer">
 
 </div>
@@ -423,7 +432,7 @@ Dashboard > Warranty
 
 <div class="d-flex flex-wrap gap-2 mt-3 mt-lg-0">
 
-<button class="btn btn-success">
+<button class="btn btn-success" id="activateWarrantyTopBtn" type="button">
 
 <i class="fa-solid fa-circle-check me-2"></i>
 
@@ -431,11 +440,19 @@ Activate Warranty
 
 </button>
 
-<button class="btn btn-warning text-white">
+<button class="btn btn-warning text-white" id="refreshWarrantyBtn" type="button">
 
 <i class="fa-solid fa-rotate-right me-2"></i>
 
 Refresh
+
+</button>
+
+<button class="btn btn-secondary" id="printWarrantyListBtn" type="button">
+
+<i class="fa-solid fa-print me-2"></i>
+
+Print
 
 </button>
 
@@ -453,7 +470,7 @@ Refresh
 
 <i class="fa-solid fa-shield-halved fa-2x text-primary"></i>
 
-<h3></h3>
+<h3 id="cardTotalWarranty">0</h3>
 
 <p>Total Warranty</p>
 
@@ -467,7 +484,7 @@ Refresh
 
 <i class="fa-solid fa-calendar-check fa-2x text-success"></i>
 
-<h3></h3>
+<h3 id="cardTodayActivation">0</h3>
 
 <p>Today's Activation</p>
 
@@ -481,7 +498,7 @@ Refresh
 
 <i class="fa-solid fa-circle-check fa-2x text-info"></i>
 
-<h3></h3>
+<h3 id="cardActiveWarranty">0</h3>
 
 <p>Active Warranty</p>
 
@@ -495,7 +512,7 @@ Refresh
 
 <i class="fa-solid fa-clock fa-2x text-danger"></i>
 
-<h3></h3>
+<h3 id="cardExpiredWarranty">0</h3>
 
 <p>Expired Warranty</p>
 
@@ -507,7 +524,7 @@ Refresh
 
 <!-- ================= WARRANTY ACTIVATION FORM ================= -->
 
-<div class="form-card">
+<div class="form-card" id="warrantyFormCard">
 
 <h4 class="fw-bold mb-4">
 
@@ -515,7 +532,7 @@ Warranty Activation Form
 
 </h4>
 
-<form>
+<form id="warrantyForm">
 
 <div class="row">
     <!-- ================= PRODUCT CATEGORY ================= -->
@@ -588,7 +605,7 @@ Warranty Activation Form
             id="warrantySerialSearch"
             placeholder="Search Serial Number">
 
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" id="serialLookupBtn" type="button">
 
             <i class="fa-solid fa-magnifying-glass"></i>
 
@@ -873,6 +890,7 @@ Warranty Activation Form
         type="text"
         class="form-control"
         id="customerMobile"
+        maxlength="15"
         placeholder="Enter Mobile Number">
 
 </div>
@@ -1116,7 +1134,7 @@ Warranty Activation Form
 
         <button
             type="submit"
-            class="btn btn-success">
+            class="btn btn-success" id="activateWarrantySubmitBtn">
 
             <i class="fa-solid fa-circle-check me-2"></i>
 
@@ -1126,7 +1144,7 @@ Warranty Activation Form
 
         <button
             type="button"
-            class="btn btn-primary">
+            class="btn btn-primary" id="saveDraftBtn">
 
             <i class="fa-solid fa-floppy-disk me-2"></i>
 
@@ -1136,7 +1154,7 @@ Warranty Activation Form
 
         <button
             type="button"
-            class="btn btn-warning text-white">
+            class="btn btn-warning text-white" id="printWarrantyCardBtn">
 
             <i class="fa-solid fa-print me-2"></i>
 
@@ -1146,7 +1164,7 @@ Warranty Activation Form
 
         <button
             type="reset"
-            class="btn btn-secondary">
+            class="btn btn-secondary" id="resetWarrantyBtn">
 
             <i class="fa-solid fa-rotate-left me-2"></i>
 
@@ -1166,7 +1184,7 @@ Warranty Activation Form
 
 <!-- ================= WARRANTY LIST ================= -->
 
-<div class="form-card mt-4">
+<div class="form-card mt-4" id="warrantyTableSection">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -1175,6 +1193,30 @@ Warranty Activation Form
             Warranty Records
 
         </h4>
+
+    </div>
+
+    <div class="row g-2 mb-3">
+
+        <div class="col-lg-5">
+            <input type="text" class="form-control" id="tableWarrantySearch" placeholder="Search serial, customer, dealer...">
+        </div>
+
+        <div class="col-lg-3">
+            <select class="form-select" id="filterWarrantyStatus">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="active">Active</option>
+                <option value="expired">Expired</option>
+                <option value="claimed">Claimed</option>
+            </select>
+        </div>
+
+        <div class="col-lg-2">
+            <button class="btn btn-outline-primary w-100" type="button" id="applyWarrantyFilterBtn">
+                <i class="fa-solid fa-filter me-2"></i>Filter
+            </button>
+        </div>
 
     </div>
 
@@ -1208,7 +1250,7 @@ Warranty Activation Form
 
             </thead>
 
-            <tbody>
+            <tbody id="warrantyTableBody">
 
                 <!-- Warranty records will come from database -->
 
@@ -1217,6 +1259,10 @@ Warranty Activation Form
         </table>
 
     </div>
+
+</div>
+
+</div>
 
 </div>
 <script>
@@ -1235,6 +1281,11 @@ const authHeaders = {
 
 let resolvedInventoryId = null;
 let resolvedDealerId = null;
+let lastLookedUpSerial = null; // used by "Print Warranty Card" for the receipt header
+
+function fmt(n){
+    return Number(n || 0).toLocaleString("en-IN");
+}
 
 
 /* ===========================================
@@ -1245,10 +1296,34 @@ let resolvedDealerId = null;
 function generateWarrantyID(){
     document.getElementById("warrantyId").value = "Auto Generate on Save";
 }
-window.onload = function(){
+
+function resetWarrantyFormState(){
+    resolvedInventoryId = null;
+    resolvedDealerId = null;
+    lastLookedUpSerial = null;
     generateWarrantyID();
-    loadWarranty();
-};
+}
+
+
+/* ===============================
+   DASHBOARD STATS -- 4 cards
+================================ */
+
+async function loadStats(){
+    try {
+        const res = await fetch("/api/warranty/stats/summary", { headers: authHeaders });
+        const result = await res.json();
+        if (!result.success) return;
+
+        const s = result.data;
+        document.getElementById("cardTotalWarranty").textContent = fmt(s.total_warranty);
+        document.getElementById("cardTodayActivation").textContent = fmt(s.today_activation);
+        document.getElementById("cardActiveWarranty").textContent = fmt(s.active_warranty);
+        document.getElementById("cardExpiredWarranty").textContent = fmt(s.expired_warranty);
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 
 /* ===========================================
@@ -1258,7 +1333,7 @@ window.onload = function(){
    yeh serial dispatch hua tha)
 =========================================== */
 
-document.querySelector('.input-group .btn-primary').addEventListener("click", async function(e){
+document.getElementById("serialLookupBtn").addEventListener("click", async function(e){
     e.preventDefault();
 
     const serial = document.getElementById("warrantySerialSearch").value.trim();
@@ -1278,6 +1353,7 @@ document.querySelector('.input-group .btn-primary').addEventListener("click", as
         const d = result.data;
         resolvedInventoryId = d.inventory_id;
         resolvedDealerId = d.dealer_id;
+        lastLookedUpSerial = d.serial_number;
 
         document.getElementById("productCategory").innerHTML = `<option selected>${d.category_name}</option>`;
         document.getElementById("warProductName").value = d.product_name;
@@ -1292,8 +1368,21 @@ document.querySelector('.input-group .btn-primary').addEventListener("click", as
         document.getElementById("warDealerState").value = d.dealer_state || "-";
         document.getElementById("warDealerCity").value = d.dealer_city || "-";
 
+        // Product's actual warranty_months (from inventory.html's free number
+        // input) might not match any of the fixed dropdown options below
+        // (6/12/24/36/48/60) -- if so, add it as a real option instead of
+        // silently leaving the dropdown blank.
         const periodSelect = document.getElementById("warrantyPeriod");
-        periodSelect.value = String(d.warranty_months);
+        const monthsStr = String(d.warranty_months);
+        let matchingOption = Array.from(periodSelect.options).find(o => o.value === monthsStr);
+        if (!matchingOption) {
+            matchingOption = document.createElement("option");
+            matchingOption.value = monthsStr;
+            matchingOption.textContent = `${monthsStr} Months`;
+            periodSelect.appendChild(matchingOption);
+        }
+        periodSelect.value = monthsStr;
+        recalcExpiry();
 
     } catch (err) {
         alert("Server se connect nahi ho paya.");
@@ -1323,6 +1412,7 @@ periodSelectEl.addEventListener("change", recalcExpiry);
 
 /* ===============================
    LOAD WARRANTY RECORDS
+   (search + status filter, no pagination)
 ================================ */
 
 function badgeClassForWStatus(status){
@@ -1333,12 +1423,28 @@ function badgeClassForWStatus(status){
     return "bg-secondary";
 }
 
+function currentWarrantyFilters(){
+    return {
+        search: document.getElementById("tableWarrantySearch").value.trim(),
+        status: document.getElementById("filterWarrantyStatus").value
+    };
+}
+
 async function loadWarranty(){
-    const tbody = document.querySelector("table tbody");
+    const tbody = document.getElementById("warrantyTableBody");
     tbody.innerHTML = `<tr><td colspan="9" class="text-center">Loading...</td></tr>`;
 
+    const { search, status } = currentWarrantyFilters();
+
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (status) params.set("status", status);
+    // No pagination -- pull a generous flat list matching the filters
+    params.set("page", 1);
+    params.set("limit", 200);
+
     try {
-        const response = await fetch("/api/warranty", { headers: authHeaders });
+        const response = await fetch(`/api/warranty?${params.toString()}`, { headers: authHeaders });
         const result = await response.json();
 
         if (!result.success) {
@@ -1349,13 +1455,13 @@ async function loadWarranty(){
         const records = result.data.warranty;
 
         if (records.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="9" class="text-center">Koi warranty record nahi mila.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="9" class="text-center">No Records Found.</td></tr>`;
             return;
         }
 
-        tbody.innerHTML = records.map((r, index) => `
-            <tr>
-                <td>${index + 1}</td>
+        tbody.innerHTML = records.map(r => `
+            <tr id="warranty-row-${r.warranty_id}">
+                <td>${r.warranty_id}</td>
                 <td>${r.category_name}</td>
                 <td>${r.serial_number}</td>
                 <td>${r.customer_name}</td>
@@ -1376,22 +1482,67 @@ async function loadWarranty(){
     }
 }
 
+document.getElementById("applyWarrantyFilterBtn").addEventListener("click", function(){
+    loadWarranty();
+});
+
+document.getElementById("tableWarrantySearch").addEventListener("keydown", function(e){
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    loadWarranty();
+});
+
+document.getElementById("filterWarrantyStatus").addEventListener("change", function(){
+    loadWarranty();
+});
+
+// Topbar search box -- placeholder says "Search Warranty ID / Serial
+// Number / Customer", drives the same table search + highlights matches.
+// Triggers on Enter, on clicking the search icon, and live as you type
+// (debounced) -- so it never feels like "nothing happens".
+async function runTopbarWarrantySearch(){
+    const term = document.getElementById("topbarWarrantySearch").value.trim();
+    if (!term) return;
+
+    document.getElementById("tableWarrantySearch").value = term;
+    await loadWarranty();
+
+    document.getElementById("warrantyTableSection").scrollIntoView({ behavior: "smooth", block: "start" });
+
+    document.querySelectorAll("#warrantyTableBody tr[id^='warranty-row-']").forEach(row => {
+        row.style.transition = "background-color 0.3s";
+        row.style.backgroundColor = "#fff3cd";
+        setTimeout(() => { row.style.backgroundColor = ""; }, 2500);
+    });
+}
+
+document.getElementById("topbarWarrantySearchIcon").addEventListener("click", function(){
+    runTopbarWarrantySearch();
+});
+
+let topbarWarrantySearchDebounce = null;
+document.getElementById("topbarWarrantySearch").addEventListener("input", function(){
+    clearTimeout(topbarWarrantySearchDebounce);
+    topbarWarrantySearchDebounce = setTimeout(runTopbarWarrantySearch, 400);
+});
+
+document.getElementById("topbarWarrantySearch").addEventListener("keydown", async function(e){
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    clearTimeout(topbarWarrantySearchDebounce);
+    await runTopbarWarrantySearch();
+});
+
 
 /* ===========================================
-   FORM SUBMIT
+   FORM SUBMIT -- "Activate Warranty" (status
+   as selected in the dropdown, default 'pending')
 =========================================== */
 
-const warrantyForm = document.querySelector("form");
+const warrantyForm = document.getElementById("warrantyForm") || document.querySelector("form");
 
-warrantyForm.addEventListener("submit", async function(e){
-    e.preventDefault();
-
-    if (!resolvedInventoryId || !resolvedDealerId) {
-        alert("Pehle ek valid Serial Number search karo (search icon dabao).");
-        return;
-    }
-
-    const payload = {
+function buildWarrantyPayload(){
+    return {
         inventory_id: resolvedInventoryId,
         dealer_id: resolvedDealerId,
         customer_name: document.getElementById("customerName").value.trim(),
@@ -1409,6 +1560,16 @@ warrantyForm.addEventListener("submit", async function(e){
         status: document.getElementById("warrantyStatus").value,
         remarks: document.getElementById("warrantyRemarks").value.trim()
     };
+}
+
+async function submitWarranty(forceStatus){
+    if (!resolvedInventoryId || !resolvedDealerId) {
+        alert("Pehle ek valid Serial Number search karo (search icon dabao).");
+        return;
+    }
+
+    const payload = buildWarrantyPayload();
+    if (forceStatus) payload.status = forceStatus;
 
     if (!payload.customer_name || !payload.customer_phone || !payload.activation_date || !payload.warranty_months) {
         alert("Please fill all required (*) fields.");
@@ -1426,20 +1587,34 @@ warrantyForm.addEventListener("submit", async function(e){
 
         if (!result.success) {
             alert(result.message || "Something went wrong.");
+            if (result.errors) alert(result.errors.join("\n"));
+            // "debug" only appears when NODE_ENV isn't production -- shows
+            // the raw SQL reason so you can see exactly what failed
+            if (result.debug) console.error("DB error detail:", result.debug);
             return;
         }
 
-        alert("Warranty Activated Successfully.");
+        alert(forceStatus === "pending" ? "Warranty Saved as Draft." : "Warranty Activated Successfully.");
         warrantyForm.reset();
-        resolvedInventoryId = null;
-        resolvedDealerId = null;
-        generateWarrantyID();
-        loadWarranty();
+        resetWarrantyFormState();
+
+        await loadWarranty();
+        await loadStats();
 
     } catch (err) {
         alert("Server se connect nahi ho paya.");
         console.error(err);
     }
+}
+
+warrantyForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    submitWarranty(null); // status = whatever the dropdown says
+});
+
+// Save Draft -- same data, forced to status 'pending' regardless of dropdown
+document.getElementById("saveDraftBtn").addEventListener("click", function(){
+    submitWarranty("pending");
 });
 
 
@@ -1470,7 +1645,8 @@ async function deleteWarranty(id){
         if (!result.success) { alert(result.message); return; }
 
         alert("Warranty record Deleted Successfully.");
-        loadWarranty();
+        await loadWarranty();
+        await loadStats();
 
     } catch (err) {
         alert("Server se connect nahi ho paya.");
@@ -1480,11 +1656,67 @@ async function deleteWarranty(id){
 
 
 /* ===========================================
-   PRINT WARRANTY
+   TOP HEADER BUTTONS
 =========================================== */
 
-document.querySelector(".btn-warning").addEventListener("click", function(){
+// Activate Warranty (header) -- jump to the form, make sure it's clean
+document.getElementById("activateWarrantyTopBtn").addEventListener("click", function(){
+    warrantyForm.reset();
+    resetWarrantyFormState();
+    document.getElementById("warrantyFormCard").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+// Refresh -- re-pull stats + current filtered warranty list from SQL
+// (this was previously mis-wired to window.print() -- fixed with a unique id)
+document.getElementById("refreshWarrantyBtn").addEventListener("click", async function(){
+    await loadStats();
+    await loadWarranty();
+});
+
+// Print -- only #warrantyTableSection is visible in print media (see <style>)
+document.getElementById("printWarrantyListBtn").addEventListener("click", function(){
     window.print();
+});
+
+
+/* ===========================================
+   PRINT WARRANTY CARD -- prints a customer-facing
+   certificate built from whatever is currently
+   filled in the form (client-side, no reload needed)
+=========================================== */
+
+document.getElementById("printWarrantyCardBtn").addEventListener("click", function(){
+    if (!resolvedInventoryId || !resolvedDealerId) {
+        alert("Pehle ek valid Serial Number search karo, tabhi warranty card print hoga.");
+        return;
+    }
+
+    const customerName = document.getElementById("customerName").value.trim() || "-";
+    const customerPhone = document.getElementById("customerMobile").value.trim() || "-";
+    const productName = document.getElementById("warProductName").value || "-";
+    const modelName = document.getElementById("warModelNumber").value || "-";
+    const dealerName = document.getElementById("warDealerName").value || "-";
+    const dealerCode = document.getElementById("warDealerId").value || "-";
+    const activation = activationDateInput.value || "-";
+    const expiry = expiryDateDisplay.value || "-";
+    const period = periodSelectEl.value ? `${periodSelectEl.value} Months` : "-";
+
+    const w = window.open("", "_blank");
+    w.document.write(`
+        <html><head><title>Warranty Card</title></head>
+        <body style="font-family:sans-serif;padding:24px;">
+            <h3>Battery ERP &mdash; Warranty Card</h3>
+            <p><b>Serial Number:</b> ${lastLookedUpSerial || "-"}</p>
+            <p><b>Product:</b> ${productName} ${modelName}</p>
+            <p><b>Customer:</b> ${customerName} (${customerPhone})</p>
+            <p><b>Dealer:</b> ${dealerName} (${dealerCode})</p>
+            <p><b>Warranty Period:</b> ${period}</p>
+            <p><b>Activation Date:</b> ${activation}</p>
+            <p><b>Expiry Date:</b> ${expiry}</p>
+        </body></html>
+    `);
+    w.document.close();
+    w.print();
 });
 
 
@@ -1492,13 +1724,22 @@ document.querySelector(".btn-warning").addEventListener("click", function(){
    RESET FORM
 =========================================== */
 
-document.querySelector(".btn-secondary").addEventListener("click", function(){
+document.getElementById("resetWarrantyBtn").addEventListener("click", function(){
     setTimeout(function(){
-        resolvedInventoryId = null;
-        resolvedDealerId = null;
-        generateWarrantyID();
-    }, 100);
+        resetWarrantyFormState();
+    }, 0);
 });
+
+
+/* ===========================================
+   PAGE LOAD
+=========================================== */
+
+window.onload = function(){
+    generateWarrantyID();
+    loadStats();
+    loadWarranty();
+};
 
 </script>
 

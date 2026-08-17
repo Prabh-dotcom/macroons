@@ -9,6 +9,12 @@ exports.getKPIs = async () => {
     const [[monthlyDispatch]] = await db.query(
         "SELECT COUNT(*) AS c FROM dispatch WHERE MONTH(dispatch_date) = MONTH(CURDATE()) AND YEAR(dispatch_date) = YEAR(CURDATE())"
     );
+    // Pichhle mahine ka dispatch count -- "+X% Growth" caption ke liye
+    const [[lastMonthDispatch]] = await db.query(
+        `SELECT COUNT(*) AS c FROM dispatch
+         WHERE MONTH(dispatch_date) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+         AND YEAR(dispatch_date) = YEAR(CURDATE() - INTERVAL 1 MONTH)`
+    );
     const [[activeWarranty]] = await db.query("SELECT COUNT(*) AS c FROM warranty WHERE status = 'active'");
     const [[totalWarranty]] = await db.query("SELECT COUNT(*) AS c FROM warranty");
     const [[registeredDealers]] = await db.query("SELECT COUNT(*) AS c FROM dealers");
@@ -17,11 +23,18 @@ exports.getKPIs = async () => {
     );
 
     const activePercent = totalWarranty.c > 0 ? Math.round((activeWarranty.c / totalWarranty.c) * 100) : 0;
+    // Agar pichhle mahine 0 dispatch the aur is mahine kuch bhi hua to
+    // growth 100% dikhate hain (0 se divide avoid karne ke liye); agar
+    // dono hi 0 hain to 0% (no change).
+    const dispatchGrowthPercent = lastMonthDispatch.c > 0
+        ? Math.round(((monthlyDispatch.c - lastMonthDispatch.c) / lastMonthDispatch.c) * 100)
+        : (monthlyDispatch.c > 0 ? 100 : 0);
 
     return {
         total_inventory: totalInventory.c,
         new_inventory_this_month: newInventoryThisMonth.c,
         monthly_dispatch: monthlyDispatch.c,
+        dispatch_growth_percent: dispatchGrowthPercent,
         active_warranty: activeWarranty.c,
         active_warranty_percent: activePercent,
         registered_dealers: registeredDealers.c,

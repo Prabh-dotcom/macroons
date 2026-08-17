@@ -14,16 +14,21 @@ exports.getSummary = asyncHandler(async (req, res) => {
     return apiResponse.success(res, 200, "Summary fetched successfully.", summary);
 });
 
+exports.getCharts = asyncHandler(async (req, res) => {
+    const charts = await ReportModel.getChartsData();
+    return apiResponse.success(res, 200, "Charts data fetched successfully.", charts);
+});
+
 exports.getReports = asyncHandler(async (req, res) => {
     const {
         search, fromDate, toDate, reportType, status,
-        dealer, category, productName, modelNumber, state,
+        dealer, category, productName, modelNumber, state, district,
         page, limit
     } = req.query;
 
     const result = await ReportModel.getReports({
         search, fromDate, toDate, reportType, status,
-        dealer, category, productName, modelNumber, state,
+        dealer, category, productName, modelNumber, state, district,
         page: page ? Number(page) : 1,
         limit: limit ? Number(limit) : 15
     });
